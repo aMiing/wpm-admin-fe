@@ -8,7 +8,7 @@ for (let i = 0; i < count; i++) {
     mock({
       uuid: '@uuid',
       id: '@id',
-      title: '@cname', //商品名称
+      title: '@ctitle', //商品名称
       'status|1': ['on', 'off'],
       author: '@cname', //厂商
       datetime: '@datetime',
@@ -25,7 +25,7 @@ for (let i = 0; i < count; i++) {
 module.exports = [
   {
     url: '/table/getList',
-    type: 'post',
+    type: 'get',
     response() {
       return {
         code: 200,

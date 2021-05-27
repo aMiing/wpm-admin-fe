@@ -84,7 +84,7 @@ module.exports = [
   },
   {
     url: '/logout',
-    type: 'post',
+    type: 'get',
     response() {
       return {
         code: 200,

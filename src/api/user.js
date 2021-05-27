@@ -26,13 +26,14 @@ export function getUserInfo(accessToken) {
 export function logout() {
   return request({
     url: '/logout',
-    method: 'post',
+    method: 'get',
   })
 }
 
-export function register() {
+export function register(data) {
   return request({
     url: '/register',
     method: 'post',
+    data,
   })
 }

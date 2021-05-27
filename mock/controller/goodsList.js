@@ -20,8 +20,8 @@ for (let i = 0; i < count; i++) {
 
 module.exports = [
   {
-    url: '/goodsList/getList',
-    type: 'post',
+    url: '/api/goods/getList',
+    type: 'get',
     response(config) {
       const { title = '', pageNo = 1, pageSize = 20 } = config.body
       let mockList = List.filter((item) => {

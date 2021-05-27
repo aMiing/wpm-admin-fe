@@ -1,11 +1,11 @@
 import request from '@/utils/request'
 
-const baseUrl = '/table/'
+const baseUrl = '/goods/'
 
 export function getList(data) {
   return request({
     url: baseUrl + 'getList',
-    method: 'post',
+    method: 'get',
     data,
   })
 }

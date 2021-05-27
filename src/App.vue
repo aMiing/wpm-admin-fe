@@ -1,14 +1,14 @@
 <template>
-  <div id="wpm-admin">
+  <div id="app">
     <router-view />
   </div>
 </template>
 
 <script>
-  export default {
-    name: 'App',
-    mounted() {},
-  }
+export default {
+  name: 'App',
+  mounted() {},
+};
 </script>
 <style lang="scss">
 *{

@@ -93,6 +93,7 @@
 <script>
   import { isPassword, isPhone } from '@/utils/validate'
   import { register } from '@/api/user'
+   import {successCode} from '@/config'
   export default {
     username: 'Register',
     directives: {
@@ -192,8 +193,9 @@
               password: this.form.password,
               phoneCode: this.form.phoneCode,
             }
-            const { msg } = await register(param)
+            const { msg, code } = await register(param)
             this.$baseMessage(msg, 'success')
+            successCode.includes(code) && this.$router.push('login')
           }
         })
       },
