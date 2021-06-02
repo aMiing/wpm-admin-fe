@@ -61,7 +61,7 @@ export default {
         author: "",
         price: "",
         stock: "",
-        type: "",
+        type: [],
         uuid: "",
       },
       rules: {
@@ -92,7 +92,7 @@ export default {
         this.mode = "add";
       } else {
         this.mode = "edit";
-        this.form = Object.assign({}, row);
+        this.form = Object.assign({}, row, {type: row.type.split(',')});
       }
       this.dialogFormVisible = true;
     },

@@ -28,7 +28,6 @@ process.env.VUE_APP_AUTHOR = author || 'amingxiansen 1006934861@qq.com'
 process.env.VUE_APP_UPDATE_TIME = time
 process.env.VUE_APP_VERSION = version
 
-console.log('process', process)
 
 const resolve = (dir) => path.join(__dirname, dir)
 // 

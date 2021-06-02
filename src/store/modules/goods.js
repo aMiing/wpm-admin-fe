@@ -69,7 +69,7 @@ const mutations = {
     const typeStr = filtType.length ? filtType.reduce((count, type) => {
       return count+(type.select ? (type.label+' ') : '')
     }, '') : '';
-    mockList = typeStr ? state.allGoodsList.filter(e => {
+    mockList = typeStr ? mockList.filter(e => {
       const types = e.type.split(',');
       return types.some(e => ~typeStr.indexOf(e))
     }) : mockList;

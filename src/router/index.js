@@ -61,10 +61,10 @@ export const asyncRoutes = [
     ],
   },
   {
-    path: '/personnelManagement',
+    path: '/management',
     component: Layout,
     redirect: 'noRedirect',
-    name: 'PersonnelManagement',
+    name: 'management',
     meta: { title: '系统设置', icon: 'users-cog', permissions: ['admin'] },
     children: [
       // {
@@ -89,10 +89,10 @@ export const asyncRoutes = [
       //   meta: { title: '菜单管理', badge: 'New' },
       // },
       {
-        path: 'goodsManagement',
-        name: 'GoodsManagement',
+        path: 'goods',
+        name: 'goods',
         component: () =>
-          import('@/views/vab/table/index'),
+          import('@/views/management/goods/index'),
         meta: { title: '商品管理', icon: 'users-cog', permissions: ['admin'] },
       },
     ],
