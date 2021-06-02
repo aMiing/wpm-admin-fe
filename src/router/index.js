@@ -12,11 +12,13 @@ Vue.use(VueRouter)
 export const constantRoutes = [
   {
     path: '/login',
+    name: 'login',
     component: () => import('@/views/login/index'),
     hidden: true,
   },
   {
     path: '/register',
+    name: 'register',
     component: () => import('@/views/register/index'),
     hidden: true,
   },

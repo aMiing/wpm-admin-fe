@@ -1,28 +1,44 @@
 <template>
   <div class="table-container">
     <vab-query-form>
-        <el-form
-          ref="form"
-          :model="queryForm"
-          :inline="true"
-          @submit.native.prevent
-          size="medium"
-        >
-          <el-form-item>
-            <el-input v-model="queryForm.title" placeholder="输入名称或编号搜索" clearable @clear="clearSearchKey"/>
-          </el-form-item>
-          <el-form-item>
-            <el-button
-              icon="el-icon-search"
-              type="primary"
-              native-type="submit"
-              @click="handleQuery"
-            >
-              查询
-            </el-button>
-          </el-form-item>
-        </el-form>
+      <el-form
+        ref="form"
+        :model="queryForm"
+        :inline="true"
+        @submit.native.prevent
+        size="medium"
+      >
+        <el-form-item>
+          <el-input
+            v-model="queryForm.title"
+            placeholder="输入名称或编号搜索"
+            clearable
+            @clear="clearSearchKey"
+          />
+        </el-form-item>
+        <el-form-item>
+          <el-button
+            icon="el-icon-search"
+            type="primary"
+            native-type="submit"
+            @click="handleQuery"
+          >
+            查询
+          </el-button>
+        </el-form-item>
+      </el-form>
     </vab-query-form>
+    <div class="type-checkbox-content">
+      <span>按类型筛选：</span>
+      <el-checkbox
+        v-for="(type, index) in queryForm.filtType"
+        :key="index"
+        :label="type.label"
+        v-model="type.select"
+        border
+      ></el-checkbox>
+      <el-button class="select-all" type="text" @click="selectAllTypes">反选</el-button>
+    </div>
 
     <el-table
       ref="tableSort"
@@ -33,14 +49,19 @@
       @selection-change="setSelectRows"
       @sort-change="tableSortChange"
     >
-      <el-table-column show-overflow-tooltip label="编号" prop="uuid" width="240">
+      <el-table-column
+        show-overflow-tooltip
+        label="编号"
+        prop="uuid"
+        width="240"
+      >
       </el-table-column>
       <el-table-column
         show-overflow-tooltip
-        prop="title"
+        prop="name"
         label="名称"
       ></el-table-column>
-      <el-table-column show-overflow-tooltip label="图片">
+      <!-- <el-table-column show-overflow-tooltip label="图片">
         <template #default="{ row }">
           <el-image
             v-if="imgShow"
@@ -48,7 +69,7 @@
             :src="row.img"
           ></el-image>
         </template>
-      </el-table-column>
+      </el-table-column> -->
 
       <el-table-column
         show-overflow-tooltip
@@ -58,7 +79,7 @@
       <el-table-column
         show-overflow-tooltip
         label="库存"
-        prop="pageViews"
+        prop="stock"
         sortable
       ></el-table-column>
 
@@ -67,17 +88,23 @@
         label="生产商"
         prop="author"
       ></el-table-column>
-      <!-- <el-table-column
+      <el-table-column
         show-overflow-tooltip
         label="所属类别"
-        prop="datetime"
-        :filters="[{text: '', value: ''}]"
-        :filter-method="filterHandler"
+        prop="type"
         sortable
-      ></el-table-column> -->
+        sort-by="type"
+      ></el-table-column>
       <el-table-column label="加入购物车" width="160px">
         <template #default="{ row }">
-          <el-input-number v-model="row.saled" :min="0" :max="row.stock" :step="1" step-strictly @change="addedChange(row)"></el-input-number>
+          <el-input-number
+            v-model="row.saled"
+            :min="0"
+            :max="row.stock"
+            :step="1"
+            step-strictly
+            @change="addedChange(row)"
+          ></el-input-number>
         </template>
       </el-table-column>
     </el-table>
@@ -94,143 +121,137 @@
 </template>
 
 <script>
-  import { getList, doDelete } from '@/api/table'
-  import { mapActions, mapGetters, mapMutations } from 'vuex'
-  export default {
-    name: 'ComprehensiveTable',
-    
-    filters: {
-      statusFilter(status) {
-        const statusMap = {
-          published: 'success',
-          draft: 'gray',
-          deleted: 'danger',
-        }
-        return statusMap[status]
-      },
+import { doDelete } from "@/api/table";
+import { mapActions, mapGetters, mapMutations } from "vuex";
+export default {
+  name: "ComprehensiveTable",
+
+  filters: {
+    statusFilter(status) {
+      const statusMap = {
+        published: "success",
+        draft: "gray",
+        deleted: "danger",
+      };
+      return statusMap[status];
     },
-    data() {
-      return {
-        imgShow: true,
-        // list: [],
-        imageList: [],
-        listLoading: true,
-        layout: 'total, sizes, prev, pager, next, jumper',
-        // total: 0,
-        background: true,
-        selectRows: '',
-        elementLoadingText: '正在加载...',
-        queryForm: {
-          pageNo: 1,
-          pageSize: 10,
-          title: '',
-        },
-      }
-    },
-    computed: {
-      ...mapGetters({
-        allGoodsList: 'goods/getGoodsList',
-        list: 'goods/getFiltList',
-        total: 'goods/getTotal'
-      }),
-      height() {
-        return this.$baseTableHeight()
-      },
-    },
-    watch: {
+  },
+  data() {
+    return {
+      imgShow: true,
+      // list: [],
+      imageList: [],
+      listLoading: true,
+      layout: "total, sizes, prev, pager, next, jumper",
+      // total: 0,
+      background: true,
+      selectRows: "",
+      elementLoadingText: "正在加载...",
       queryForm: {
-        handler(val) {
-          this.getFiltData(val)
-        },
-        deep: true,
-      }
+        pageNo: 1,
+        pageSize: 20,
+        title: "",
+        filtType: [
+          { label: "化妆品", select: true },
+          { label: "电子产品", select: true },
+        ],
+      },
+    };
+  },
+  computed: {
+    ...mapGetters({
+      // allGoodsList: "goods/getGoodsList",
+      list: "goods/getFiltList",
+      total: "goods/getTotal",
+      allTypes: "goods/getAllTypes",
+    }),
+    height() {
+      return this.$baseTableHeight();
     },
-    created() {
-      this.fetchData()
+  },
+  watch: {
+    allTypes(val) {
+      this.queryForm.filtType = val;
     },
-    methods: {
-      ...mapMutations({
-        addCartItem: 'cart/addCartItem',
-        setGoodsList: 'goods/setGoodsList',
-        getFiltData: 'goods/getFiltData',
-      }),
-      addedChange(row) {
-        this.addCartItem(row)
+    queryForm: {
+      handler(val) {
+        this.getFiltData(val);
       },
-      clearSearchKey() {
-        this.handleQuery()
-      },
-      tableSortChange() {
-        const imageList = []
-        this.$refs.tableSort.tableData.forEach((item, index) => {
-          imageList.push(item.img)
-        })
-        this.imageList = imageList
-      },
-      setSelectRows(val) {
-        this.selectRows = val
-      },
-      handleAdd() {
-        this.$refs['edit'].showEdit()
-      },
-      handleEdit(row) {
-        this.$refs['edit'].showEdit(row)
-      },
-      
-      handleSizeChange(val) {
-        this.queryForm.pageSize = val
-      },
-      handleCurrentChange(val) {
-        this.queryForm.pageNo = val
-      },
-      handleQuery() {
-        this.queryForm.pageNo = 1
-      },
-      async fetchData() {
-        this.listLoading = true
-        const { data } = await getList()
-        this.setGoodsList(data)
-        this.queryForm.pageSize = 20
-        const imageList = []
-        data.forEach((item, index) => {
-          imageList.push(item.img)
-        })
-        this.imageList = imageList
-        setTimeout(() => {
-          this.listLoading = false
-        }, 500)
-      },
-      testMessage() {
-        this.$baseMessage('test1', 'success')
-      },
-      testALert() {
-        this.$baseAlert('11')
-        this.$baseAlert('11', '自定义标题', () => {
-          /* 可以写回调; */
-        })
-        this.$baseAlert('11', null, () => {
-          /* 可以写回调; */
-        })
-      },
-      testConfirm() {
-        this.$baseConfirm(
-          '你确定要执行该操作?',
-          null,
-          () => {
-            /* 可以写回调; */
-          },
-          () => {
-            /* 可以写回调; */
-          }
-        )
-      },
-      testNotify() {
-        this.$baseNotify('测试消息提示', 'test', 'success', 'bottom-right')
-      },
-      // filterHandler(value, row, column) {
-      //   const property = column['property'];
-      //   return row[property] === value;
-      // }
+      deep: true,
     },
-  }
+  },
+  async created() {
+    await this.fetchData();
+  },
+  methods: {
+    ...mapMutations({
+      addCartItem: "cart/addCartItem",
+      getFiltData: "goods/getFiltData",
+    }),
+    ...mapActions({
+      setGoodsList: "goods/setGoodsList",
+    }),
+    addedChange(row) {
+      this.addCartItem(row);
+    },
+    clearSearchKey() {
+      this.handleQuery();
+    },
+    tableSortChange() {
+      const imageList = [];
+      this.$refs.tableSort.tableData.forEach((item, index) => {
+        imageList.push(item.img);
+      });
+      this.imageList = imageList;
+    },
+    setSelectRows(val) {
+      this.selectRows = val;
+    },
+    handleAdd() {
+      this.$refs["edit"].showEdit();
+    },
+    handleEdit(row) {
+      this.$refs["edit"].showEdit(row);
+    },
+
+    handleSizeChange(val) {
+      this.queryForm.pageSize = val;
+    },
+    handleCurrentChange(val) {
+      this.queryForm.pageNo = val;
+    },
+    handleQuery() {
+      this.queryForm.pageNo = 1;
+    },
+    async fetchData() {
+      this.listLoading = true;
+      await this.setGoodsList();
+      // this.queryForm.pageSize = 20;
+      const imageList = [];
+      this.list.forEach((item, index) => {
+        imageList.push(item.img);
+      });
+      this.imageList = imageList;
+      setTimeout(() => {
+        this.listLoading = false;
+      }, 500);
+    },
+    selectAllTypes() {
+      this.queryForm.filtType = this.queryForm.filtType.map(e => {
+        return Object.assign(e, {select: !e.select})
+      })
+    }
+  },
+};
 </script>
+<style lang="scss">
+.type-checkbox-content {
+  margin-bottom: 10px;
+}
+.el-checkbox {
+  margin: 0 5px 5px 0;
+}
+.select-all{
+  margin: 0 10px;
+}
+</style>

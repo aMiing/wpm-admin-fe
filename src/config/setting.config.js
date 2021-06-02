@@ -16,7 +16,7 @@ const setting = {
   baseURL:
     process.env.NODE_ENV === 'development'
       ? 'vab-mock-server'
-      : 'vab-mock-server',
+      : 'api',
   //标题 （包括初次加载雪花屏的标题 页面的标题 浏览器的标题）
   title: '商品管理系统',
   //简写
@@ -42,7 +42,7 @@ const setting = {
   //token名称
   tokenName: 'accessToken',
   //token在localStorage、sessionStorage存储的key的名称
-  tokenTableName: 'vue-admin-2021',
+  tokenTableName: 'wpm-admin-2021',
   //token存储位置localStorage sessionStorage
   storage: 'localStorage',
   //token失效回退到登录页时是否记录本次的路由
@@ -50,7 +50,7 @@ const setting = {
   //是否显示logo，不显示时设置false，显示时请填写remixIcon图标名称，暂时只支持设置remixIcon
   logo: 'vuejs-fill',
   //是否显示在页面高亮错误
-  errorLog: ['development', 'production'],
+  errorLog: ['development'],//, 'production'
   //是否开启登录拦截
   loginInterception: true,
   //是否开启登录RSA加密

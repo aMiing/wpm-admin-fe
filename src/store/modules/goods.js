@@ -2,57 +2,102 @@
  * @author 
  * @description 代码生成机状态管理
  */
+import { getList } from '@/api/table'
 
 const state = () => ({
   allGoodsList: [],
   currentGoodsList: [],
   total: 0,
+  allTypes: []
 })
 const getters = {
   getGoodsList: (state) => state.allGoodsList,
   getFiltList: (state) => state.currentGoodsList,
   getTotal: state => state.total,
+  getAllTypes: state => state.allTypes,
 }
 
 const mutations = {
   setGoodsList(state, allGoodsList) {
-    state.allGoodsList = allGoodsList
+    state.allGoodsList = allGoodsList.map(e => {
+      return {...e, saled: 0}
+    })
+  },
+  updateAllTypes(state) {
+    let typeList = []
+    state.allGoodsList.forEach(e => {
+      const labelArr = String(e.type).trim().split(',')
+      typeList = typeList.concat(labelArr)
+    })
+    state.allTypes = [...new Set(typeList)].map(e => {
+      return {label: e, select: false}
+    })
   },
   addGoodsItem(state, item) {
-    const index = state.allGoodsList.indexOf(item)
-    ~index ? state.allGoodsList[index] = item : state.allGoodsList.push(item)
+   let index = -1;
+   state.allGoodsList.forEach((e, ind) => {
+      if(e.uuid === item.uuid){
+        index = ind
+      }
+    });
+    ~index ? state.allGoodsList[index] = item : state.allGoodsList.unshift(item)
   },
   resetStock(state, list) {
     list.forEach(e => {
-      e.pageViews = e.pageViews - e.saled;
-      const index = state.allGoodsList.indexOf(e)
+      e.stock = e.stock - e.saled;
+      let index = -1;
+      state.allGoodsList.forEach((e, ind) => {
+        if(e.uuid === e.uuid){
+          index = ind
+        }
+      });
       ~index && (state.allGoodsList[index] = e )
     })
   },
-  delGoodsList(state, list) {
-    const index = state.allGoodsList.indexOf(list)
+  delGoodsList(state, uuid) {
+    let index = -1;
+    state.allGoodsList.forEach((e, ind) => {
+      if(e.uuid === uuid) index = ind;
+    });
     ~index && state.allGoodsList.splice(index, 1)
   },
   getFiltData(state, config) {
-    const { title = '', pageNo = 1, pageSize = 20 } = config
+    const { title = '', pageNo = 1, pageSize = 20, filtType = [] } = config
     let mockList = title ? state.allGoodsList.filter((item) => {
-      return ~(item.title+item.uuid).indexOf(title)
+      return ~(item.name+item.uuid).indexOf(title)
     }) : state.allGoodsList;
+    const typeStr = filtType.length ? filtType.reduce((count, type) => {
+      return count+(type.select ? (type.label+' ') : '')
+    }, '') : '';
+    mockList = typeStr ? state.allGoodsList.filter(e => {
+      const types = e.type.split(',');
+      return types.some(e => ~typeStr.indexOf(e))
+    }) : mockList;
     const pageList = mockList.filter((item, index) =>
-        index < pageSize * pageNo && index >= pageSize * (pageNo - 1)
+    index < pageSize * pageNo && index >= pageSize * (pageNo - 1)
     )
     state.currentGoodsList = pageList;
     state.total = mockList.length;
-
-    // return {
-    //   totalCount: mockList.length,
-    //   data: pageList,
-    // }
   }
 }
 const actions = {
-  setGoodsList({ commit }, goodsList) {
-    commit('setGoodsList', goodsList)
+  async setGoodsList({ commit }) {
+    // 请求数据
+    const { data } = await getList()
+    commit('setGoodsList', data)
+    commit('updateAllTypes')
+  },
+  addGoodsItem({ commit }, list) {
+    commit('addGoodsItem', list)
+    commit('getFiltData', {title: ""})
+  },
+  delGoodsList({ commit }, list) {
+    list.uuid.split(',').forEach(e => {
+      commit('delGoodsList', e)
+    })
+    commit('getFiltData', {title: ""})
   },
 }
+
+
 export default { state, getters, mutations, actions }

@@ -15,27 +15,27 @@ const {
   devPort,
   providePlugin,
   build7z,
-  donation,
 } = require('./src/config')
 
 const { version, author } = require('./package.json')
 const Webpack = require('webpack')
-const WebpackBar = require('webpackbar')
 const FileManagerPlugin = require('filemanager-webpack-plugin')
 const dayjs = require('dayjs')
 const date = dayjs().format('YYYY_M_D')
 const time = dayjs().format('YYYY-M-D HH:mm:ss')
-process.env.VUE_APP_TITLE = title || 'vue-admin'
+process.env.VUE_APP_TITLE = title || 'wpm-admin'
 process.env.VUE_APP_AUTHOR = author || 'amingxiansen 1006934861@qq.com'
 process.env.VUE_APP_UPDATE_TIME = time
 process.env.VUE_APP_VERSION = version
 
+console.log('process', process)
+
 const resolve = (dir) => path.join(__dirname, dir)
+// 
 // const mockServer = () => {
 //   if (process.env.NODE_ENV === 'development') return require('./mock')
 //   else return ''
 // }
-
 module.exports = {
   publicPath,
   assetsDir,
@@ -53,7 +53,7 @@ module.exports = {
     },
     // after: mockServer(),
     proxy: {
-      '/vab-mock-server/': {
+      '/vab-mock-server': {
         target: 'http://localhost:3000',
         pathRewrite:{
           '^/vab-mock-server':'/api'

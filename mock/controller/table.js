@@ -12,7 +12,7 @@ for (let i = 0; i < count; i++) {
       'status|1': ['on', 'off'],
       author: '@cname', //厂商
       datetime: '@datetime',
-      pageViews: '@integer(0, 5000)',
+      stock: '@integer(0, 5000)',
       img: handleRandomImage(200, 200),
       smallImg: handleRandomImage(40, 40),
       switch: '@boolean',

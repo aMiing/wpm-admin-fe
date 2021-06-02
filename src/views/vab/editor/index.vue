@@ -1,7 +1,7 @@
 <template>
   <div class="editor-container">
     <el-form ref="form" :model="form" :rules="rules" label-width="100px">
-      <el-form-item label="标题" prop="title">
+      <el-form-item label="标题" prop="name">
         <el-input v-model="form.title" maxlength="20"></el-input>
       </el-form-item>
       <el-form-item label="所属模块" prop="module">

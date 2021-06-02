@@ -10,9 +10,10 @@ export function getList(data) {
   })
 }
 
-export function doEdit(data) {
+export function doEdit(data, mode) {
+  const uri = mode==='edit'?'update':'create'
   return request({
-    url: baseUrl + 'doEdit',
+    url: baseUrl + uri,
     method: 'post',
     data,
   })
@@ -20,7 +21,7 @@ export function doEdit(data) {
 
 export function doDelete(data) {
   return request({
-    url: baseUrl + 'doDelete',
+    url: baseUrl + 'delete',
     method: 'post',
     data,
   })

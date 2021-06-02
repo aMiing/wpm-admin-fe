@@ -6,7 +6,7 @@
     @close="close"
   >
     <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-      <el-form-item label="标题" prop="title">
+      <el-form-item label="标题" prop="name">
         <el-input v-model.trim="form.title" autocomplete="off"></el-input>
       </el-form-item>
       <el-form-item label="作者" prop="author">
