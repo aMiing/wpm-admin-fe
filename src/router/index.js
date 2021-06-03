@@ -95,6 +95,30 @@ export const asyncRoutes = [
           import('@/views/management/goods/index'),
         meta: { title: '商品管理', icon: 'users-cog', permissions: ['admin'] },
       },
+      // {
+      //   path: 'order',
+      //   name: 'order',
+      //   component: () =>
+      //     import('@/views/management/order/index'),
+      //   meta: { title: '订单列表', icon: 'users-cog', permissions: ['admin'] },
+      // },
+    ],
+  },
+  {
+    path: '/order',
+    component: Layout,
+    redirect: 'order',
+    children: [
+      {
+        path: 'order',
+        name: 'order',
+        component: () => import('@/views/order/index'),
+        meta: {
+          title: '订单列表',
+          icon: 'book',
+          // affix: true,
+        },
+      },
     ],
   },
   

@@ -68,10 +68,9 @@
 </template>
 
 <script>
-  // import variables from '@/styles/variables.scss'
   import { getList, resetStock } from '@/api/table'
+  import { createOrder } from '@/api/order'
   import { mapActions, mapGetters, mapMutations } from 'vuex'
-  // import { layout as defaultLayout } from '@/config'
   import {successCode} from '@/config'
   export default {
     name: 'cart',
@@ -86,6 +85,7 @@
     computed: {
       ...mapGetters({
         cartList: 'cart/getCartList',
+        username: 'user/username'
       }),
       allcartCount() {
         return this.cartList.reduce((total,item) => total += item.saled, 0)
@@ -128,13 +128,18 @@
       },
       // 更新库存
       async resetStock() {
-        const {msg, code} = await resetStock(this.cartList)
-        this.$baseMessage(msg, 'success')
-        if(successCode.includes(code)){
-          // 修改store
-          this.resetStockStore(this.cartList)
-          this.drawerVisible  = false;
-          this.clearCartlist()
+        try{
+          const {msg, code} = await resetStock(this.cartList)
+          await createOrder({allPayPrice: this.allPayPrice, salesperson: this.username, purchase: this.cartList})
+          this.$baseMessage(msg, 'success')
+          if(successCode.includes(code)){
+            // 修改store
+            this.resetStockStore(this.cartList)
+            this.drawerVisible  = false;
+            this.clearCartlist()
+          }
+        }catch(err) {
+          this.$baseMessage(err, 'error')
         }
       },
       handleOpenThemeBar() {

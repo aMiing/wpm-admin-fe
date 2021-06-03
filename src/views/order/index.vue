@@ -11,7 +11,7 @@
         <el-form-item>
           <el-input
             v-model="queryForm.title"
-            placeholder="输入名称或编号搜索"
+            placeholder="输入商品名称搜索"
             clearable
             @clear="clearSearchKey"
           />
@@ -28,16 +28,26 @@
         </el-form-item>
       </el-form>
     </vab-query-form>
-    <div class="checkbox-content type-select">
-      <span>按类型筛选：</span>
-      <el-checkbox
-        v-for="(type, index) in queryForm.filtType"
-        :key="index"
-        :label="type.label"
-        v-model="type.select"
-        border
-      ></el-checkbox>
-      <el-button class="select-all" type="text" @click="selectAllTypes">反选</el-button>
+    <div class="checkbox-content time-select">
+      <el-radio-group v-model="initSelectRadio" @change="radioSelectChange">
+        <el-radio-button label="今天"></el-radio-button>
+        <el-radio-button label="昨天"></el-radio-button>
+        <el-radio-button label="近一周"></el-radio-button>
+        <el-radio-button label="近30天"></el-radio-button>
+        <el-radio-button label="近90天"></el-radio-button>
+      </el-radio-group>
+      <div class="initTime">
+        <el-date-picker
+          v-model="initStartDate"
+          type="daterange"
+          range-separator="至"
+          start-placeholder="开始日期"
+          end-placeholder="结束日期"
+          value-format="timestamp"
+          @change="pickerDateChange"
+        >
+        </el-date-picker>
+      </div>
     </div>
 
     <el-table
@@ -46,65 +56,50 @@
       :data="list"
       :element-loading-text="elementLoadingText"
       :height="height"
-      @selection-change="setSelectRows"
       @sort-change="tableSortChange"
     >
       <el-table-column
         show-overflow-tooltip
-        label="编号"
+        label="订单编号"
         prop="uuid"
         width="240"
       >
       </el-table-column>
       <el-table-column
         show-overflow-tooltip
-        prop="name"
-        label="名称"
+        prop="purchase"
+        label="购买商品"
       ></el-table-column>
-      <!-- <el-table-column show-overflow-tooltip label="图片">
+
+      <el-table-column
+        show-overflow-tooltip
+        label="销售员"
+        prop="salesperson"
+      ></el-table-column>
+
+      <el-table-column
+        show-overflow-tooltip
+        prop="allPayPrice"
+        label="订单金额"
+        sortable
+        sort-by="allPayPrice"
+      >
+      </el-table-column>
+
+      <el-table-column
+        show-overflow-tooltip
+        label="订单状态"
+      >
         <template #default="{ row }">
-          <el-image
-            v-if="imgShow"
-            :preview-src-list="imageList"
-            :src="row.img"
-          ></el-image>
+          <el-tag :type="row.state | statusFilter">
+            {{ (row.state) | statusTextFilter }}
+          </el-tag>
         </template>
-      </el-table-column> -->
+      </el-table-column>
 
-      <el-table-column
-        show-overflow-tooltip
-        prop="price"
-        label="单价"
-      ></el-table-column>
-      <el-table-column
-        show-overflow-tooltip
-        label="库存"
-        prop="stock"
-        sortable
-      ></el-table-column>
-
-      <el-table-column
-        show-overflow-tooltip
-        label="生产商"
-        prop="author"
-      ></el-table-column>
-      <el-table-column
-        show-overflow-tooltip
-        label="所属类别"
-        prop="type"
-        sortable
-        sort-by="type"
-      ></el-table-column>
-      <el-table-column label="加入购物车" width="160px">
+      <el-table-column show-overflow-tooltip label="订单生成时间" width="200">
         <template #default="{ row }">
-          <el-input-number
-            v-model="row.saled"
-            :min="0"
-            :max="row.stock"
-            :step="1"
-            step-strictly
-            @change="addedChange(row)"
-          ></el-input-number>
+          <span>{{ row.createTime | timeFilter }}</span>
         </template>
       </el-table-column>
     </el-table>
@@ -121,11 +116,20 @@
 </template>
 
 <script>
-import { doDelete } from "@/api/table";
 import { mapActions, mapGetters, mapMutations } from "vuex";
+import { getList } from "@/api/order";
 export default {
-  name: "Index",
+  name: "Order", //销售订单列表
   filters: {
+    statusFilter(status) {
+      return status === 1 ? "success" : "info";
+    },
+    statusTextFilter(status) {
+      return status === 1 ? "有效" : "无效";
+    },
+    timeFilter(NS) {
+      return new Date(NS).toLocaleString();
+    },
   },
   data() {
     return {
@@ -140,29 +144,22 @@ export default {
         pageNo: 1,
         pageSize: 20,
         title: "",
-        filtType: [
-          { label: "化妆品", select: true },
-          { label: "电子产品", select: true },
-        ],
+        filtType: [],
       },
+      initStartDate: "",
+      initSelectRadio: "今天",
     };
   },
   computed: {
     ...mapGetters({
-      // allGoodsList: "goods/getGoodsList",
-      list: "goods/getFiltList",
-      total: "goods/getTotal",
-      allTypes: "goods/getAllTypes",
-      cartList: 'cart/getCartList',
+      list: "order/getFiltList",
+      total: "order/getTotal",
     }),
     height() {
       return this.$baseTableHeight();
     },
   },
   watch: {
-    allTypes(val) {
-      this.queryForm.filtType = val;
-    },
     queryForm: {
       handler(val) {
         this.getFiltData(val);
@@ -172,25 +169,46 @@ export default {
   },
   async created() {
     await this.fetchData();
-    this.mergeCartList()
   },
   methods: {
     ...mapMutations({
-      addCartItem: "cart/addCartItem",
-      delCartItem: "cart/delCartItem",
-      getFiltData: "goods/getFiltData",
-      setCurrenList: "goods/setCurrenList",
+      getFiltData: "order/getFiltData",
+      setCurrenList: "order/setCurrenList",
     }),
     ...mapActions({
-      setGoodsList: "goods/setGoodsList",
+      setOrderList: "order/setOrderList",
     }),
-
-    mergeCartList() {
-      const list = this.list.map(e => {
-        const saled = this.cartList?.find(i => e.uuid === i.uuid)?.saled || 0;
-        return {...e, saled}
-      })
-      this.setCurrenList(list)
+    radioSelectChange(label) {
+      // 选中日期变化，更新数据
+      const today = new Date().toLocaleDateString();
+      const Now = new Date().getTime();
+      const Zero = new Date(today).getTime();
+      const oneDay = 1000 * 3600 * 24;
+      let timeRange = [];
+      switch (label) {
+        case "今天":
+          timeRange = [Zero, Now];
+          break;
+        case "昨天":
+          timeRange = [Zero - oneDay, Zero];
+          break;
+        case "近一周":
+          timeRange = [Now - 7 * oneDay, Now];
+          break;
+        case "近30天":
+          timeRange = [Now - 30 * oneDay, Now];
+          break;
+        case "近90天":
+          timeRange = [Now - 90 * oneDay, Now];
+          break;
+        default:
+          timeRange = [Zero, Now];
+          break;
+      }
+      this.pickerDateChange(timeRange);
+    },
+    async pickerDateChange(dates) {
+      this.setOrderList(dates);
     },
     addedChange(row) {
       Number(row.saled) > 0 ? this.addCartItem(row) : this.delCartItem(row);
@@ -205,15 +223,6 @@ export default {
       });
       this.imageList = imageList;
     },
-    setSelectRows(val) {
-      this.selectRows = val;
-    },
-    handleAdd() {
-      this.$refs["edit"].showEdit();
-    },
-    handleEdit(row) {
-      this.$refs["edit"].showEdit(row);
-    },
 
     handleSizeChange(val) {
       this.queryForm.pageSize = val;
@@ -226,33 +235,22 @@ export default {
     },
     async fetchData() {
       this.listLoading = true;
-      await this.setGoodsList();
-      // this.queryForm.pageSize = 20;
-      const imageList = [];
-      this.list.forEach((item, index) => {
-        imageList.push(item.img);
-      });
-      this.imageList = imageList;
+      this.radioSelectChange(this.initStartDate);
       setTimeout(() => {
         this.listLoading = false;
       }, 500);
     },
-    selectAllTypes() {
-      this.queryForm.filtType = this.queryForm.filtType.map(e => {
-        return Object.assign(e, {select: !e.select})
-      })
-    }
   },
 };
 </script>
 <style lang="scss">
 .checkbox-content {
-  margin-bottom: 10px;
-}
-.el-checkbox {
-  margin: 0 5px 5px 0;
-}
-.select-all{
-  margin: 0 10px;
+  &.time-select {
+    display: flex;
+    justify-content: flex-start;
+    .initTime {
+      margin: 0 12px 5px;
+    }
+  }
 }
 </style>

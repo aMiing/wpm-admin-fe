@@ -37,7 +37,7 @@
         </el-form>
       </vab-query-form-right-panel>
     </vab-query-form>
-    <div class="type-checkbox-content">
+    <div class="checkbox-content type-select">
       <span>按类型筛选：</span>
       <el-checkbox
         v-for="(type, index) in queryForm.filtType"
@@ -122,7 +122,7 @@
       ></el-table-column>
       <el-table-column show-overflow-tooltip label="录入时间" width="200">
         <template #default="{ row }">
-          <span>{{ formatterTime(row.createTime) }}</span>
+          <span>{{ row.createTime | timeFilter }}</span>
         </template>
       </el-table-column>
       <el-table-column show-overflow-tooltip label="操作" width="180px">
@@ -162,6 +162,10 @@ export default {
     statusFilter(status) {
       return status === 1 ? "success" : "info";
     },
+    timeFilter(NS) {
+      // return new Date(NS).toLocaleString();
+      return NS
+    }
   },
   data() {
     return {
@@ -218,10 +222,6 @@ export default {
       setGoodsList: "goods/setGoodsList",
       delGoodsList: "goods/delGoodsList",
     }),
-    formatterTime(NS) {
-      return new Date(NS).toLocaleString();
-    },
-
     handleStatusText(state) {
       return state === 1 ? "在售" : "下架";
     },
@@ -307,7 +307,7 @@ export default {
 </script>
 
 <style lang="scss">
-.type-checkbox-content {
+.checkbox-content {
   margin-bottom: 10px;
 }
 .el-checkbox {
