@@ -60,7 +60,7 @@
           </el-tooltip>
         </div>
         <div class="submit-btn-box" v-show='allcartCount'>
-          <el-button type="primary" size="medium" :loading="saveLoading" @click="resetStock"> 保存，更新库存 </el-button>
+          <el-button type="primary" size="medium" :loading="saveLoading" @click="resetStock"> 确认售出并更新库存 </el-button>
         </div>
       </div>
     </el-drawer>
@@ -74,7 +74,7 @@
   // import { layout as defaultLayout } from '@/config'
   import {successCode} from '@/config'
   export default {
-    name: 'VabThemeBar',
+    name: 'cart',
     data() {
       return {
         tableHeight: 200,

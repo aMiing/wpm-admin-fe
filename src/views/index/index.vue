@@ -139,11 +139,9 @@ export default {
   data() {
     return {
       imgShow: true,
-      // list: [],
       imageList: [],
       listLoading: true,
       layout: "total, sizes, prev, pager, next, jumper",
-      // total: 0,
       background: true,
       selectRows: "",
       elementLoadingText: "正在加载...",
@@ -164,6 +162,7 @@ export default {
       list: "goods/getFiltList",
       total: "goods/getTotal",
       allTypes: "goods/getAllTypes",
+      cartList: 'cart/getCartList',
     }),
     height() {
       return this.$baseTableHeight();
@@ -182,17 +181,28 @@ export default {
   },
   async created() {
     await this.fetchData();
+    this.mergeCartList()
   },
   methods: {
     ...mapMutations({
       addCartItem: "cart/addCartItem",
+      delCartItem: "cart/delCartItem",
       getFiltData: "goods/getFiltData",
+      setCurrenList: "goods/setCurrenList",
     }),
     ...mapActions({
       setGoodsList: "goods/setGoodsList",
     }),
+
+    mergeCartList() {
+      const list = this.list.map(e => {
+        const saled = this.cartList?.find(i => e.uuid === i.uuid)?.saled || 0;
+        return {...e, saled}
+      })
+      this.setCurrenList(list)
+    },
     addedChange(row) {
-      this.addCartItem(row);
+      Number(row.saled) > 0 ? this.addCartItem(row) : this.delCartItem(row);
     },
     clearSearchKey() {
       this.handleQuery();

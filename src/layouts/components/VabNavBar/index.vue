@@ -16,7 +16,7 @@
         <div class="right-panel">
           <vab-error-log />
           <vab-full-screen-bar @refresh="refreshRoute" />
-          <vab-theme-bar class="hidden-xs-only" />
+          <cart class="hidden-xs-only" />
           <vab-icon
             title="重载所有路由"
             :pulse="pulse"
