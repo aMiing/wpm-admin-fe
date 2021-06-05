@@ -29,25 +29,7 @@
       </el-form>
     </vab-query-form>
     <div class="checkbox-content time-select">
-      <el-radio-group v-model="initSelectRadio" @change="radioSelectChange">
-        <el-radio-button label="今天"></el-radio-button>
-        <el-radio-button label="昨天"></el-radio-button>
-        <el-radio-button label="近一周"></el-radio-button>
-        <el-radio-button label="近30天"></el-radio-button>
-        <el-radio-button label="近90天"></el-radio-button>
-      </el-radio-group>
-      <div class="initTime">
-        <el-date-picker
-          v-model="initStartDate"
-          type="daterange"
-          range-separator="至"
-          start-placeholder="开始日期"
-          end-placeholder="结束日期"
-          value-format="timestamp"
-          @change="pickerDateChange"
-        >
-        </el-date-picker>
-      </div>
+      <select-date @setDateEmit="setDateEmit" />
     </div>
 
     <el-table
@@ -86,13 +68,10 @@
       >
       </el-table-column>
 
-      <el-table-column
-        show-overflow-tooltip
-        label="订单状态"
-      >
+      <el-table-column show-overflow-tooltip label="订单状态">
         <template #default="{ row }">
           <el-tag :type="row.state | statusFilter">
-            {{ (row.state) | statusTextFilter }}
+            {{ row.state | statusTextFilter }}
           </el-tag>
         </template>
       </el-table-column>
@@ -117,9 +96,13 @@
 
 <script>
 import { mapActions, mapGetters, mapMutations } from "vuex";
-import { getList } from "@/api/order";
+// import { getList } from "@/api/order";
+import SelectDate from "@/components/SelectDate";
 export default {
   name: "Order", //销售订单列表
+  components: {
+    SelectDate,
+  },
   filters: {
     statusFilter(status) {
       return status === 1 ? "success" : "info";
@@ -178,36 +161,36 @@ export default {
     ...mapActions({
       setOrderList: "order/setOrderList",
     }),
-    radioSelectChange(label) {
-      // 选中日期变化，更新数据
-      const today = new Date().toLocaleDateString();
-      const Now = new Date().getTime();
-      const Zero = new Date(today).getTime();
-      const oneDay = 1000 * 3600 * 24;
-      let timeRange = [];
-      switch (label) {
-        case "今天":
-          timeRange = [Zero, Now];
-          break;
-        case "昨天":
-          timeRange = [Zero - oneDay, Zero];
-          break;
-        case "近一周":
-          timeRange = [Now - 7 * oneDay, Now];
-          break;
-        case "近30天":
-          timeRange = [Now - 30 * oneDay, Now];
-          break;
-        case "近90天":
-          timeRange = [Now - 90 * oneDay, Now];
-          break;
-        default:
-          timeRange = [Zero, Now];
-          break;
-      }
-      this.pickerDateChange(timeRange);
-    },
-    async pickerDateChange(dates) {
+    // radioSelectChange(label) {
+    //   // 选中日期变化，更新数据
+    //   const today = new Date().toLocaleDateString();
+    //   const Now = new Date().getTime();
+    //   const Zero = new Date(today).getTime();
+    //   const oneDay = 1000 * 3600 * 24;
+    //   let timeRange = [];
+    //   switch (label) {
+    //     case "今天":
+    //       timeRange = [Zero, Now];
+    //       break;
+    //     case "昨天":
+    //       timeRange = [Zero - oneDay, Zero];
+    //       break;
+    //     case "近一周":
+    //       timeRange = [Now - 7 * oneDay, Now];
+    //       break;
+    //     case "近30天":
+    //       timeRange = [Now - 30 * oneDay, Now];
+    //       break;
+    //     case "近90天":
+    //       timeRange = [Now - 90 * oneDay, Now];
+    //       break;
+    //     default:
+    //       timeRange = [Zero, Now];
+    //       break;
+    //   }
+    //   this.pickerDateChange(timeRange);
+    // },
+    async setDateEmit(dates) {
       this.setOrderList(dates);
     },
     addedChange(row) {
@@ -235,7 +218,7 @@ export default {
     },
     async fetchData() {
       this.listLoading = true;
-      this.radioSelectChange(this.initStartDate);
+      // this.radioSelectChange(this.initStartDate);
       setTimeout(() => {
         this.listLoading = false;
       }, 500);
@@ -243,14 +226,4 @@ export default {
   },
 };
 </script>
-<style lang="scss">
-.checkbox-content {
-  &.time-select {
-    display: flex;
-    justify-content: flex-start;
-    .initTime {
-      margin: 0 12px 5px;
-    }
-  }
-}
-</style>
+

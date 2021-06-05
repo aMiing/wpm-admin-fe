@@ -60,14 +60,20 @@ const actions = {
     commit('setOrderList', data)
     commit('getFiltData', {})
   },
-  addGoodsItem({
+  getSalesPreview({
     commit
-  }, list) {
-    commit('addGoodsItem', list)
-    commit('getFiltData', {
-      title: ""
-    })
-  },
+  }) {
+
+    commit()
+  }
+  // addGoodsItem({
+  //   commit
+  // }, list) {
+  //   commit('addGoodsItem', list)
+  //   commit('getFiltData', {
+  //     title: ""
+  //   })
+  // },
 }
 
 

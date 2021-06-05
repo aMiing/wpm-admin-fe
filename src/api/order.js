@@ -18,3 +18,21 @@ export function createOrder(data) {
   })
 }
 
+export function getDataPreview(data) {
+  console.log('body', data)
+  return request({
+    url: baseUrl + 'getDataPreview',
+    method: 'post',
+    data,
+  })
+}
+
+
+export function getOrderStatistics(data) {
+  console.log('body', data)
+  return request({
+    url: baseUrl + 'getOrderStatistics',
+    method: 'post',
+    data,
+  })
+}

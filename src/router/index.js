@@ -62,9 +62,9 @@ export const asyncRoutes = [
   },
   {
     path: '/management',
+    name: 'management',
     component: Layout,
     redirect: 'noRedirect',
-    name: 'management',
     meta: { title: '系统设置', icon: 'users-cog', permissions: ['admin'] },
     children: [
       // {
@@ -105,18 +105,26 @@ export const asyncRoutes = [
     ],
   },
   {
-    path: '/order',
+    path: '/data',
     component: Layout,
-    redirect: 'order',
+    redirect: 'noRedirect',
+    meta: { title: '销售数据', icon: 'chart-line', permissions: ['admin'] },
     children: [
       {
+        path: 'analyse',
+        name: 'analyse',
+        component: () => import('@/views/analyse/index'),
+        meta: {
+          title: '数据统计',
+          icon: 'chart-pie',
+        },
+      },{
         path: 'order',
         name: 'order',
         component: () => import('@/views/order/index'),
         meta: {
           title: '订单列表',
           icon: 'book',
-          // affix: true,
         },
       },
     ],
