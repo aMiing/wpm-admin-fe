@@ -37,7 +37,9 @@
         v-model="type.select"
         border
       ></el-checkbox>
-      <el-button class="select-all" type="text" @click="selectAllTypes">反选</el-button>
+      <el-button class="select-all" type="text" @click="selectAllTypes"
+        >反选</el-button
+      >
     </div>
 
     <el-table
@@ -125,8 +127,7 @@ import { doDelete } from "@/api/table";
 import { mapActions, mapGetters, mapMutations } from "vuex";
 export default {
   name: "Index",
-  filters: {
-  },
+  filters: {},
   data() {
     return {
       imgShow: true,
@@ -153,7 +154,7 @@ export default {
       list: "goods/getFiltList",
       total: "goods/getTotal",
       allTypes: "goods/getAllTypes",
-      cartList: 'cart/getCartList',
+      cartList: "cart/getCartList",
     }),
     height() {
       return this.$baseTableHeight();
@@ -166,13 +167,14 @@ export default {
     queryForm: {
       handler(val) {
         this.getFiltData(val);
+        this.mergeCartList();
       },
       deep: true,
     },
   },
   async created() {
     await this.fetchData();
-    this.mergeCartList()
+    this.mergeCartList();
   },
   methods: {
     ...mapMutations({
@@ -186,11 +188,11 @@ export default {
     }),
 
     mergeCartList() {
-      const list = this.list.map(e => {
-        const saled = this.cartList?.find(i => e.uuid === i.uuid)?.saled || 0;
-        return {...e, saled}
-      })
-      this.setCurrenList(list)
+      const list = this.list.map((e) => {
+        const saled = this.cartList?.find((i) => e.uuid === i.uuid)?.saled || 0;
+        return { ...e, saled };
+      });
+      this.setCurrenList(list);
     },
     addedChange(row) {
       Number(row.saled) > 0 ? this.addCartItem(row) : this.delCartItem(row);
@@ -238,10 +240,10 @@ export default {
       }, 500);
     },
     selectAllTypes() {
-      this.queryForm.filtType = this.queryForm.filtType.map(e => {
-        return Object.assign(e, {select: !e.select})
-      })
-    }
+      this.queryForm.filtType = this.queryForm.filtType.map((e) => {
+        return Object.assign(e, { select: !e.select });
+      });
+    },
   },
 };
 </script>
@@ -252,7 +254,7 @@ export default {
 .el-checkbox {
   margin: 0 5px 5px 0;
 }
-.select-all{
+.select-all {
   margin: 0 10px;
 }
 </style>

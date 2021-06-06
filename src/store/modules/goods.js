@@ -23,7 +23,7 @@ const mutations = {
   setGoodsList(state, allGoodsList) {
     state.allGoodsList = allGoodsList
   },
-  setCurrenList(state, list){
+  setCurrenList(state, list) {
     state.currentGoodsList = list
   },
   updateAllTypes(state) {
@@ -81,8 +81,9 @@ const mutations = {
       const types = e.type.split(',');
       return types.some(e => ~typeStr.indexOf(e))
     }) : mockList;
+    const pSize = pageSize * (pageNo - 1) >= mockList.length ? 1 : pageSize //兼容处理
     const pageList = mockList.filter((item, index) =>
-      index < pageSize * pageNo && index >= pageSize * (pageNo - 1)
+      index < pSize * pageNo && index >= pSize * (pageNo - 1)
     )
     state.currentGoodsList = pageList;
     state.total = mockList.length;
