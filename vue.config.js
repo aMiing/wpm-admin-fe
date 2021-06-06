@@ -33,11 +33,6 @@ process.env.VUE_APP_VERSION = version
 
 
 const resolve = (dir) => path.join(__dirname, dir)
-// 
-// const mockServer = () => {
-//   if (process.env.NODE_ENV === 'development') return require('./mock')
-//   else return ''
-// }
 module.exports = {
   publicPath,
   assetsDir,
@@ -53,10 +48,9 @@ module.exports = {
       warnings: true,
       errors: true,
     },
-    // after: mockServer(),
     proxy: {
       '/vab-mock-server': {
-        target: 'http://localhost:3000',
+        target: 'http://49.235.109.180:3000',
         pathRewrite: {
           '^/vab-mock-server': '/api'
         }

@@ -16,7 +16,7 @@ module.exports = {
     'vue',
   ],
   rules: {
-    'no-unused-vars': 0,
+    'no-unused-vars': 1,
     'global-require': 0,
     'consistent-return': 0,
     "no-param-reassign": 0,

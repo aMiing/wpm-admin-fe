@@ -44,9 +44,7 @@
 
     <el-table
       ref="tableSort"
-      v-loading="listLoading"
       :data="list"
-      :element-loading-text="elementLoadingText"
       :height="height"
       @selection-change="setSelectRows"
       @sort-change="tableSortChange"
@@ -123,7 +121,6 @@
 </template>
 
 <script>
-import { doDelete } from "@/api/table";
 import { mapActions, mapGetters, mapMutations } from "vuex";
 export default {
   name: "Index",
@@ -202,7 +199,7 @@ export default {
     },
     tableSortChange() {
       const imageList = [];
-      this.$refs.tableSort.tableData.forEach((item, index) => {
+      this.$refs.tableSort.tableData.forEach((item) => {
         imageList.push(item.img);
       });
       this.imageList = imageList;
@@ -227,16 +224,15 @@ export default {
       this.queryForm.pageNo = 1;
     },
     async fetchData() {
-      this.listLoading = true;
+      const Loading = this.$baseColorfullLoading(1);
       await this.setGoodsList();
-      // this.queryForm.pageSize = 20;
       const imageList = [];
-      this.list.forEach((item, index) => {
+      this.list.forEach((item) => {
         imageList.push(item.img);
       });
       this.imageList = imageList;
       setTimeout(() => {
-        this.listLoading = false;
+        Loading.close();
       }, 500);
     },
     selectAllTypes() {

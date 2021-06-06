@@ -13,10 +13,9 @@ const setting = {
   // 进行编译的依赖
   transpileDependencies: [],
   // 默认的接口地址 如果是开发环境和生产环境走vab-mock-server，当然你也可以选择自己配置成需要的接口地址
-  baseURL:
-    process.env.NODE_ENV === 'development'
-      ? 'vab-mock-server'
-      : 'api',
+  baseURL: process.env.NODE_ENV === 'development' ?
+    'vab-mock-server' :
+    'api',
   //标题 （包括初次加载雪花屏的标题 页面的标题 浏览器的标题）
   title: '商品管理系统',
   //简写
@@ -50,7 +49,7 @@ const setting = {
   //是否显示logo，不显示时设置false，显示时请填写remixIcon图标名称，暂时只支持设置remixIcon
   logo: 'vuejs-fill',
   //是否显示在页面高亮错误
-  errorLog: ['development'],//, 'production'
+  errorLog: ['development'], //, 'production'
   //是否开启登录拦截
   loginInterception: true,
   //是否开启登录RSA加密
@@ -64,9 +63,12 @@ const setting = {
   //需要加loading层的请求，防止重复提交
   debounce: ['doEdit'],
   //需要自动注入并加载的模块
-  providePlugin: { maptalks: 'maptalks', 'window.maptalks': 'maptalks' },
+  providePlugin: {
+    maptalks: 'maptalks',
+    'window.maptalks': 'maptalks'
+  },
   //npm run build时是否自动生成7z压缩包
-  build7z: false,
+  build7z: true,
   //代码生成机生成在view下的文件夹名称
   templateFolder: 'project',
   //是否显示终端donation打印

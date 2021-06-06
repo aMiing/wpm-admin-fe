@@ -7,7 +7,7 @@ import '@/layouts/export';
 import '@/assets/style/common.scss'
 /**
  * @author
- * @description 生产环境默认都使用mock，如果正式用于生产环境时，记得去掉
+ * @description 
  */
 
 Vue.config.productionTip = false;

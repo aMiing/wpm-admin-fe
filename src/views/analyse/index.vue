@@ -139,8 +139,7 @@
 <script>
 import VabChart from "@/plugins/echarts";
 import SelectDate from "@/components/SelectDate";
-import { getList, getDataPreview, getOrderStatistics } from "@/api/order";
-import { mapActions, mapGetters, mapMutations } from "vuex";
+import { getDataPreview, getOrderStatistics } from "@/api/order";
 
 export default {
   name: "Analyse",
@@ -259,7 +258,6 @@ export default {
   created() {
     this.fetchData();
   },
-  mounted() {},
   methods: {
     async setDateEmit(dates) {
       const { data } = await getOrderStatistics(dates);
@@ -281,6 +279,7 @@ export default {
       this.allVolume = allVolume;
     },
     async fetchData() {
+      const Loading = this.$baseColorfullLoading(1);
       const today = new Date().toLocaleDateString();
       const Now = new Date().getTime();
       const Zero = new Date(today).getTime();
@@ -301,6 +300,9 @@ export default {
           orderCount: e[0].orderCount || 0,
         };
       });
+      setTimeout(() => {
+        Loading.close();
+      }, 500);
     },
   },
 };

@@ -46,14 +46,14 @@
         v-model="type.select"
         border
       ></el-checkbox>
-      <el-button class="select-all" type="text" @click="selectAllTypes">反选</el-button>
+      <el-button class="select-all" type="text" @click="selectAllTypes"
+        >反选</el-button
+      >
     </div>
 
     <el-table
       ref="tableSort"
-      v-loading="listLoading"
       :data="list"
-      :element-loading-text="elementLoadingText"
       :height="height"
       @selection-change="setSelectRows"
       @sort-change="tableSortChange"
@@ -164,8 +164,8 @@ export default {
     },
     timeFilter(NS) {
       // return new Date(NS).toLocaleString();
-      return NS
-    }
+      return NS;
+    },
   },
   data() {
     return {
@@ -253,7 +253,7 @@ export default {
         this.$baseConfirm("你确定要删除当前项吗", null, async () => {
           const { msg } = await doDelete({ uuid: row.uuid });
           await this.delGoodsList({ uuid: row.uuid });
-          this.updateAllTypes()
+          this.updateAllTypes();
           this.$baseMessage(msg, "success");
         });
       } else {
@@ -262,7 +262,7 @@ export default {
           this.$baseConfirm("你确定要删除选中项吗", null, async () => {
             const { msg } = await doDelete({ uuid: ids });
             await this.delGoodsList({ uuid: ids });
-            this.updateAllTypes()
+            this.updateAllTypes();
             this.$baseMessage(msg, "success");
           });
         } else {
@@ -284,24 +284,23 @@ export default {
       this.queryForm.pageNo = 1;
     },
     async fetchData() {
-      this.listLoading = true;
+      const Loading = this.$baseColorfullLoading(1);
       await this.setGoodsList();
-      // this.queryForm.pageSize = 20;
       const imageList = [];
       this.list.forEach((item, index) => {
         imageList.push(item.img);
       });
       this.imageList = imageList;
       setTimeout(() => {
-        this.listLoading = false;
+        Loading.close();
       }, 500);
     },
 
     selectAllTypes() {
-      this.queryForm.filtType = this.queryForm.filtType.map(e => {
-        return Object.assign(e, {select: !e.select})
-      })
-    }
+      this.queryForm.filtType = this.queryForm.filtType.map((e) => {
+        return Object.assign(e, { select: !e.select });
+      });
+    },
   },
 };
 </script>
@@ -313,7 +312,7 @@ export default {
 .el-checkbox {
   margin: 0 5px 5px 0;
 }
-.select-all{
+.select-all {
   margin: 0 10px;
 }
 </style>

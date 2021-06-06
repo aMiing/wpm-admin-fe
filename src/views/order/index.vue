@@ -34,9 +34,7 @@
 
     <el-table
       ref="tableSort"
-      v-loading="listLoading"
       :data="list"
-      :element-loading-text="elementLoadingText"
       :height="height"
       @sort-change="tableSortChange"
     >
@@ -201,7 +199,7 @@ export default {
     },
     tableSortChange() {
       const imageList = [];
-      this.$refs.tableSort.tableData.forEach((item, index) => {
+      this.$refs.tableSort.tableData.forEach((item) => {
         imageList.push(item.img);
       });
       this.imageList = imageList;
@@ -217,10 +215,9 @@ export default {
       this.queryForm.pageNo = 1;
     },
     async fetchData() {
-      this.listLoading = true;
-      // this.radioSelectChange(this.initStartDate);
+      const Loading = this.$baseColorfullLoading(1);
       setTimeout(() => {
-        this.listLoading = false;
+        Loading.close();
       }, 500);
     },
   },
