@@ -279,12 +279,11 @@ export default {
       });
       this.allOrdersCount = allOrdersCount;
       this.allVolume = allVolume;
-      // console.log("setDateEmit", data, this.orderData, this.volumeData);
     },
     async fetchData() {
       const today = new Date().toLocaleDateString();
       const Now = new Date().getTime();
-      const Zero = new Date(Now).getTime();
+      const Zero = new Date(today).getTime();
       const theWeek =
         Zero - ((new Date().getDay() || 7) - 1) * 24 * 3600 * 1000;
       const theMonth = Zero - (new Date().getDate() - 1) * 24 * 3600 * 1000;
@@ -294,7 +293,6 @@ export default {
         [theMonth, Now],
       ];
       const { data } = await getDataPreview({ parames });
-      // console.log("preview", data);
       const labelList = ["日销售额", "周销售额", "月销售额"];
       this.salesData = data.map((e, index) => {
         return {
@@ -303,7 +301,6 @@ export default {
           orderCount: e[0].orderCount || 0,
         };
       });
-      console.log("this.salesData", this.salesData);
     },
   },
 };
