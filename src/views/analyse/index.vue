@@ -83,7 +83,7 @@
               >总订单量：
               <vab-count
                 :start-val="countConfig.startVal"
-                :end-val="Number('2000')"
+                :end-val="allOrdersCount"
                 :duration="countConfig.duration"
                 :decimals="Number('0')"
               />
@@ -92,7 +92,7 @@
               日均：
               <vab-count
                 :start-val="countConfig.startVal"
-                :end-val="Number('48')"
+                :end-val="avarageOrder"
                 :duration="countConfig.duration"
                 :decimals="Number('0')"
               />
@@ -115,18 +115,18 @@
               >总营业额：
               <vab-count
                 :start-val="Number('0')"
-                :end-val="Number('20000')"
+                :end-val="allVolume"
                 :duration="Number('1000')"
-                :decimals="Number('0')"
+                :decimals="Number('2')"
               />
             </span>
             <span>
               日均：
               <vab-count
                 :start-val="Number('0')"
-                :end-val="Number('480')"
+                :end-val="avarageVolume"
                 :duration="Number('1000')"
-                :decimals="Number('0')"
+                :decimals="Number('2')"
               />
             </span>
           </div>
@@ -153,6 +153,9 @@ export default {
       volumeData: [],
       orderData: [],
       salesData: [],
+      allOrdersCount: 0,
+      allVolume: 0,
+      getStatisticLen: 0,
       countConfig: {
         startVal: 0,
         decimals: 2,
@@ -160,7 +163,7 @@ export default {
       },
       chartOption: {
         grid: {
-          top: "4%",
+          top: "8%",
           left: "2%",
           right: "4%",
           bottom: "0%",
@@ -216,11 +219,10 @@ export default {
             name: "有效订单",
             type: "line",
             smooth: true,
-          },
-          {
-            name: "无效订单",
-            type: "line",
-            smooth: true,
+            label: {
+              show: true,
+              position: "top",
+            },
           },
         ],
       });
@@ -234,9 +236,24 @@ export default {
           {
             name: "销售金额",
             type: "bar",
+            label: {
+              show: true,
+              position: "top",
+            },
           },
         ],
       });
+    },
+
+    avarageOrder() {
+      return this.getStatisticLen
+        ? Math.round(this.allOrdersCount / this.getStatisticLen)
+        : 0;
+    },
+    avarageVolume() {
+      return this.getStatisticLen
+        ? Math.round((this.allVolume / this.getStatisticLen) * 100) / 100
+        : 0;
     },
   },
   created() {
@@ -246,7 +263,9 @@ export default {
   methods: {
     async setDateEmit(dates) {
       const { data } = await getOrderStatistics(dates);
-      this.getStatisticLen = data.length;
+      this.getStatisticLen = Math.ceil(
+        (dates[1] - dates[0]) / (3600 * 1000 * 24)
+      );
       let allOrdersCount = 0,
         allVolume = 0;
 
