@@ -50,7 +50,8 @@ module.exports = {
     },
     proxy: {
       '/vab-mock-server': {
-        target: 'http://49.235.109.180:3000',
+        // target: 'http://49.235.109.180:3000',
+        target: 'http://localhost:3000',
         pathRewrite: {
           '^/vab-mock-server': '/api'
         }

@@ -11,7 +11,7 @@ const network = {
   //操作正常code，支持String、Array、int多种类型
   successCode: [200, 0],
   //登录失效code
-  invalidCode: 402,
+  invalidCode: 403,
   //无权限code
   noPermissionCode: 401,
 }

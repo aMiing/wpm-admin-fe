@@ -67,7 +67,7 @@
         show-overflow-tooltip
         label="编号"
         prop="uuid"
-        width="240"
+        min-width="240"
       >
       </el-table-column>
       <el-table-column
@@ -95,7 +95,7 @@
         label="库存"
         prop="stock"
         sortable
-        width="80"
+        min-width="80"
       ></el-table-column>
 
       <el-table-column
@@ -119,13 +119,14 @@
         prop="type"
         sortable
         sort-by="type"
+        min-width="120"
       ></el-table-column>
-      <el-table-column show-overflow-tooltip label="录入时间" width="200">
+      <el-table-column show-overflow-tooltip label="录入时间" min-width="160">
         <template #default="{ row }">
           <span>{{ row.createTime | timeFilter }}</span>
         </template>
       </el-table-column>
-      <el-table-column show-overflow-tooltip label="操作" width="180px">
+      <el-table-column show-overflow-tooltip label="操作" min-width="150px">
         <template #default="{ row }">
           <el-button type="text" @click="handleEdit(row)">编辑</el-button>
           <el-button type="text" @click="handleOffOrOn(row)">{{
@@ -163,8 +164,8 @@ export default {
       return status === 1 ? "success" : "info";
     },
     timeFilter(NS) {
-      // return new Date(NS).toLocaleString();
-      return NS;
+      return new Date(NS).toLocaleString();
+      // return NS;
     },
   },
   data() {
@@ -227,7 +228,7 @@ export default {
     },
     tableSortChange() {
       const imageList = [];
-      this.$refs.tableSort.tableData.forEach((item, index) => {
+      this.$refs.tableSort.tableData.forEach((item) => {
         imageList.push(item.img);
       });
       this.imageList = imageList;
@@ -287,7 +288,7 @@ export default {
       const Loading = this.$baseColorfullLoading(1);
       await this.setGoodsList();
       const imageList = [];
-      this.list.forEach((item, index) => {
+      this.list.forEach((item) => {
         imageList.push(item.img);
       });
       this.imageList = imageList;

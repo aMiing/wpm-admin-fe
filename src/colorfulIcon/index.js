@@ -6,7 +6,7 @@ const req = require.context('./svg', false, /\.svg$/),
       let icon = a[i].default.id;
       arr.push(icon);
     }
-    console.log(JSON.stringify(arr));*/
+    ;*/
     return requireContext.keys().map(requireContext)
   }
 requireAll(req)

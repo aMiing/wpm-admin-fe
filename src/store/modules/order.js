@@ -52,7 +52,6 @@ const actions = {
   async setOrderList({
     commit
   }, config) {
-    console.log('config', config)
     // 请求数据
     const {
       data

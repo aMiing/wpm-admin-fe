@@ -19,7 +19,6 @@ export function createOrder(data) {
 }
 
 export function getDataPreview(data) {
-  console.log('body', data)
   return request({
     url: baseUrl + 'getDataPreview',
     method: 'post',
@@ -29,7 +28,6 @@ export function getDataPreview(data) {
 
 
 export function getOrderStatistics(data) {
-  console.log('body', data)
   return request({
     url: baseUrl + 'getOrderStatistics',
     method: 'post',
