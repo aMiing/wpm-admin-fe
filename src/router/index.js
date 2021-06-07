@@ -61,10 +61,10 @@ export const asyncRoutes = [
     ],
   },
   {
-    path: '/personnelManagement',
+    path: '/management',
+    name: 'management',
     component: Layout,
     redirect: 'noRedirect',
-    name: 'PersonnelManagement',
     meta: { title: '系统设置', icon: 'users-cog', permissions: ['admin'] },
     children: [
       // {
@@ -89,11 +89,43 @@ export const asyncRoutes = [
       //   meta: { title: '菜单管理', badge: 'New' },
       // },
       {
-        path: 'goodsManagement',
-        name: 'GoodsManagement',
+        path: 'goods',
+        name: 'goods',
         component: () =>
-          import('@/views/vab/table/index'),
+          import('@/views/management/goods/index'),
         meta: { title: '商品管理', icon: 'users-cog', permissions: ['admin'] },
+      },
+      // {
+      //   path: 'order',
+      //   name: 'order',
+      //   component: () =>
+      //     import('@/views/management/order/index'),
+      //   meta: { title: '订单列表', icon: 'users-cog', permissions: ['admin'] },
+      // },
+    ],
+  },
+  {
+    path: '/data',
+    component: Layout,
+    redirect: 'noRedirect',
+    meta: { title: '销售数据', icon: 'chart-line', permissions: ['admin'] },
+    children: [
+      {
+        path: 'analyse',
+        name: 'analyse',
+        component: () => import('@/views/analyse/index'),
+        meta: {
+          title: '数据统计',
+          icon: 'chart-pie',
+        },
+      },{
+        path: 'order',
+        name: 'order',
+        component: () => import('@/views/order/index'),
+        meta: {
+          title: '订单列表',
+          icon: 'book',
+        },
       },
     ],
   },

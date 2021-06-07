@@ -17,7 +17,10 @@ const {
   build7z,
 } = require('./src/config')
 
-const { version, author } = require('./package.json')
+const {
+  version,
+  author
+} = require('./package.json')
 const Webpack = require('webpack')
 const FileManagerPlugin = require('filemanager-webpack-plugin')
 const dayjs = require('dayjs')
@@ -28,14 +31,8 @@ process.env.VUE_APP_AUTHOR = author || 'amingxiansen 1006934861@qq.com'
 process.env.VUE_APP_UPDATE_TIME = time
 process.env.VUE_APP_VERSION = version
 
-console.log('process', process)
 
 const resolve = (dir) => path.join(__dirname, dir)
-// 
-// const mockServer = () => {
-//   if (process.env.NODE_ENV === 'development') return require('./mock')
-//   else return ''
-// }
 module.exports = {
   publicPath,
   assetsDir,
@@ -51,12 +48,12 @@ module.exports = {
       warnings: true,
       errors: true,
     },
-    // after: mockServer(),
     proxy: {
       '/vab-mock-server': {
+        // target: 'http://49.235.109.180:3000',
         target: 'http://localhost:3000',
-        pathRewrite:{
-          '^/vab-mock-server':'/api'
+        pathRewrite: {
+          '^/vab-mock-server': '/api'
         }
       }
     }
@@ -70,7 +67,7 @@ module.exports = {
       },
       plugins: [
         new Webpack.ProvidePlugin(providePlugin),
-        
+
       ],
     }
   },
@@ -90,7 +87,9 @@ module.exports = {
       .end()
       .use('svg-sprite-loader')
       .loader('svg-sprite-loader')
-      .options({ symbolId: 'remix-icon-[name]' })
+      .options({
+        symbolId: 'remix-icon-[name]'
+      })
       .end()
 
     config.module
@@ -100,9 +99,15 @@ module.exports = {
       .end()
       .use('svg-sprite-loader')
       .loader('svg-sprite-loader')
-      .options({ symbolId: 'colorful-icon-[name]' })
+      .options({
+        symbolId: 'colorful-icon-[name]'
+      })
       .end()
-
+    config.module.rule('pug')
+      .test(/\.pug$/)
+      .use('pug-html-loader')
+      .loader('pug-html-loader')
+      .end()
     /*  config.when(process.env.NODE_ENV === "development", (config) => {
       config.devtool("source-map");
     }); */
@@ -130,7 +135,7 @@ module.exports = {
           },
         },
       })
-     
+
       config.module
         .rule('images')
         .use('image-webpack-loader')
@@ -145,19 +150,15 @@ module.exports = {
       config.when(process.env.NODE_ENV === 'production', (config) => {
         config
           .plugin('fileManager')
-          .use(FileManagerPlugin, [
-            {
-              onEnd: {
-                delete: [`./${outputDir}/video`, `./${outputDir}/data`],
-                archive: [
-                  {
-                    source: `./${outputDir}`,
-                    destination: `./${outputDir}/${abbreviation}_${outputDir}_${date}.7z`,
-                  },
-                ],
-              },
+          .use(FileManagerPlugin, [{
+            onEnd: {
+              delete: [`./${outputDir}/video`, `./${outputDir}/data`],
+              archive: [{
+                source: `./${outputDir}`,
+                destination: `./${outputDir}/${abbreviation}_${outputDir}_${date}.7z`,
+              }, ],
             },
-          ])
+          }, ])
           .end()
       })
     }
@@ -174,7 +175,10 @@ module.exports = {
 
         /*sass-loader 9.0写法，感谢github用户 shaonialife*/
         additionalData(content, loaderContext) {
-          const { resourcePath, rootContext } = loaderContext
+          const {
+            resourcePath,
+            rootContext
+          } = loaderContext
           const relativePath = path.relative(rootContext, resourcePath)
           if (
             relativePath.replace(/\\/g, '/') !== 'src/styles/variables.scss'

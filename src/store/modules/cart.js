@@ -12,17 +12,21 @@ const getters = {
 
 const mutations = {
   setCartList(state, addedList) {
-    state.addedList = addedList
+    state.addedList = addedList.filter(e => Number(e.stock) > 0)
   },
   addCartItem(state, item) {
-    // state.addedList.some(e => e.uuid === item.uuid) ? 
-    const index = state.addedList.indexOf(item)
-    ~index ? state.addedList[index] = item : state.addedList.push(item)
+    let findIndex = -1;
+    state.addedList.forEach((e, index) => {
+      if(e.uuid === item.uuid) findIndex = index;
+    })
+    ~findIndex ? state.addedList[findIndex] = item : state.addedList.unshift(item)
   },
   delCartItem(state, item) {
-    const index = state.addedList.indexOf(item)
-    ~index && state.addedList.splice(index, 1)
-    // state.addedList.delete(item)
+    let findIndex = -1;
+    state.addedList.forEach((e, index) => {
+      if(e.uuid === item.uuid) findIndex = index;
+    })
+    ~findIndex && state.addedList.splice(findIndex, 1)
   },
   clearCartlist(state) {
     state.addedList.forEach(e => {

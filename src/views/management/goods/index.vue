@@ -1,32 +1,41 @@
 <template>
   <div class="table-container">
     <vab-query-form>
-      <el-form
-        ref="form"
-        :model="queryForm"
-        :inline="true"
-        @submit.native.prevent
-        size="medium"
-      >
-        <el-form-item>
-          <el-input
-            v-model="queryForm.title"
-            placeholder="输入名称或编号搜索"
-            clearable
-            @clear="clearSearchKey"
-          />
-        </el-form-item>
-        <el-form-item>
-          <el-button
-            icon="el-icon-search"
-            type="primary"
-            native-type="submit"
-            @click="handleQuery"
-          >
-            查询
-          </el-button>
-        </el-form-item>
-      </el-form>
+      <vab-query-form-left-panel>
+        <el-button icon="el-icon-plus" type="primary" @click="handleAdd">
+          添加
+        </el-button>
+        <el-button icon="el-icon-delete" type="danger" @click="handleDelete">
+          删除
+        </el-button>
+      </vab-query-form-left-panel>
+      <vab-query-form-right-panel>
+        <el-form
+          ref="form"
+          :model="queryForm"
+          :inline="true"
+          @submit.native.prevent
+        >
+          <el-form-item>
+            <el-input
+              v-model="queryForm.title"
+              placeholder="输入名称或编号搜索"
+              clearable
+              @clear="clearSearchKey"
+            />
+          </el-form-item>
+          <el-form-item>
+            <el-button
+              icon="el-icon-search"
+              type="primary"
+              native-type="submit"
+              @click="handleQuery"
+            >
+              查询
+            </el-button>
+          </el-form-item>
+        </el-form>
+      </vab-query-form-right-panel>
     </vab-query-form>
     <div class="checkbox-content type-select">
       <span>按类型筛选：</span>
@@ -51,9 +60,14 @@
     >
       <el-table-column
         show-overflow-tooltip
+        type="selection"
+        width="55"
+      ></el-table-column>
+      <el-table-column
+        show-overflow-tooltip
         label="编号"
         prop="uuid"
-        width="240"
+        min-width="240"
       >
       </el-table-column>
       <el-table-column
@@ -81,6 +95,7 @@
         label="库存"
         prop="stock"
         sortable
+        min-width="80"
       ></el-table-column>
 
       <el-table-column
@@ -88,23 +103,36 @@
         label="生产商"
         prop="author"
       ></el-table-column>
+      <el-table-column show-overflow-tooltip label="状态">
+        <template #default="{ row }">
+          <!-- <el-tag v-if="Number(row.stock) === 0" type="danger">
+            售罄
+          </el-tag> -->
+          <el-tag :type="row.online | statusFilter">
+            {{ handleStatusText(row.online) }}
+          </el-tag>
+        </template>
+      </el-table-column>
       <el-table-column
         show-overflow-tooltip
         label="所属类别"
         prop="type"
         sortable
         sort-by="type"
+        min-width="120"
       ></el-table-column>
-      <el-table-column label="加入购物车" width="160px">
+      <el-table-column show-overflow-tooltip label="录入时间" min-width="160">
         <template #default="{ row }">
-          <el-input-number
-            v-model="row.saled"
-            :min="0"
-            :max="row.stock"
-            :step="1"
-            step-strictly
-            @change="addedChange(row)"
-          ></el-input-number>
+          <span>{{ row.createTime | timeFilter }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column show-overflow-tooltip label="操作" min-width="150px">
+        <template #default="{ row }">
+          <el-button type="text" @click="handleEdit(row)">编辑</el-button>
+          <el-button type="text" @click="handleOffOrOn(row)">{{
+            row.online === 1 ? "下架" : "上架"
+          }}</el-button>
+          <el-button type="text" @click="handleDelete(row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -117,14 +145,29 @@
       @current-change="handleCurrentChange"
       @size-change="handleSizeChange"
     ></el-pagination>
+    <table-edit ref="edit"></table-edit>
   </div>
 </template>
 
 <script>
+import { doDelete, doEdit } from "@/api/table";
+import TableEdit from "./components/TableEdit";
+import { successCode } from "@/config";
 import { mapActions, mapGetters, mapMutations } from "vuex";
 export default {
-  name: "Index",
-  filters: {},
+  name: "ComprehensiveTable",
+  components: {
+    TableEdit,
+  },
+  filters: {
+    statusFilter(status) {
+      return status === 1 ? "success" : "info";
+    },
+    timeFilter(NS) {
+      return new Date(NS).toLocaleString();
+      // return NS;
+    },
+  },
   data() {
     return {
       imgShow: true,
@@ -147,16 +190,15 @@ export default {
   },
   computed: {
     ...mapGetters({
-      // allGoodsList: "goods/getGoodsList",
       list: "goods/getFiltList",
       total: "goods/getTotal",
       allTypes: "goods/getAllTypes",
-      cartList: "cart/getCartList",
     }),
     height() {
       return this.$baseTableHeight();
     },
   },
+
   watch: {
     allTypes(val) {
       this.queryForm.filtType = val;
@@ -164,38 +206,25 @@ export default {
     queryForm: {
       handler(val) {
         this.getFiltData(val);
-        this.mergeCartList();
       },
       deep: true,
     },
   },
   async created() {
     await this.fetchData();
-    this.mergeCartList();
   },
   methods: {
     ...mapMutations({
       addCartItem: "cart/addCartItem",
-      delCartItem: "cart/delCartItem",
       getFiltData: "goods/getFiltData",
-      setCurrenList: "goods/setCurrenList",
+      updateAllTypes: "goods/updateAllTypes",
     }),
     ...mapActions({
       setGoodsList: "goods/setGoodsList",
+      delGoodsList: "goods/delGoodsList",
     }),
-
-    mergeCartList() {
-      const list = this.list.map((e) => {
-        const saled = this.cartList?.find((i) => e.uuid === i.uuid)?.saled || 0;
-        return { ...e, saled };
-      });
-      this.setCurrenList(list);
-    },
-    addedChange(row) {
-      Number(row.saled) > 0 ? this.addCartItem(row) : this.delCartItem(row);
-    },
-    clearSearchKey() {
-      this.handleQuery();
+    handleStatusText(state) {
+      return state === 1 ? "在售" : "下架";
     },
     tableSortChange() {
       const imageList = [];
@@ -213,7 +242,39 @@ export default {
     handleEdit(row) {
       this.$refs["edit"].showEdit(row);
     },
-
+    async handleOffOrOn(row) {
+      row.online = row.online === 1 ? 2 : 1;
+      const { msg, code } = await doEdit(row, "edit");
+      !successCode.includes(code) && (row.online = row.online === 1 ? 2 : 1);
+      this.$baseMessage(msg, "success");
+      // 请求数据更新
+    },
+    handleDelete(row) {
+      if (row.uuid) {
+        this.$baseConfirm("你确定要删除当前项吗", null, async () => {
+          const { msg } = await doDelete({ uuid: row.uuid });
+          await this.delGoodsList({ uuid: row.uuid });
+          this.updateAllTypes();
+          this.$baseMessage(msg, "success");
+        });
+      } else {
+        if (this.selectRows.length > 0) {
+          const ids = this.selectRows.map((item) => item.uuid).join(",");
+          this.$baseConfirm("你确定要删除选中项吗", null, async () => {
+            const { msg } = await doDelete({ uuid: ids });
+            await this.delGoodsList({ uuid: ids });
+            this.updateAllTypes();
+            this.$baseMessage(msg, "success");
+          });
+        } else {
+          this.$baseMessage("未选中任何行", "error");
+          return false;
+        }
+      }
+    },
+    clearSearchKey() {
+      this.handleQuery();
+    },
     handleSizeChange(val) {
       this.queryForm.pageSize = val;
     },
@@ -235,6 +296,7 @@ export default {
         Loading.close();
       }, 500);
     },
+
     selectAllTypes() {
       this.queryForm.filtType = this.queryForm.filtType.map((e) => {
         return Object.assign(e, { select: !e.select });
@@ -243,6 +305,7 @@ export default {
   },
 };
 </script>
+
 <style lang="scss">
 .checkbox-content {
   margin-bottom: 10px;
