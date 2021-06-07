@@ -1,4 +1,4 @@
-<div align="center"><img width="200" src="https://gitee.com/amingxiansen/images/logo/logo-common.png"/>
+<div align="center"><img width="200" src="https://gitee.com/amingxiansen/images/blob/master/logos/logo-common.png"/>
 <h1> wpm（element-ui） </h1>
 
 ## 演示地址
@@ -16,10 +16,10 @@
 <table>
 <tr>
 <td>
-<img width="200px" src="https://gitee.com/amingxiansen/images/qr_code/zfb.jpeg">
+<img width="200px" src="https://gitee.com/amingxiansen/images/blob/master/qr_code/zfb.jpeg">
 </td>
 <td>
-<img width="200px" src="https://gitee.com/amingxiansen/images/qr_code/wechat.jpeg">
+<img width="200px" src="https://gitee.com/amingxiansen/images/blob/master/qr_code/wechat.jpeg">
 </td>
 </tr>
 </table>
