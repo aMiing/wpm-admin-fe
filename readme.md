@@ -1,5 +1,6 @@
 <div align="center"><img width="200" src="https://gitee.com/amingxiansen/images/raw/master/logos/logo-common.png"/>
 <h1> wpm（element-ui） </h1>
+</div>
 
 ## 演示地址
 
