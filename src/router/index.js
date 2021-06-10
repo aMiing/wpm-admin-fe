@@ -6,11 +6,13 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Layout from '@/layouts'
-import { publicPath, routerMode } from '@/config'
+import {
+  publicPath,
+  routerMode
+} from '@/config'
 
 Vue.use(VueRouter)
-export const constantRoutes = [
-  {
+export const constantRoutes = [{
     path: '/login',
     name: 'login',
     component: () => import('@/views/login/index'),
@@ -42,22 +44,49 @@ export const constantRoutes = [
   },
 ]
 
-export const asyncRoutes = [
-  {
+export const asyncRoutes = [{
     path: '/',
     component: Layout,
     redirect: 'index',
-    children: [
-      {
-        path: 'index',
-        name: 'index',
-        component: () => import('@/views/index'),
+    children: [{
+      path: 'index',
+      name: 'index',
+      component: () => import('@/views/index'),
+      meta: {
+        title: '列表页',
+        icon: 'home',
+        affix: true,
+      },
+    }, ],
+  },
+
+  {
+    path: '/data',
+    component: Layout,
+    redirect: 'noRedirect',
+    meta: {
+      title: '销售数据',
+      icon: 'chart-line',
+      permissions: ['admin']
+    },
+    children: [{
+        path: 'analyse',
+        name: 'analyse',
+        component: () => import('@/views/analyse/index'),
         meta: {
-          title: '首页',
-          icon: 'home',
-          affix: true,
+          title: '数据统计',
+          icon: 'chart-pie'
         },
       },
+      {
+        path: 'order',
+        name: 'order',
+        component: () => import('@/views/order/index'),
+        meta: {
+          title: '订单列表',
+          icon: 'book'
+        },
+      }
     ],
   },
   {
@@ -65,8 +94,34 @@ export const asyncRoutes = [
     name: 'management',
     component: Layout,
     redirect: 'noRedirect',
-    meta: { title: '系统设置', icon: 'users-cog', permissions: ['admin'] },
-    children: [
+    meta: {
+      title: '系统设置',
+      icon: 'cogs',
+      permissions: ['admin']
+    },
+    children: [{
+        path: 'goods',
+        name: 'goods',
+        component: () =>
+          import('@/views/management/goods/index'),
+        meta: {
+          title: '库存管理',
+          icon: 'warehouse',
+          permissions: ['admin']
+        },
+      },
+      {
+        path: 'systemInfo',
+        name: 'systemInfo',
+        component: () =>
+          import('@/views/management/systemConfig/index'),
+        meta: {
+          title: '系统管理',
+          icon: 'cog',
+          badge: 'New'
+        },
+      },
+
       // {
       //   path: 'userManagement',
       //   name: 'UserManagement',
@@ -81,55 +136,9 @@ export const asyncRoutes = [
       //     import('@/views/personnelManagement/roleManagement/index'),
       //   meta: { title: '角色管理' },
       // },
-      // {
-      //   path: 'menuManagement',
-      //   name: 'MenuManagement',
-      //   component: () =>
-      //     import('@/views/personnelManagement/menuManagement/index'),
-      //   meta: { title: '菜单管理', badge: 'New' },
-      // },
-      {
-        path: 'goods',
-        name: 'goods',
-        component: () =>
-          import('@/views/management/goods/index'),
-        meta: { title: '商品管理', icon: 'users-cog', permissions: ['admin'] },
-      },
-      // {
-      //   path: 'order',
-      //   name: 'order',
-      //   component: () =>
-      //     import('@/views/management/order/index'),
-      //   meta: { title: '订单列表', icon: 'users-cog', permissions: ['admin'] },
-      // },
     ],
   },
-  {
-    path: '/data',
-    component: Layout,
-    redirect: 'noRedirect',
-    meta: { title: '销售数据', icon: 'chart-line', permissions: ['admin'] },
-    children: [
-      {
-        path: 'analyse',
-        name: 'analyse',
-        component: () => import('@/views/analyse/index'),
-        meta: {
-          title: '数据统计',
-          icon: 'chart-pie',
-        },
-      },{
-        path: 'order',
-        name: 'order',
-        component: () => import('@/views/order/index'),
-        meta: {
-          title: '订单列表',
-          icon: 'book',
-        },
-      },
-    ],
-  },
-  
+
   {
     path: '*',
     redirect: '/404',

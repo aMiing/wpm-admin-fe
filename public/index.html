@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>后台管理系统</title>
+</head>
+
+<body>
+    <div id="app">
+        <iframe id='IEIframe' style='display: none;' width="100%" height="700px" src="ie.html" frameborder="0"></iframe>
+    </div>
+
+    <script type="text/javascript">
+        /* 如果是ie浏览器 */
+        if (!!window.ActiveXObject || "ActiveXObject" in window) {
+            document.querySelector('#IEIframe').style.display = 'block'
+        }
+    </script>
+
+</body>
+
+</html>

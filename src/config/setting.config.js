@@ -1,11 +1,12 @@
 /**
  * @description 导出默认通用配置
  */
+const pub_dir = __dirname.slice(0, -23) + 'fe-public';
 const setting = {
   // 开发以及部署时的URL
   publicPath: '',
   // 生产环境构建文件的目录名
-  outputDir: 'dist',
+  outputDir: pub_dir,
   // 放置生成的静态资源 (js、css、img、fonts) 的 (相对于 outputDir 的) 目录。
   assetsDir: 'static',
   // 开发环境每次保存时是否输出为eslint编译警告

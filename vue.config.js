@@ -4,6 +4,9 @@
  */
 
 const path = require('path')
+
+
+
 const {
   publicPath,
   assetsDir,
@@ -23,6 +26,7 @@ const {
 } = require('./package.json')
 const Webpack = require('webpack')
 const FileManagerPlugin = require('filemanager-webpack-plugin')
+const CopyPlugin = require("copy-webpack-plugin");
 const dayjs = require('dayjs')
 const date = dayjs().format('YYYY_M_D')
 const time = dayjs().format('YYYY-M-D HH:mm:ss')
@@ -67,7 +71,11 @@ module.exports = {
       },
       plugins: [
         new Webpack.ProvidePlugin(providePlugin),
-
+        new CopyPlugin([{
+          from: path.resolve(__dirname, "./favicon.ico"),
+          to: outputDir,
+          ignore: ['.*']
+        }])
       ],
     }
   },
@@ -108,6 +116,12 @@ module.exports = {
       .use('pug-html-loader')
       .loader('pug-html-loader')
       .end()
+    config.module
+      .rule('htmlLoader')
+      .test(/\.html$/)
+      .use('html-loader')
+      .loader('html-loader')
+      .end()
     /*  config.when(process.env.NODE_ENV === "development", (config) => {
       config.devtool("source-map");
     }); */
@@ -146,22 +160,23 @@ module.exports = {
         .end()
     })
 
-    if (build7z) {
-      config.when(process.env.NODE_ENV === 'production', (config) => {
-        config
-          .plugin('fileManager')
-          .use(FileManagerPlugin, [{
-            onEnd: {
-              delete: [`./${outputDir}/video`, `./${outputDir}/data`],
-              archive: [{
-                source: `./${outputDir}`,
-                destination: `./${outputDir}/${abbreviation}_${outputDir}_${date}.7z`,
-              }, ],
-            },
-          }, ])
-          .end()
-      })
-    }
+    // if (build7z) {
+    //   const zip_dir = __dirname.slice(0, -12)
+    //   config.when(process.env.NODE_ENV === 'production', (config) => {
+    //     config
+    //       .plugin('fileManager')
+    //       .use(FileManagerPlugin, [{
+    //         onEnd: {
+    //           delete: [`./${outputDir}/video`, `./${outputDir}/data`],
+    //           archive: [{
+    //             source: `./${outputDir}`,
+    //             destination: zip_dir + `wpm-fe-zip/${abbreviation}_${outputDir}_${date}.7z`,
+    //           }, ],
+    //         },
+    //       }, ])
+    //       .end()
+    //   })
+    // }
   },
   runtimeCompiler: true,
   productionSourceMap: false,

@@ -3,13 +3,13 @@
     <router-link to="/">
       <!-- 这里是logo变更的位置 -->
       <!-- <vab-remix-icon v-if="logo" class="logo" :icon-class="logo" /> -->
-      <img class="logo" src="../../../assets/logo/logo.png" alt="主logo" />
+      <img class="logo" :src="systemInfo.sys_logo" alt="" />
       <span
         class="title"
         :class="{ 'hidden-xs-only': layout === 'horizontal' }"
-        :title="title"
+        :title="systemInfo.sys_name"
       >
-        {{ title }}
+        {{ systemInfo.sys_name }}
       </span>
     </router-link>
   </div>
@@ -28,6 +28,7 @@ export default {
     ...mapGetters({
       logo: "settings/logo",
       layout: "settings/layout",
+      systemInfo: "user/getSysInfo",
     }),
   },
 };

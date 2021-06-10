@@ -33,9 +33,7 @@ const handleCode = (code, msg) => {
       // 重置/清空token缓存
       store.dispatch('user/resetAccessToken').catch(() => {})
       if (loginInterception) {
-        setTimeout(() => {
-          location.reload()
-        }, 300)
+        location.reload()
       }
       break
     case noPermissionCode:

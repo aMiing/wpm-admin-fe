@@ -1,19 +1,19 @@
 <template>
   <span>
     <vab-icon
-      title="已选商品"
+      title="已选"
       :icon="['fas', 'shopping-cart']"
       @click="handleOpenThemeBar"
     ></vab-icon>
     <div class="theme-bar-setting">
       <div @click="handleOpenThemeBar">
         <vab-icon :icon="['fas', 'shopping-cart']"></vab-icon>
-        <p>已选商品</p>
+        <p>已选</p>
       </div>
     </div>
 
     <el-drawer
-      title="已选商品列表"
+      title="已选列表"
       :visible.sync="drawerVisible"
       direction="rtl"
       append-to-body
@@ -63,10 +63,10 @@
         </div>
         <div class="custom-count">
           <span
-            >共 <i class="custom-count-num">{{ allcartCount }}</i> 件商品， 总价
-            <i class="custom-count-price">{{ allPayPrice }}</i> 元</span
+            >数量： <i class="custom-count-num">{{ allcartCount }}</i> 件/次，
+            总价 <i class="custom-count-price">{{ allPayPrice }}</i> 元</span
           >
-          <el-tooltip content="清空购物车" placement="top" effect="light">
+          <el-tooltip content="清空已选" placement="top" effect="light">
             <el-button
               icon="el-icon-delete"
               circle

@@ -13,7 +13,7 @@
             display: flex;
           "
         >
-          <i class="dots-loader" style="margin: auto"></i>
+          <!-- <i class="dots-loader" style="margin: auto"></i> -->
         </div>
       </el-tab-pane>
       <el-tab-pane label="基本设置">基本设置</el-tab-pane>
