@@ -2,6 +2,7 @@
 @charset "utf-8";
 
 body.vue-admin-theme-glory {
+    background-color: #fef9f5;
     .el-button--primary,
     .el-radio-button__orig-radio:checked + .el-radio-button__inner {
         border-color: #f6ca9d;
@@ -9,6 +10,13 @@ body.vue-admin-theme-glory {
         box-shadow: -1px 0 0 0 #f6ca9d;
         &:hover {
             color: #fff;
+        }
+    }
+    .wpm-admin-wrapper {
+        .layout-container-vertical {
+            .vab-main {
+                background-color: #fef9f5;
+            }
         }
     }
     .side-bar-container {
@@ -40,9 +48,12 @@ body.vue-admin-theme-glory {
     .el-table th {
         background-color: #f6ca9d1a;
     }
-    .el-input-number__increase.is-disabled,
-    .el-input-number__decrease.is-disabled {
+    .el-input-number__increase,
+    .el-input-number__decrease {
         background-color: #f6ca9d1a;
+        &.is-disabled {
+            background-color: #f6ca9d1a;
+        }
     }
     .el-checkbox.is-bordered.is-checked {
         border-color: #f6ca9da8;
@@ -60,6 +71,17 @@ body.vue-admin-theme-glory {
             .theme-bar-setting {
                 background-color: #f6ca9d !important;
             }
+        }
+    }
+
+    /* 进度条开始 */
+    #nprogress {
+        .bar {
+            background: $base-color-blue !important;
+        }
+
+        .peg {
+            box-shadow: 0 0 10px $base-color-blue, 0 0 5px $base-color-blue !important;
         }
     }
 }

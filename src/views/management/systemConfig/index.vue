@@ -124,6 +124,7 @@ export default {
     },
     resetForm(formName) {
       this.$refs[formName].resetFields();
+      this.ruleForm = Object.assign({}, this.systemInfo);
     },
     handleAvatarSuccess(res, file) {
       this.loadFileName = file.response.filename;

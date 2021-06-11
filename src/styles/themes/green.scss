@@ -2,6 +2,7 @@
 @charset "utf-8";
 
 body.vue-admin-theme-green {
+    background-color: #e7f3ff;
     .el-button--primary,
     .el-radio-button__orig-radio:checked + .el-radio-button__inner {
         border-color: #409eff;
@@ -9,6 +10,13 @@ body.vue-admin-theme-green {
         box-shadow: -1px 0 0 0#409EFF;
         &:hover {
             color: #fff;
+        }
+    }
+    .wpm-admin-wrapper {
+        .layout-container-vertical {
+            .vab-main {
+                background-color: #e7f3ff;
+            }
         }
     }
     .side-bar-container {
@@ -40,9 +48,12 @@ body.vue-admin-theme-green {
     .el-table th {
         background-color: #409eff1f;
     }
-    .el-input-number__increase.is-disabled,
-    .el-input-number__decrease.is-disabled {
+    .el-input-number__increase,
+    .el-input-number__decrease {
         background-color: #409eff1f;
+        &.is-disabled {
+            background-color: #409eff1f;
+        }
     }
     .el-checkbox.is-bordered.is-checked {
         border-color: #409effcc;
