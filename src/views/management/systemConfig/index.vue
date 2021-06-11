@@ -23,12 +23,11 @@
                 <el-upload
                   ref="logoUpload"
                   class="avatar-uploader"
-                  action="http://localhost:3000/api/upload/uploadImg"
+                  action="/api/upload/uploadImg"
                   :show-file-list="false"
                   :on-success="handleAvatarSuccess"
                   :before-upload="beforeAvatarUpload"
                 >
-                  <!--    -->
                   <img
                     v-if="ruleForm.sys_logo"
                     :src="ruleForm.sys_logo"
@@ -36,6 +35,19 @@
                   />
                   <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                 </el-upload>
+              </el-form-item>
+              <el-form-item label="主题">
+                <el-radio-group v-model="ruleForm.theme_name">
+                  <el-radio-button label="default">默认</el-radio-button>
+                  <el-radio-button label="green">绿荫草场</el-radio-button>
+                  <el-radio-button label="glory">荣耀典藏</el-radio-button>
+                </el-radio-group>
+                <el-button
+                  class="theme-color-preview"
+                  type="text"
+                  @click="previewTheme"
+                  >预览</el-button
+                >
               </el-form-item>
               <el-form-item>
                 <el-button type="primary" @click="submitForm('ruleForm')"
@@ -62,6 +74,7 @@ export default {
       ruleForm: {
         sys_name: "",
         sys_logo: "",
+        theme_name: "",
       },
       rules: {
         sys_name: [
@@ -85,20 +98,21 @@ export default {
     this.ruleForm = Object.assign({}, this.systemInfo);
   },
   methods: {
+    ...mapMutations({
+      setSysInfo: "user/setSysInfo",
+    }),
     submitForm(formName) {
       this.$refs[formName].validate(async (valid) => {
         if (valid) {
           try {
-            await updateSysInfo({
+            const params = {
               sys_name: this.ruleForm.sys_name,
-              sys_logo: this.loadFileName,
-            });
-            // 成功，跳转到登录页
-            await this.$store.dispatch("user/logout");
-            this.$baseMessage("保存成功！即将跳转到登录页~", "success");
-            setTimeout(() => {
-              this.$router.push("/login");
-            }, 2000);
+              sys_logo: this.loadFileName || this.ruleForm.sys_logo,
+              theme_name: this.ruleForm.theme_name,
+            };
+            await updateSysInfo(params);
+            this.$baseMessage("保存成功！", "success");
+            this.setSysInfo(params);
           } catch {
             // 失败
             this.$baseMessage("保存失败", "error");
@@ -132,6 +146,11 @@ export default {
       }
       return isImage && isLt2M;
     },
+    previewTheme() {
+      document.getElementsByTagName(
+        "body"
+      )[0].className = `vue-admin-theme-${this.ruleForm.theme_name}`;
+    },
   },
 };
 </script>
@@ -164,5 +183,8 @@ export default {
   width: 140px;
   height: 140px;
   display: block;
+}
+.theme-color-preview {
+  margin: 0 16px;
 }
 </style>

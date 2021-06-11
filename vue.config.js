@@ -59,6 +59,12 @@ module.exports = {
         pathRewrite: {
           '^/vab-mock-server': '/api'
         }
+      },
+      '/api/upload/': {
+        target: 'http://localhost:3000',
+      },
+      'customer-upload/': {
+        target: 'http://localhost:3000',
       }
     }
   },

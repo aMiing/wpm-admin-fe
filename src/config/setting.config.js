@@ -1,7 +1,7 @@
 /**
  * @description 导出默认通用配置
  */
-const pub_dir = __dirname.slice(0, -23) + 'fe-public';
+const pub_dir = __dirname.slice(0, -23) + '/fe-public/dist';
 const setting = {
   // 开发以及部署时的URL
   publicPath: '',

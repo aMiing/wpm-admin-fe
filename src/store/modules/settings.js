@@ -17,7 +17,7 @@ const theme =
 const state = () => ({
   tabsBar: theme.tabsBar || tabsBar,
   logo,
-  collapse: false,
+  collapse: true,
   layout: theme.layout || layout,
   header: theme.header || header,
   device: 'desktop',

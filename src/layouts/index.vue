@@ -66,11 +66,20 @@ export default {
       collapse: "settings/collapse",
       header: "settings/header",
       device: "settings/device",
+      getSysInfo: "user/getSysInfo",
     }),
     classObj() {
       return {
         mobile: this.device === "mobile",
       };
+    },
+  },
+  watch: {
+    "getSysInfo.theme_name": {
+      handler(val) {
+        this.changeTheme(val);
+      },
+      immediate: true,
     },
   },
   beforeMount() {
@@ -83,9 +92,7 @@ export default {
     this.oldLayout = this.layout;
     const userAgent = navigator.userAgent;
     if (userAgent.includes("Juejin")) {
-      this.$baseAlert(
-        "wpm-admin不支持在掘金内置浏览器演示，请手动复制以下地址到浏览器中查看http://mpfhrd48.sanxing.uz7.cn/wpm-admin"
-      );
+      this.$baseAlert("不支持在掘金内置浏览器演示，请复制地址到浏览器中查看");
     }
     const isMobile = this.handleIsMobile();
     if (isMobile) {
@@ -100,18 +107,8 @@ export default {
         this.$store.dispatch("settings/foldSideBar");
       }, 2000);
     } else {
-      // this.$store.dispatch('settings/openSideBar')
+      this.$store.dispatch("settings/openSideBar");
     }
-    this.$nextTick(() => {
-      window.addEventListener(
-        "storage",
-        (e) => {
-          if (e.key === tokenName || e.key === null) window.location.reload();
-          if (e.key === tokenName && e.value === null) window.location.reload();
-        },
-        false
-      );
-    });
   },
   methods: {
     ...mapActions({
@@ -135,6 +132,14 @@ export default {
           isMobile ? "mobile" : "desktop"
         );
       }
+    },
+    changeTheme(val) {
+      this.$nextTick(() => {
+        val &&
+          (document.getElementsByTagName(
+            "body"
+          )[0].className = `vue-admin-theme-${val}`);
+      });
     },
   },
 };

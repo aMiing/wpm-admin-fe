@@ -29,6 +29,7 @@ const state = () => ({
   permissions: [],
   sys_name: '',
   sys_logo: '',
+  theme_name: '',
 })
 const getters = {
   accessToken: (state) => state.accessToken,
@@ -39,6 +40,7 @@ const getters = {
     return {
       sys_name: state.sys_name || '商品管理系统',
       sys_logo: state.sys_logo || 'https://gitee.com/amingxiansen/images/raw/master/logos/logo.png',
+      theme_name: state.theme_name || 'default',
     }
   }
 }
@@ -53,10 +55,12 @@ const mutations = {
 
   setSysInfo(state, {
     sys_name,
-    sys_logo
+    sys_logo,
+    theme_name,
   }) {
     state.sys_name = sys_name
     state.sys_logo = sys_logo
+    state.theme_name = theme_name
   },
   setAvatar(state, avatar) {
     state.avatar = avatar
@@ -115,7 +119,8 @@ const actions = {
       name,
       avatar,
       sys_logo,
-      sys_name
+      sys_name,
+      theme_name,
     } = data
     if (permissions && name && Array.isArray(permissions)) {
       commit('setPermissions', permissions)
@@ -123,7 +128,8 @@ const actions = {
       commit('setAvatar', avatar)
       commit('setSysInfo', {
         sys_logo,
-        sys_name
+        sys_name,
+        theme_name,
       })
       return permissions
     } else {
