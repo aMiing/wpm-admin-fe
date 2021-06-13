@@ -62,10 +62,11 @@
           </el-table>
         </div>
         <div class="custom-count">
-          <span
-            >数量： <i class="custom-count-num">{{ allcartCount }}</i> 件/次，
-            总价 <i class="custom-count-price">{{ allPayPrice }}</i> 元</span
-          >
+          <span>
+            数量： <i class="custom-count-num">{{ allcartCount }}</i> 件/次，
+            总价 <i class="custom-count-price">{{ allPayPrice }}</i> 元
+          </span>
+          <el-button>打折</el-button>
           <el-tooltip content="清空已选" placement="top" effect="light">
             <el-button
               icon="el-icon-delete"
