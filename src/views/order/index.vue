@@ -38,12 +38,7 @@
       :height="height"
       @sort-change="tableSortChange"
     >
-      <el-table-column
-        show-overflow-tooltip
-        label="订单编号"
-        prop="uuid"
-        width="240"
-      >
+      <el-table-column show-overflow-tooltip label="订单编号" prop="uuid">
       </el-table-column>
       <el-table-column
         show-overflow-tooltip
@@ -74,7 +69,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column show-overflow-tooltip label="订单生成时间" width="200">
+      <el-table-column show-overflow-tooltip label="订单生成时间">
         <template #default="{ row }">
           <span>{{ row.createTime | timeFilter }}</span>
         </template>

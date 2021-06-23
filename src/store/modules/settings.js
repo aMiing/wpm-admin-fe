@@ -5,7 +5,13 @@
 
 import defaultSettings from '@/config'
 
-const { tabsBar, logo, layout, header, themeBar } = defaultSettings
+const {
+  tabsBar,
+  logo,
+  layout,
+  header,
+  themeBar
+} = defaultSettings
 const theme =
   JSON.parse(localStorage.getItem('wpm-admin-theme')) || ''
 const state = () => ({
@@ -50,26 +56,45 @@ const mutations = {
   },
 }
 const actions = {
-  changeLayout({ commit }, layout) {
+  changeLayout({
+    commit
+  }, layout) {
     commit('changeLayout', layout)
   },
-  changeHeader({ commit }, header) {
+  changeHeader({
+    commit
+  }, header) {
     commit('changeHeader', header)
   },
-  changeTabsBar({ commit }, tabsBar) {
+  changeTabsBar({
+    commit
+  }, tabsBar) {
     commit('changeTabsBar', tabsBar)
   },
-  changeCollapse({ commit }) {
+  changeCollapse({
+    commit
+  }) {
     commit('changeCollapse')
   },
-  foldSideBar({ commit }) {
+  foldSideBar({
+    commit
+  }) {
     commit('foldSideBar')
   },
-  openSideBar({ commit }) {
+  openSideBar({
+    commit
+  }) {
     commit('openSideBar')
   },
-  toggleDevice({ commit }, device) {
+  toggleDevice({
+    commit
+  }, device) {
     commit('toggleDevice', device)
   },
 }
-export default { state, getters, mutations, actions }
+export default {
+  state,
+  getters,
+  mutations,
+  actions
+}

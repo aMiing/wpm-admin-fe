@@ -10,7 +10,7 @@
     </span>
 
     <el-dropdown-menu slot="dropdown">
-      <el-dropdown-item command="personalCenter">个人中心</el-dropdown-item>
+      <!-- <el-dropdown-item command="personalCenter">个人中心</el-dropdown-item> -->
       <el-dropdown-item command="logout">退出登录</el-dropdown-item>
     </el-dropdown-menu>
   </el-dropdown>
@@ -26,6 +26,7 @@ export default {
     ...mapGetters({
       avatar: "user/avatar",
       username: "user/username",
+      systemInfo: "user/getSysInfo",
     }),
   },
   methods: {
@@ -44,7 +45,7 @@ export default {
     },
     logout() {
       this.$baseConfirm(
-        "您确定要退出" + this.$baseTitle + "吗?",
+        "您确定要退出" + (this.systemInfo.sys_name || this.$baseTitle) + "吗?",
         null,
         async () => {
           await this.$store.dispatch("user/logout");

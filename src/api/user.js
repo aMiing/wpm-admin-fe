@@ -1,6 +1,11 @@
 import request from '@/utils/request'
-import { encryptedData } from '@/utils/encrypt'
-import { loginRSA, tokenName } from '@/config'
+import {
+  encryptedData
+} from '@/utils/encrypt'
+import {
+  loginRSA,
+  tokenName
+} from '@/config'
 
 export async function login(data) {
   if (loginRSA) {
@@ -33,6 +38,14 @@ export function logout() {
 export function register(data) {
   return request({
     url: '/register',
+    method: 'post',
+    data,
+  })
+}
+
+export function updateSysInfo(data) {
+  return request({
+    url: '/updateSysInfo',
     method: 'post',
     data,
   })

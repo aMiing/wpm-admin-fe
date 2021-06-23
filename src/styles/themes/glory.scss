@@ -1,0 +1,87 @@
+// 荣耀典藏主题 glory.scss
+@charset "utf-8";
+
+body.vue-admin-theme-glory {
+    background-color: #fef9f5;
+    .el-button--primary,
+    .el-radio-button__orig-radio:checked + .el-radio-button__inner {
+        border-color: #f6ca9d;
+        background-color: #f6ca9d;
+        box-shadow: -1px 0 0 0 #f6ca9d;
+        &:hover {
+            color: #fff;
+        }
+    }
+    .wpm-admin-wrapper {
+        .layout-container-vertical {
+            .vab-main {
+                background-color: #fef9f5;
+            }
+        }
+    }
+    .side-bar-container {
+        background: #16181d !important;
+        .el-menu {
+            background: #16181d !important;
+        }
+        .el-menu-item {
+            background: #16181d !important;
+        }
+        .el-menu-item.is-active,
+        .el-menu-item:hover {
+            background-color: #f6ca9d !important;
+        }
+        .el-submenu__title {
+            background: #16181d !important;
+        }
+    }
+    .el-button--text,
+    .el-radio-button__inner:hover {
+        color: #f6ca9d;
+    }
+    .el-button:hover,
+    .el-button:focus {
+        color: #f6ca9d;
+        border-color: #f6ca9da8;
+        background-color: #f6ca9d1a;
+    }
+    .el-table th {
+        background-color: #f6ca9d1a;
+    }
+    .el-input-number__increase,
+    .el-input-number__decrease {
+        background-color: #f6ca9d1a;
+        &.is-disabled {
+            background-color: #f6ca9d1a;
+        }
+    }
+    .el-checkbox.is-bordered.is-checked {
+        border-color: #f6ca9da8;
+    }
+    .el-input__inner:focus,
+    .el-range-editor.is-active {
+        border-color: #f6ca9da8;
+    }
+
+    .logo-container-vertical {
+        background: #16181d;
+    }
+    .nav-bar-container {
+        .right-panel {
+            .theme-bar-setting {
+                background-color: #f6ca9d !important;
+            }
+        }
+    }
+
+    /* 进度条开始 */
+    #nprogress {
+        .bar {
+            background: $base-color-blue !important;
+        }
+
+        .peg {
+            box-shadow: 0 0 10px $base-color-blue, 0 0 5px $base-color-blue !important;
+        }
+    }
+}

@@ -11,7 +11,7 @@ export function getList(data) {
 }
 
 export function doEdit(data, mode) {
-  const uri = mode==='edit'?'update':'create'
+  const uri = mode === 'edit' ? 'update' : 'create'
   return request({
     url: baseUrl + uri,
     method: 'post',

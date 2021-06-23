@@ -1,0 +1,76 @@
+// 荣耀典藏主题 green.scss
+@charset "utf-8";
+
+body.vue-admin-theme-green {
+    background-color: #e7f3ff;
+    .el-button--primary,
+    .el-radio-button__orig-radio:checked + .el-radio-button__inner {
+        border-color: #409eff;
+        background-color: #409eff;
+        box-shadow: -1px 0 0 0#409EFF;
+        &:hover {
+            color: #fff;
+        }
+    }
+    .wpm-admin-wrapper {
+        .layout-container-vertical {
+            .vab-main {
+                background-color: #e7f3ff;
+            }
+        }
+    }
+    .side-bar-container {
+        background: #16181d !important;
+        .el-menu {
+            background: #16181d !important;
+        }
+        .el-menu-item {
+            background: #16181d !important;
+        }
+        .el-menu-item.is-active,
+        .el-menu-item:hover {
+            background-color: #409eff !important;
+        }
+        .el-submenu__title {
+            background: #16181d !important;
+        }
+    }
+    .el-button--text,
+    .el-radio-button__inner:hover {
+        color: #409eff;
+    }
+    .el-button:hover,
+    .el-button:focus {
+        color: #409eff;
+        border-color: #409effcc;
+        background-color: #409eff1f;
+    }
+    .el-table th {
+        background-color: #409eff1f;
+    }
+    .el-input-number__increase,
+    .el-input-number__decrease {
+        background-color: #409eff1f;
+        &.is-disabled {
+            background-color: #409eff1f;
+        }
+    }
+    .el-checkbox.is-bordered.is-checked {
+        border-color: #409effcc;
+    }
+    .el-input__inner:focus,
+    .el-range-editor.is-active {
+        border-color: #409effcc;
+    }
+
+    .logo-container-vertical {
+        background: #16181d;
+    }
+    .nav-bar-container {
+        .right-panel {
+            .theme-bar-setting {
+                background-color: #409eff !important;
+            }
+        }
+    }
+}
