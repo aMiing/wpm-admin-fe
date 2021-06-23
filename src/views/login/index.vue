@@ -11,13 +11,7 @@
         <div style="color: transparent">占位符</div>
       </el-col>
       <el-col :xs="24" :sm="24" :md="12" :lg="8" :xl="8">
-        <el-form
-          ref="form"
-          :model="form"
-          :rules="rules"
-          class="login-form"
-          label-position="left"
-        >
+        <el-form ref="form" :model="form" :rules="rules" class="login-form" label-position="left">
           <div class="title">hello !</div>
           <div class="title-tips">欢迎来到{{ title }}！</div>
           <el-form-item style="margin-top: 40px" prop="username">
@@ -45,23 +39,14 @@
               placeholder="请输入密码"
               @keyup.enter.native="handleLogin"
             />
-            <span
-              v-if="passwordType === 'password'"
-              class="show-password"
-              @click="handlePassword"
-            >
+            <span v-if="passwordType === 'password'" class="show-password" @click="handlePassword">
               <vab-icon :icon="['fas', 'eye-slash']"></vab-icon>
             </span>
             <span v-else class="show-password" @click="handlePassword">
               <vab-icon :icon="['fas', 'eye']"></vab-icon>
             </span>
           </el-form-item>
-          <el-button
-            :loading="loading"
-            class="login-btn"
-            type="primary"
-            @click="handleLogin"
-          >
+          <el-button :loading="loading" class="login-btn" type="primary" @click="handleLogin">
             登录
           </el-button>
           <router-link to="/register">
@@ -74,28 +59,28 @@
 </template>
 
 <script>
-import { isPassword } from "@/utils/validate";
+import { isPassword } from '@/utils/validate';
 
 export default {
-  name: "Login",
+  name: 'Login',
   directives: {
     focus: {
       inserted(el) {
-        el.querySelector("input").focus();
+        el.querySelector('input').focus();
       },
     },
   },
   data() {
     const validateusername = (rule, value, callback) => {
-      if ("" == value) {
-        callback(new Error("用户名不能为空"));
+      if ('' == value) {
+        callback(new Error('用户名不能为空'));
       } else {
         callback();
       }
     };
     const validatePassword = (rule, value, callback) => {
       if (!isPassword(value)) {
-        callback(new Error("密码不能少于6位"));
+        callback(new Error('密码不能少于6位'));
       } else {
         callback();
       }
@@ -104,71 +89,70 @@ export default {
       nodeEnv: process.env.NODE_ENV,
       title: this.$baseTitle,
       form: {
-        username: "",
-        password: "",
+        username: '',
+        password: '',
       },
       rules: {
         username: [
           {
             required: true,
-            trigger: "blur",
+            trigger: 'blur',
             validator: validateusername,
           },
         ],
         password: [
           {
             required: true,
-            trigger: "blur",
+            trigger: 'blur',
             validator: validatePassword,
           },
         ],
       },
       loading: false,
-      passwordType: "password",
+      passwordType: 'password',
       redirect: undefined,
     };
   },
   watch: {
     $route: {
       handler(route) {
-        this.redirect = (route.query && route.query.redirect) || "/";
+        this.redirect = (route.query && route.query.redirect) || '/';
       },
       immediate: true,
     },
   },
   created() {
-    document.body.style.overflow = "hidden";
+    document.body.style.overflow = 'hidden';
   },
   beforeDestroy() {
-    document.body.style.overflow = "auto";
+    document.body.style.overflow = 'auto';
   },
   mounted() {
-    this.form.username = "admin";
-    this.form.password = "123456";
+    this.form.username = 'admin';
+    this.form.password = '123456';
     // setTimeout(() => {
     //   this.handleLogin()
     // }, 3000)
   },
   methods: {
     handlePassword() {
-      this.passwordType === "password"
-        ? (this.passwordType = "")
-        : (this.passwordType = "password");
+      this.passwordType === 'password'
+        ? (this.passwordType = '')
+        : (this.passwordType = 'password');
       this.$nextTick(() => {
         this.$refs.password.focus();
       });
     },
     handleLogin() {
-      this.$refs.form.validate((valid) => {
+      const origin = this.$route.query.origin || '';
+      this.$refs.form.validate(valid => {
         if (valid) {
           this.loading = true;
           this.$store
-            .dispatch("user/login", this.form)
+            .dispatch('user/login', Object.assign(this.form, { from: origin }))
             .then(() => {
               const routerPath =
-                this.redirect === "/404" || this.redirect === "/401"
-                  ? "/"
-                  : this.redirect;
+                this.redirect === '/404' || this.redirect === '/401' ? '/' : this.redirect;
               this.$router.push(routerPath).catch(() => {});
               this.loading = false;
             })
@@ -187,8 +171,7 @@ export default {
 <style lang="scss" scoped>
 .login-container {
   height: 100vh;
-  background: url("~@/assets/login_images/background.jpg") center center fixed
-    no-repeat;
+  background: url('~@/assets/login_images/background.jpg') center center fixed no-repeat;
   background-size: cover;
 
   .title {
