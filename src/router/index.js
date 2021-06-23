@@ -25,6 +25,15 @@ export const constantRoutes = [{
     hidden: true,
   },
   {
+    path: '/',
+    name: 'Reception',
+    component: () => import('@/views/reception'),
+    hidden: true,
+    meta: {
+      title: '前台',
+    },
+  },
+  {
     path: '/personalCenter',
     name: 'PersonalCenter',
     component: () => import('@/views/personalCenter'),
@@ -45,17 +54,65 @@ export const constantRoutes = [{
 ]
 
 export const asyncRoutes = [{
-    path: '/',
+    path: '/goods',
     component: Layout,
-    redirect: 'index',
+    redirect: 'noRedirect',
+    meta: {
+      title: '商品管理',
+      icon: 'volleyball-ball',
+    },
     children: [{
       path: 'index',
       name: 'index',
       component: () => import('@/views/index'),
       meta: {
-        title: '列表页',
-        icon: 'home',
-        affix: true,
+        title: '查看商品',
+        icon: 'table'
+      },
+    }, {
+      path: 'stock',
+      name: 'stock',
+      component: () => import('@/views/stock/index'),
+      meta: {
+        title: '库存记录',
+        icon: 'warehouse',
+      },
+    }, {
+      path: 'create',
+      name: 'create',
+      component: () => import('@/views/create/index'),
+      meta: {
+        title: '新增商品',
+        icon: 'folder-plus',
+      },
+    }, ],
+  },
+  {
+    path: '/vip',
+    name: 'vip',
+    component: Layout,
+    redirect: 'noRedirect',
+    meta: {
+      title: '会员管理',
+      icon: 'user-check',
+    },
+    children: [{
+      path: 'list',
+      name: 'list',
+      component: () =>
+        import('@/views/vip/list/index'),
+      meta: {
+        title: '会员列表',
+        icon: 'users',
+      },
+    }, {
+      path: 'privilege',
+      name: 'privilege',
+      component: () =>
+        import('@/views/vip/privilege/index'),
+      meta: {
+        title: '会员活动',
+        icon: 'user-secret',
       },
     }, ],
   },
@@ -100,44 +157,18 @@ export const asyncRoutes = [{
       permissions: ['admin']
     },
     children: [{
-        path: 'goods',
-        name: 'goods',
-        component: () =>
-          import('@/views/management/goods/index'),
-        meta: {
-          title: '库存管理',
-          icon: 'warehouse',
-          permissions: ['admin']
-        },
+      path: 'systemInfo',
+      name: 'systemInfo',
+      component: () =>
+        import('@/views/management/systemConfig/index'),
+      meta: {
+        title: '系统设置',
+        icon: 'cog',
+        badge: 'New'
       },
-      {
-        path: 'systemInfo',
-        name: 'systemInfo',
-        component: () =>
-          import('@/views/management/systemConfig/index'),
-        meta: {
-          title: '系统管理',
-          icon: 'cog',
-          badge: 'New'
-        },
-      },
-
-      // {
-      //   path: 'userManagement',
-      //   name: 'UserManagement',
-      //   component: () =>
-      //     import('@/views/personnelManagement/userManagement/index'),
-      //   meta: { title: '用户管理' },
-      // },
-      // {
-      //   path: 'roleManagement',
-      //   name: 'RoleManagement',
-      //   component: () =>
-      //     import('@/views/personnelManagement/roleManagement/index'),
-      //   meta: { title: '角色管理' },
-      // },
-    ],
+    }],
   },
+
 
   {
     path: '*',

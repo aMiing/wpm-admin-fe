@@ -139,7 +139,7 @@ const install = (Vue) => {
   /* 全局TableHeight */
   Vue.prototype.$baseTableHeight = (formType) => {
     let height = window.innerHeight
-    let paddingHeight = 307
+    let paddingHeight = 283
     const formHeight = 50
 
     // if (layout === 'vertical') {

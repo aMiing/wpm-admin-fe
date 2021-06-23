@@ -1,42 +1,44 @@
 <template>
   <div class="table-container">
-    <vab-query-form>
-      <vab-query-form-left-panel>
+    <el-row>
+      <el-col :xs="24" :sm="24" :md="14" :lg="14" :xl="14">
         <el-button icon="el-icon-plus" type="primary" @click="handleAdd">
           添加
         </el-button>
         <el-button icon="el-icon-delete" type="danger" @click="handleDelete">
           删除
         </el-button>
-      </vab-query-form-left-panel>
-      <vab-query-form-right-panel>
-        <el-form
-          ref="form"
-          :model="queryForm"
-          :inline="true"
-          @submit.native.prevent
-        >
-          <el-form-item>
-            <el-input
-              v-model="queryForm.title"
-              placeholder="输入名称或编号搜索"
-              clearable
-              @clear="clearSearchKey"
-            />
-          </el-form-item>
-          <el-form-item>
-            <el-button
-              icon="el-icon-search"
-              type="primary"
-              native-type="submit"
-              @click="handleQuery"
-            >
-              查询
-            </el-button>
-          </el-form-item>
-        </el-form>
-      </vab-query-form-right-panel>
-    </vab-query-form>
+      </el-col>
+      <el-col :xs="24" :sm="24" :md="10" :lg="10" :xl="10">
+        <div class="right-panel">
+          <el-form
+            ref="form"
+            :model="queryForm"
+            :inline="true"
+            @submit.native.prevent
+          >
+            <el-form-item>
+              <el-input
+                v-model="queryForm.title"
+                placeholder="输入名称或编号搜索"
+                clearable
+                @clear="clearSearchKey"
+              />
+            </el-form-item>
+            <el-form-item>
+              <el-button
+                icon="el-icon-search"
+                type="primary"
+                native-type="submit"
+                @click="handleQuery"
+              >
+                查询
+              </el-button>
+            </el-form-item>
+          </el-form>
+        </div>
+      </el-col>
+    </el-row>
     <div class="checkbox-content type-select">
       <span>按类型筛选：</span>
       <el-checkbox
@@ -315,5 +317,11 @@ export default {
 }
 .select-all {
   margin: 0 10px;
+}
+.right-panel {
+  display: flex;
+  align-content: center;
+  align-items: center;
+  justify-content: flex-end;
 }
 </style>

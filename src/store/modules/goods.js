@@ -29,8 +29,8 @@ const mutations = {
   updateAllTypes(state) {
     let typeList = []
     state.allGoodsList.forEach(e => {
-      const labelArr = String(e.type).trim().split(',')
-      typeList = typeList.concat(labelArr)
+      const labelArr = e.type ? String(e.type).trim().split(',') : ['未分类'];
+      typeList = e.type ? typeList.concat(labelArr) : labelArr.concat(typeList)
     })
     state.allTypes = [...new Set(typeList)].map(e => {
       return {

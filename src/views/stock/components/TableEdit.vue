@@ -16,10 +16,7 @@
         <el-input v-model.trim="form.author" autocomplete="off"></el-input>
       </el-form-item>
       <el-form-item label="当前库存" prop="stock">
-        <el-input
-          v-model.trim.number="form.stock"
-          autocomplete="off"
-        ></el-input>
+        <el-input v-model.trim.number="form.stock" autocomplete="off"></el-input>
       </el-form-item>
       <el-form-item label="商品类别" prop="type">
         <el-select
@@ -48,77 +45,75 @@
 </template>
 
 <script>
-import { doEdit } from "@/api/table";
-import { successCode } from "@/config";
-import { mapActions, mapGetters, mapMutations } from "vuex";
+import { doEdit } from '@/api/table';
+import { successCode } from '@/config';
+import { mapActions, mapGetters, mapMutations } from 'vuex';
 
 export default {
-  name: "TableEdit",
+  name: 'TableEdit',
   data() {
     return {
       form: {
-        name: "",
-        author: "",
-        price: "",
-        stock: "",
+        name: '',
+        author: '',
+        price: '',
+        stock: '',
         type: [],
-        uuid: "",
+        uuid: '',
       },
       rules: {
-        name: [{ required: true, trigger: "blur", message: "请输入名称" }],
-        author: [{ required: true, trigger: "blur", message: "请输入生产商" }],
-        price: [{ required: true, trigger: "blur", message: "请输入单价" }],
-        stock: [{ required: true, trigger: "blur", message: "请输入库存" }],
+        name: [{ required: true, trigger: 'blur', message: '请输入名称' }],
+        author: [{ required: true, trigger: 'blur', message: '请输入生产商' }],
+        price: [{ required: true, trigger: 'blur', message: '请输入单价' }],
+        stock: [{ required: true, trigger: 'blur', message: '请输入库存' }],
       },
-      mode: "",
+      mode: '',
       dialogFormVisible: false,
     };
   },
   computed: {
     ...mapGetters({
-      allTypes: "goods/getAllTypes",
+      allTypes: 'goods/getAllTypes',
     }),
   },
   methods: {
     ...mapMutations({
-      updateAllTypes: "goods/updateAllTypes",
+      updateAllTypes: 'goods/updateAllTypes',
     }),
     ...mapActions({
-      addGoodsItem: "goods/addGoodsItem",
-      getFiltData: "goods/getFiltData",
+      addGoodsItem: 'goods/addGoodsItem',
+      getFiltData: 'goods/getFiltData',
     }),
     showEdit(row) {
       if (!row) {
-        this.mode = "add";
+        this.mode = 'add';
       } else {
-        this.mode = "edit";
-        this.form = Object.assign({}, row, {type: row.type.split(',')});
+        this.mode = 'edit';
+        this.form = Object.assign({}, row, { type: row.type.split(',') });
       }
       this.dialogFormVisible = true;
     },
     close() {
-      this.$refs["form"].resetFields();
+      this.$refs['form'].resetFields();
       this.form = this.$options.data().form;
       this.dialogFormVisible = false;
-      this.$emit("fetch-data");
     },
     save() {
-      this.$refs["form"].validate(async (valid) => {
+      this.$refs['form'].validate(async valid => {
         if (valid) {
           const parames = Object.assign(this.form, {
-            type: this.form.type.join(","),
+            type: this.form.type.join(','),
           });
           const { msg, code, data } = await doEdit(parames, this.mode);
           if (successCode.includes(code)) {
-            data.forEach(async (e) => {
+            data.forEach(async e => {
               await this.addGoodsItem(e);
             });
           }
           this.updateAllTypes();
-          this.$baseMessage(msg, "success");
-          this.$refs["form"].resetFields();
+          this.$baseMessage(msg, 'success');
+          this.$refs['form'].resetFields();
           this.dialogFormVisible = false;
-          this.$emit("fetch-data");
           this.form = this.$options.data().form;
         } else {
           return false;

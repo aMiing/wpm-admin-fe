@@ -54,10 +54,19 @@
 
       <el-table-column
         show-overflow-tooltip
-        prop="allPayPrice"
+        prop="originPayPrice"
         label="订单金额"
         sortable
-        sort-by="allPayPrice"
+        sort-by="originPayPrice"
+      >
+      </el-table-column>
+
+      <el-table-column
+        show-overflow-tooltip
+        prop="realPayPrice"
+        label="实收金额"
+        sortable
+        sort-by="realPayPrice"
       >
       </el-table-column>
 

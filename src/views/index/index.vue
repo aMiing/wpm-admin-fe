@@ -1,13 +1,7 @@
 <template>
   <div class="table-container">
     <vab-query-form>
-      <el-form
-        ref="form"
-        :model="queryForm"
-        :inline="true"
-        @submit.native.prevent
-        size="medium"
-      >
+      <el-form ref="form" :model="queryForm" :inline="true" @submit.native.prevent size="medium">
         <el-form-item>
           <el-input
             v-model="queryForm.title"
@@ -17,12 +11,7 @@
           />
         </el-form-item>
         <el-form-item>
-          <el-button
-            icon="el-icon-search"
-            type="primary"
-            native-type="submit"
-            @click="handleQuery"
-          >
+          <el-button icon="el-icon-search" type="primary" native-type="submit" @click="handleQuery">
             查询
           </el-button>
         </el-form-item>
@@ -37,9 +26,7 @@
         v-model="type.select"
         border
       ></el-checkbox>
-      <el-button class="select-all" type="text" @click="selectAllTypes"
-        >反选</el-button
-      >
+      <el-button class="select-all" type="text" @click="selectAllTypes">反选</el-button>
     </div>
 
     <el-table
@@ -49,18 +36,9 @@
       @selection-change="setSelectRows"
       @sort-change="tableSortChange"
     >
-      <el-table-column
-        show-overflow-tooltip
-        label="编号"
-        prop="uuid"
-        width="240"
-      >
+      <el-table-column show-overflow-tooltip label="编号" prop="uuid" width="240">
       </el-table-column>
-      <el-table-column
-        show-overflow-tooltip
-        prop="name"
-        label="名称"
-      ></el-table-column>
+      <el-table-column show-overflow-tooltip prop="name" label="名称"></el-table-column>
       <!-- <el-table-column show-overflow-tooltip label="图片">
         <template #default="{ row }">
           <el-image
@@ -71,23 +49,10 @@
         </template>
       </el-table-column> -->
 
-      <el-table-column
-        show-overflow-tooltip
-        prop="price"
-        label="单价"
-      ></el-table-column>
-      <el-table-column
-        show-overflow-tooltip
-        label="库存"
-        prop="stock"
-        sortable
-      ></el-table-column>
+      <el-table-column show-overflow-tooltip prop="price" label="单价"></el-table-column>
+      <el-table-column show-overflow-tooltip label="库存" prop="stock" sortable></el-table-column>
 
-      <el-table-column
-        show-overflow-tooltip
-        label="生产商"
-        prop="author"
-      ></el-table-column>
+      <el-table-column show-overflow-tooltip label="生产商" prop="author"></el-table-column>
       <el-table-column
         show-overflow-tooltip
         label="所属类别"
@@ -95,7 +60,7 @@
         sortable
         sort-by="type"
       ></el-table-column>
-      <el-table-column label="加入购物车" width="160px">
+      <!-- <el-table-column label="加入购物车" width="160px">
         <template #default="{ row }">
           <el-input-number
             v-model="row.saled"
@@ -106,7 +71,7 @@
             @change="addedChange(row)"
           ></el-input-number>
         </template>
-      </el-table-column>
+      </el-table-column> -->
     </el-table>
     <el-pagination
       :background="background"
@@ -121,37 +86,34 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapMutations } from "vuex";
+import { mapActions, mapGetters, mapMutations } from 'vuex';
 export default {
-  name: "Index",
+  name: 'Index',
   filters: {},
   data() {
     return {
       imgShow: true,
       imageList: [],
       listLoading: true,
-      layout: "total, sizes, prev, pager, next, jumper",
+      layout: 'total, sizes, prev, pager, next, jumper',
       background: true,
-      selectRows: "",
-      elementLoadingText: "正在加载...",
+      selectRows: '',
+      elementLoadingText: '正在加载...',
       queryForm: {
         pageNo: 1,
         pageSize: 20,
-        title: "",
-        filtType: [
-          { label: "化妆品", select: true },
-          { label: "电子产品", select: true },
-        ],
+        title: '',
+        filtType: [],
       },
     };
   },
   computed: {
     ...mapGetters({
       // allGoodsList: "goods/getGoodsList",
-      list: "goods/getFiltList",
-      total: "goods/getTotal",
-      allTypes: "goods/getAllTypes",
-      cartList: "cart/getCartList",
+      list: 'goods/getFiltList',
+      total: 'goods/getTotal',
+      allTypes: 'goods/getAllTypes',
+      cartList: 'cart/getCartList',
     }),
     height() {
       return this.$baseTableHeight();
@@ -175,18 +137,18 @@ export default {
   },
   methods: {
     ...mapMutations({
-      addCartItem: "cart/addCartItem",
-      delCartItem: "cart/delCartItem",
-      getFiltData: "goods/getFiltData",
-      setCurrenList: "goods/setCurrenList",
+      addCartItem: 'cart/addCartItem',
+      delCartItem: 'cart/delCartItem',
+      getFiltData: 'goods/getFiltData',
+      setCurrenList: 'goods/setCurrenList',
     }),
     ...mapActions({
-      setGoodsList: "goods/setGoodsList",
+      setGoodsList: 'goods/setGoodsList',
     }),
 
     mergeCartList() {
-      const list = this.list.map((e) => {
-        const saled = this.cartList?.find((i) => e.uuid === i.uuid)?.saled || 0;
+      const list = this.list.map(e => {
+        const saled = this.cartList?.find(i => e.uuid === i.uuid)?.saled || 0;
         return { ...e, saled };
       });
       this.setCurrenList(list);
@@ -199,7 +161,7 @@ export default {
     },
     tableSortChange() {
       const imageList = [];
-      this.$refs.tableSort.tableData.forEach((item) => {
+      this.$refs.tableSort.tableData.forEach(item => {
         imageList.push(item.img);
       });
       this.imageList = imageList;
@@ -208,10 +170,10 @@ export default {
       this.selectRows = val;
     },
     handleAdd() {
-      this.$refs["edit"].showEdit();
+      this.$refs['edit'].showEdit();
     },
     handleEdit(row) {
-      this.$refs["edit"].showEdit(row);
+      this.$refs['edit'].showEdit(row);
     },
 
     handleSizeChange(val) {
@@ -227,7 +189,7 @@ export default {
       const Loading = this.$baseColorfullLoading(1);
       await this.setGoodsList();
       const imageList = [];
-      this.list.forEach((item) => {
+      this.list.forEach(item => {
         imageList.push(item.img);
       });
       this.imageList = imageList;
@@ -236,7 +198,7 @@ export default {
       }, 500);
     },
     selectAllTypes() {
-      this.queryForm.filtType = this.queryForm.filtType.map((e) => {
+      this.queryForm.filtType = this.queryForm.filtType.map(e => {
         return Object.assign(e, { select: !e.select });
       });
     },
