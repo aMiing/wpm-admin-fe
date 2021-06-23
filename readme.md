@@ -46,7 +46,7 @@
 技术栈：前端 vue2.x+ElementUi+echarts
 后端: nodejs14.x+koa2
 数据库：mysql 5.7.0
-预览地址: [http://49.235.109.180:3000/#/login](http://49.235.109.180:3000/#/login) 
+预览地址: [http://49.235.109.180:3000/#/login?origin=gh](http://49.235.109.180:3000/#/login?origin=gh) 
 ### 效果展示：
  登录页
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20210606235635159.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5MzkzODk5,size_16,color_FFFFFF,t_70)
