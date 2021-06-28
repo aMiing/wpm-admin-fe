@@ -3,22 +3,24 @@
     <router-link to="/">
       <!-- 这里是logo变更的位置 -->
       <!-- <vab-remix-icon v-if="logo" class="logo" :icon-class="logo" /> -->
-      <img class="logo" :src="systemInfo.sys_logo" alt="" />
-      <span
-        class="title"
-        :class="{ 'hidden-xs-only': layout === 'horizontal' }"
-        :title="systemInfo.sys_name"
-      >
-        {{ systemInfo.sys_name }}
-      </span>
+      <div class="sys_haed-content">
+        <img class="logo" :src="systemInfo.sys_logo" alt="" />
+        <span
+          class="title"
+          :class="{ 'hidden-xs-only': layout === 'horizontal' }"
+          :title="systemInfo.sys_name"
+        >
+          {{ systemInfo.sys_name }}
+        </span>
+      </div>
     </router-link>
   </div>
 </template>
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters } from 'vuex';
 
 export default {
-  name: "VabLogo",
+  name: 'VabLogo',
   data() {
     return {
       title: this.$baseTitle,
@@ -26,9 +28,9 @@ export default {
   },
   computed: {
     ...mapGetters({
-      logo: "settings/logo",
-      layout: "settings/layout",
-      systemInfo: "user/getSysInfo",
+      logo: 'settings/logo',
+      layout: 'settings/layout',
+      systemInfo: 'user/getSysInfo',
     }),
   },
 };
@@ -89,6 +91,19 @@ export default {
     @include title;
 
     max-width: calc(#{$base-left-menu-width} - 60px);
+  }
+}
+.sys_haed-content {
+  &:hover {
+    * {
+      display: none;
+    }
+    &::before {
+      content: '←前台';
+      color: #fff;
+      cursor: pointer;
+      font-size: 17px;
+    }
   }
 }
 </style>

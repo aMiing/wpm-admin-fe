@@ -107,12 +107,12 @@ import { resetStock } from '@/api/table';
 import { createOrder } from '@/api/order';
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 import { successCode } from '@/config';
-
 import ChangePrice from './components/changePrice.vue';
 import DiscountEdit from './components/discountEdit.vue';
 import HoldedEdit from './components/holdedEdit.vue';
 import VipList from './components/vipList.vue';
 import SettlementDialog from './components/settlementDialog.vue';
+import { scaleTwoPrice } from '@/utils/price.js';
 export default {
   name: 'cart',
   components: { DiscountEdit, ChangePrice, HoldedEdit, VipList, SettlementDialog },
@@ -172,16 +172,18 @@ export default {
       selectedVip: 'vip/getSelectedVip',
     }),
     allcartCount() {
-      return this.cartList.reduce((total, item) => (total += item.saled), 0);
+      return scaleTwoPrice(this.cartList.reduce((total, item) => (total += item.saled), 0));
     },
     originPayPrice() {
-      return this.cartList.reduce((total, item) => (total += item.price * item.saled), 0);
+      return scaleTwoPrice(
+        this.cartList.reduce((total, item) => (total += item.price * item.saled), 0),
+      );
     },
     allPayPrice() {
-      return this.originPayPrice * this.discount;
+      return scaleTwoPrice(this.originPayPrice * this.discount);
     },
     computedPrice() {
-      return this.changedPrice || this.allPayPrice;
+      return scaleTwoPrice(this.changedPrice || this.allPayPrice);
     },
   },
 
@@ -236,7 +238,7 @@ export default {
         if (successCode.includes(code)) {
           this.clearCartlist();
           // 清空会员信息
-          this.$refs.vipList.cancelSelect();
+          this.selectedVip && this.$refs.vipList.cancelSelect();
         }
       } catch (err) {
         this.$baseMessage(err, 'error');

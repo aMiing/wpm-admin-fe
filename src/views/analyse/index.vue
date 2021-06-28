@@ -50,10 +50,7 @@
       >
         <router-link :to="item.link" target="_blank">
           <el-card class="icon-panel" shadow="never">
-            <vab-icon
-              :style="{ color: item.color }"
-              :icon="['fas', item.icon]"
-            ></vab-icon>
+            <vab-icon :style="{ color: item.color }" :icon="['fas', item.icon]"></vab-icon>
             <p>{{ item.title }}</p>
           </el-card>
         </router-link>
@@ -64,7 +61,7 @@
         <span class="title">数据统计</span>
       </div>
       <div class="checkbox-content time-select">
-        <select-date @setDateEmit="setDateEmit" />
+        <select-date initSelect="近一周" @setDateEmit="setDateEmit" />
       </div>
     </el-row>
     <el-row :gutter="20">
@@ -73,11 +70,7 @@
           <div slot="header">
             <span>订单数据</span>
           </div>
-          <vab-chart
-            :autoresize="true"
-            theme="vab-echarts-theme"
-            :options="orderOption"
-          />
+          <vab-chart :autoresize="true" theme="vab-echarts-theme" :options="orderOption" />
           <div class="bottom">
             <span
               >总订单量：
@@ -105,11 +98,7 @@
           <div slot="header">
             <span>营业额</span>
           </div>
-          <vab-chart
-            :autoresize="true"
-            theme="vab-echarts-theme"
-            :options="volumeOption"
-          />
+          <vab-chart :autoresize="true" theme="vab-echarts-theme" :options="volumeOption" />
           <div class="bottom">
             <span
               >总营业额：
@@ -137,12 +126,12 @@
 </template>
 
 <script>
-import VabChart from "@/plugins/echarts";
-import SelectDate from "@/components/SelectDate";
-import { getDataPreview, getOrderStatistics } from "@/api/order";
+import VabChart from '@/plugins/echarts';
+import SelectDate from '@/components/SelectDate';
+import { getDataPreview, getOrderStatistics } from '@/api/order';
 
 export default {
-  name: "Analyse",
+  name: 'Analyse',
   components: {
     VabChart,
     SelectDate,
@@ -162,21 +151,21 @@ export default {
       },
       chartOption: {
         grid: {
-          top: "8%",
-          left: "2%",
-          right: "4%",
-          bottom: "0%",
+          top: '8%',
+          left: '2%',
+          right: '4%',
+          bottom: '0%',
           containLabel: true,
         },
         tooltip: {
-          trigger: "axis",
+          trigger: 'axis',
           axisPointer: {
-            type: "shadow", // 默认为直线，可选为：'line' | 'shadow'
+            type: 'shadow', // 默认为直线，可选为：'line' | 'shadow'
           },
         },
         xAxis: [
           {
-            type: "category",
+            type: 'category',
             axisTick: {
               alignWithLabel: true,
             },
@@ -184,7 +173,7 @@ export default {
         ],
         yAxis: [
           {
-            type: "value",
+            type: 'value',
             // name: ,
           },
         ],
@@ -192,17 +181,17 @@ export default {
       //卡片图标
       iconList: [
         {
-          icon: "book",
-          title: "订单列表",
-          link: "/data/order",
-          color: "#69c0ff",
+          icon: 'book',
+          title: '订单列表',
+          link: '/data/order',
+          color: '#69c0ff',
         },
 
         {
-          icon: "coffee",
-          title: "敬请期待",
-          link: "",
-          color: "#95de64",
+          icon: 'coffee',
+          title: '敬请期待',
+          link: '',
+          color: '#95de64',
         },
       ],
     };
@@ -211,16 +200,16 @@ export default {
     orderOption() {
       return Object.assign({}, this.chartOption, {
         dataset: {
-          source: [["date", "有效订单"]].concat(this.orderData),
+          source: [['date', '有效订单']].concat(this.orderData),
         },
         series: [
           {
-            name: "有效订单",
-            type: "line",
+            name: '有效订单',
+            type: 'line',
             smooth: true,
             label: {
               show: true,
-              position: "top",
+              position: 'top',
             },
           },
         ],
@@ -229,15 +218,15 @@ export default {
     volumeOption() {
       return Object.assign({}, this.chartOption, {
         dataset: {
-          source: [["date", "销售额"]].concat(this.volumeData),
+          source: [['date', '销售额']].concat(this.volumeData),
         },
         series: [
           {
-            name: "销售金额",
-            type: "bar",
+            name: '销售金额',
+            type: 'bar',
             label: {
               show: true,
-              position: "top",
+              position: 'top',
             },
           },
         ],
@@ -245,9 +234,7 @@ export default {
     },
 
     avarageOrder() {
-      return this.getStatisticLen
-        ? Math.round(this.allOrdersCount / this.getStatisticLen)
-        : 0;
+      return this.getStatisticLen ? Math.round(this.allOrdersCount / this.getStatisticLen) : 0;
     },
     avarageVolume() {
       return this.getStatisticLen
@@ -261,17 +248,15 @@ export default {
   methods: {
     async setDateEmit(dates) {
       const { data } = await getOrderStatistics(dates);
-      this.getStatisticLen = Math.ceil(
-        (dates[1] - dates[0]) / (3600 * 1000 * 24)
-      );
+      this.getStatisticLen = Math.ceil((dates[1] - dates[0]) / (3600 * 1000 * 24));
       let allOrdersCount = 0,
         allVolume = 0;
 
-      this.orderData = data.map((e) => {
+      this.orderData = data.map(e => {
         allOrdersCount += e.orderCount;
         return [e.date, e.orderCount];
       });
-      this.volumeData = data.map((e) => {
+      this.volumeData = data.map(e => {
         allVolume += e.volume;
         return [e.date, e.volume];
       });
@@ -283,8 +268,7 @@ export default {
       const today = new Date().toLocaleDateString();
       const Now = new Date().getTime();
       const Zero = new Date(today).getTime();
-      const theWeek =
-        Zero - ((new Date().getDay() || 7) - 1) * 24 * 3600 * 1000;
+      const theWeek = Zero - ((new Date().getDay() || 7) - 1) * 24 * 3600 * 1000;
       const theMonth = Zero - (new Date().getDate() - 1) * 24 * 3600 * 1000;
       const parames = [
         [Zero, Now],
@@ -292,7 +276,7 @@ export default {
         [theMonth, Now],
       ];
       const { data } = await getDataPreview({ parames });
-      const labelList = ["日销售额", "周销售额", "月销售额"];
+      const labelList = ['日销售额', '周销售额', '月销售额'];
       this.salesData = data.map((e, index) => {
         return {
           label: labelList[index],

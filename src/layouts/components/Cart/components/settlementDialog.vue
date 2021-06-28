@@ -47,6 +47,7 @@
 
 <script>
 import { mapActions, mapGetters, mapMutations } from 'vuex';
+import { scaleTwoPrice } from '@/utils/price.js';
 export default {
   name: 'settlementDialog',
   props: {
@@ -65,20 +66,35 @@ export default {
     ...mapGetters({
       selectedVip: 'vip/getSelectedVip',
     }),
+    balancePay() {
+      if (this.payMethod === 'balance-pay') {
+        return scaleTwoPrice(
+          this.selectedVip.balance >= this.computedPrice
+            ? this.computedPrice
+            : this.selectedVip.balance,
+        );
+      } else {
+        return 0;
+      }
+    },
     afterBalance() {
       if (this.payMethod === 'balance-pay') {
-        return this.selectedVip.balance >= this.computedPrice
-          ? this.selectedVip.balance - this.computedPrice
-          : 0;
+        return scaleTwoPrice(
+          this.selectedVip.balance >= this.computedPrice
+            ? this.selectedVip.balance - this.computedPrice
+            : 0,
+        );
       } else {
-        return this.selectedVip.balance;
+        return this.computedPrice;
       }
     },
     surplusPayment() {
       if (this.payMethod === 'balance-pay') {
-        return this.selectedVip.balance >= this.computedPrice
-          ? 0
-          : this.computedPrice - this.selectedVip.balance;
+        return scaleTwoPrice(
+          this.selectedVip.balance >= this.computedPrice
+            ? 0
+            : this.computedPrice - this.selectedVip.balance,
+        );
       } else {
         return this.computedPrice;
       }
@@ -102,10 +118,13 @@ export default {
       // 支付确认
       await this.$emit('resetStock', {
         payMethod: this.payMethod,
+        balancePay: this.balancePay,
         surplusPayment: this.surplusPayment,
+        PN: this.selectedVip?.PN,
       });
       //修改余额
-      await this.updateBalance({ balance: this.afterBalance, uuid: this.selectedVip.uuid });
+      this.selectedVip &&
+        (await this.updateBalance({ balance: this.afterBalance, uuid: this.selectedVip.uuid }));
       this.close();
     },
   },

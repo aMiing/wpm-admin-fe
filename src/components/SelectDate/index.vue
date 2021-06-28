@@ -24,15 +24,22 @@
 
 <script>
 export default {
-  name: "SetDate",
+  name: 'SetDate',
+  props: {
+    initSelect: {
+      type: String,
+      default: '今天',
+    },
+  },
   data() {
-      return {
-      initStartDate: "",
-      initSelectRadio: "今天",
-      }
+    return {
+      initStartDate: '',
+      initSelectRadio: '',
+    };
   },
   mounted() {
-      this.radioSelectChange(this.initSelectRadio)
+    this.initSelectRadio = this.initSelect;
+    this.radioSelectChange(this.initSelectRadio);
   },
   methods: {
     radioSelectChange(label) {
@@ -43,19 +50,19 @@ export default {
       const oneDay = 1000 * 3600 * 24;
       let timeRange = [];
       switch (label) {
-        case "今天":
+        case '今天':
           timeRange = [Zero, Now];
           break;
-        case "昨天":
+        case '昨天':
           timeRange = [Zero - oneDay, Zero];
           break;
-        case "近一周":
+        case '近一周':
           timeRange = [Now - 7 * oneDay, Now];
           break;
-        case "近30天":
+        case '近30天':
           timeRange = [Now - 30 * oneDay, Now];
           break;
-        case "近90天":
+        case '近90天':
           timeRange = [Now - 90 * oneDay, Now];
           break;
         default:
@@ -65,7 +72,7 @@ export default {
       this.pickerDateChange(timeRange);
     },
     async pickerDateChange(dates) {
-      this.$emit('setDateEmit', dates)
+      this.$emit('setDateEmit', dates);
     },
   },
 };
@@ -73,11 +80,11 @@ export default {
 
 <style lang="scss">
 .select-date-content {
-    margin-bottom: 12px;
-    display: flex;
-    justify-content: flex-start;
-    .initTime {
-      margin: 0 12px 6px;
-    }
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: flex-start;
+  .initTime {
+    margin: 0 12px 6px;
+  }
 }
 </style>

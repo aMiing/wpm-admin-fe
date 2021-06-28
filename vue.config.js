@@ -14,10 +14,8 @@ const {
   lintOnSave,
   transpileDependencies,
   title,
-  abbreviation,
   devPort,
   providePlugin,
-  build7z,
 } = require('./src/config')
 
 const {
@@ -166,23 +164,6 @@ module.exports = {
         .end()
     })
 
-    // if (build7z) {
-    //   const zip_dir = __dirname.slice(0, -12)
-    //   config.when(process.env.NODE_ENV === 'production', (config) => {
-    //     config
-    //       .plugin('fileManager')
-    //       .use(FileManagerPlugin, [{
-    //         onEnd: {
-    //           delete: [`./${outputDir}/video`, `./${outputDir}/data`],
-    //           archive: [{
-    //             source: `./${outputDir}`,
-    //             destination: zip_dir + `wpm-fe-zip/${abbreviation}_${outputDir}_${date}.7z`,
-    //           }, ],
-    //         },
-    //       }, ])
-    //       .end()
-    //   })
-    // }
   },
   runtimeCompiler: true,
   productionSourceMap: false,

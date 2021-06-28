@@ -2,21 +2,12 @@
   <div class="table-container">
     <el-row>
       <el-col :xs="24" :sm="24" :md="14" :lg="14" :xl="14">
-        <el-button icon="el-icon-plus" type="primary" @click="handleAdd">
-          添加
-        </el-button>
-        <el-button icon="el-icon-delete" type="danger" @click="handleDelete">
-          删除
-        </el-button>
+        <el-button icon="el-icon-plus" type="primary" @click="handleAdd"> 添加 </el-button>
+        <el-button icon="el-icon-delete" type="danger" @click="handleDelete"> 删除 </el-button>
       </el-col>
       <el-col :xs="24" :sm="24" :md="10" :lg="10" :xl="10">
         <div class="right-panel">
-          <el-form
-            ref="form"
-            :model="queryForm"
-            :inline="true"
-            @submit.native.prevent
-          >
+          <el-form ref="form" :model="queryForm" :inline="true" @submit.native.prevent>
             <el-form-item>
               <el-input
                 v-model="queryForm.title"
@@ -48,9 +39,7 @@
         v-model="type.select"
         border
       ></el-checkbox>
-      <el-button class="select-all" type="text" @click="selectAllTypes"
-        >反选</el-button
-      >
+      <el-button class="select-all" type="text" @click="selectAllTypes">反选</el-button>
     </div>
 
     <el-table
@@ -60,23 +49,10 @@
       @selection-change="setSelectRows"
       @sort-change="tableSortChange"
     >
-      <el-table-column
-        show-overflow-tooltip
-        type="selection"
-        width="55"
-      ></el-table-column>
-      <el-table-column
-        show-overflow-tooltip
-        label="编号"
-        prop="uuid"
-        min-width="240"
-      >
+      <el-table-column show-overflow-tooltip type="selection" width="55"></el-table-column>
+      <el-table-column show-overflow-tooltip label="编号/条码" prop="uuid" min-width="240">
       </el-table-column>
-      <el-table-column
-        show-overflow-tooltip
-        prop="name"
-        label="名称"
-      ></el-table-column>
+      <el-table-column show-overflow-tooltip prop="name" label="名称"></el-table-column>
       <!-- <el-table-column show-overflow-tooltip label="图片">
         <template #default="{ row }">
           <el-image
@@ -87,11 +63,7 @@
         </template>
       </el-table-column> -->
 
-      <el-table-column
-        show-overflow-tooltip
-        prop="price"
-        label="单价"
-      ></el-table-column>
+      <el-table-column show-overflow-tooltip prop="price" label="单价"></el-table-column>
       <el-table-column
         show-overflow-tooltip
         label="库存"
@@ -100,11 +72,7 @@
         min-width="80"
       ></el-table-column>
 
-      <el-table-column
-        show-overflow-tooltip
-        label="生产商"
-        prop="author"
-      ></el-table-column>
+      <el-table-column show-overflow-tooltip label="生产商" prop="author"></el-table-column>
       <el-table-column show-overflow-tooltip label="状态">
         <template #default="{ row }">
           <!-- <el-tag v-if="Number(row.stock) === 0" type="danger">
@@ -132,7 +100,7 @@
         <template #default="{ row }">
           <el-button type="text" @click="handleEdit(row)">编辑</el-button>
           <el-button type="text" @click="handleOffOrOn(row)">{{
-            row.online === 1 ? "下架" : "上架"
+            row.online === 1 ? '下架' : '上架'
           }}</el-button>
           <el-button type="text" @click="handleDelete(row)">删除</el-button>
         </template>
@@ -152,18 +120,18 @@
 </template>
 
 <script>
-import { doDelete, doEdit } from "@/api/table";
-import TableEdit from "./components/TableEdit";
-import { successCode } from "@/config";
-import { mapActions, mapGetters, mapMutations } from "vuex";
+import { doDelete, doEdit } from '@/api/table';
+import TableEdit from './components/TableEdit';
+import { successCode } from '@/config';
+import { mapActions, mapGetters, mapMutations } from 'vuex';
 export default {
-  name: "ComprehensiveTable",
+  name: 'ComprehensiveTable',
   components: {
     TableEdit,
   },
   filters: {
     statusFilter(status) {
-      return status === 1 ? "success" : "info";
+      return status === 1 ? 'success' : 'info';
     },
     timeFilter(NS) {
       return new Date(NS).toLocaleString();
@@ -175,26 +143,26 @@ export default {
       imgShow: true,
       imageList: [],
       listLoading: true,
-      layout: "total, sizes, prev, pager, next, jumper",
+      layout: 'total, sizes, prev, pager, next, jumper',
       background: true,
-      selectRows: "",
-      elementLoadingText: "正在加载...",
+      selectRows: '',
+      elementLoadingText: '正在加载...',
       queryForm: {
         pageNo: 1,
         pageSize: 20,
-        title: "",
+        title: '',
         filtType: [
-          { label: "化妆品", select: true },
-          { label: "电子产品", select: true },
+          { label: '化妆品', select: true },
+          { label: '电子产品', select: true },
         ],
       },
     };
   },
   computed: {
     ...mapGetters({
-      list: "goods/getFiltList",
-      total: "goods/getTotal",
-      allTypes: "goods/getAllTypes",
+      list: 'goods/getFiltList',
+      total: 'goods/getTotal',
+      allTypes: 'goods/getAllTypes',
     }),
     height() {
       return this.$baseTableHeight();
@@ -217,20 +185,20 @@ export default {
   },
   methods: {
     ...mapMutations({
-      addCartItem: "cart/addCartItem",
-      getFiltData: "goods/getFiltData",
-      updateAllTypes: "goods/updateAllTypes",
+      addCartItem: 'cart/addCartItem',
+      getFiltData: 'goods/getFiltData',
+      updateAllTypes: 'goods/updateAllTypes',
     }),
     ...mapActions({
-      setGoodsList: "goods/setGoodsList",
-      delGoodsList: "goods/delGoodsList",
+      setGoodsList: 'goods/setGoodsList',
+      delGoodsList: 'goods/delGoodsList',
     }),
     handleStatusText(state) {
-      return state === 1 ? "在售" : "下架";
+      return state === 1 ? '在售' : '下架';
     },
     tableSortChange() {
       const imageList = [];
-      this.$refs.tableSort.tableData.forEach((item) => {
+      this.$refs.tableSort.tableData.forEach(item => {
         imageList.push(item.img);
       });
       this.imageList = imageList;
@@ -239,37 +207,37 @@ export default {
       this.selectRows = val;
     },
     handleAdd() {
-      this.$refs["edit"].showEdit();
+      this.$refs['edit'].showEdit();
     },
     handleEdit(row) {
-      this.$refs["edit"].showEdit(row);
+      this.$refs['edit'].showEdit(row);
     },
     async handleOffOrOn(row) {
       row.online = row.online === 1 ? 2 : 1;
-      const { msg, code } = await doEdit(row, "edit");
+      const { msg, code } = await doEdit(row, 'edit');
       !successCode.includes(code) && (row.online = row.online === 1 ? 2 : 1);
-      this.$baseMessage(msg, "success");
+      this.$baseMessage(msg, 'success');
       // 请求数据更新
     },
     handleDelete(row) {
       if (row.uuid) {
-        this.$baseConfirm("你确定要删除当前项吗", null, async () => {
+        this.$baseConfirm('你确定要删除当前项吗', null, async () => {
           const { msg } = await doDelete({ uuid: row.uuid });
           await this.delGoodsList({ uuid: row.uuid });
           this.updateAllTypes();
-          this.$baseMessage(msg, "success");
+          this.$baseMessage(msg, 'success');
         });
       } else {
         if (this.selectRows.length > 0) {
-          const ids = this.selectRows.map((item) => item.uuid).join(",");
-          this.$baseConfirm("你确定要删除选中项吗", null, async () => {
+          const ids = this.selectRows.map(item => item.uuid).join(',');
+          this.$baseConfirm('你确定要删除选中项吗', null, async () => {
             const { msg } = await doDelete({ uuid: ids });
             await this.delGoodsList({ uuid: ids });
             this.updateAllTypes();
-            this.$baseMessage(msg, "success");
+            this.$baseMessage(msg, 'success');
           });
         } else {
-          this.$baseMessage("未选中任何行", "error");
+          this.$baseMessage('未选中任何行', 'error');
           return false;
         }
       }
@@ -290,7 +258,7 @@ export default {
       const Loading = this.$baseColorfullLoading(1);
       await this.setGoodsList();
       const imageList = [];
-      this.list.forEach((item) => {
+      this.list.forEach(item => {
         imageList.push(item.img);
       });
       this.imageList = imageList;
@@ -300,7 +268,7 @@ export default {
     },
 
     selectAllTypes() {
-      this.queryForm.filtType = this.queryForm.filtType.map((e) => {
+      this.queryForm.filtType = this.queryForm.filtType.map(e => {
         return Object.assign(e, { select: !e.select });
       });
     },
