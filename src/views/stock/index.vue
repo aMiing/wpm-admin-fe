@@ -44,7 +44,7 @@
 
     <el-table
       ref="tableSort"
-      :data="list"
+      :data="fillList"
       :height="height"
       @selection-change="setSelectRows"
       @sort-change="tableSortChange"
@@ -137,7 +137,7 @@ export default {
       return status === 1 ? 'success' : 'info';
     },
     timeFilter(NS) {
-      return formatTime(new Date(NS), '{yy}-{mm}-{dd} {hh}:{ii}:{ss}');
+      return NS ? formatTime(new Date(NS), '{yy}-{mm}-{dd} {hh}:{ii}:{ss}') : '--';
     },
   },
   data() {
@@ -166,6 +166,14 @@ export default {
       total: 'goods/getTotal',
       allTypes: 'goods/getAllTypes',
     }),
+    fillList() {
+      return this.list.map(e => {
+        return {
+          ...e,
+          author: e.author || '--',
+        };
+      });
+    },
     height() {
       return this.$baseTableHeight();
     },
@@ -265,7 +273,7 @@ export default {
       const Loading = this.$baseColorfullLoading(1);
       await this.setGoodsList();
       const imageList = [];
-      this.list.forEach(item => {
+      this.fillList.forEach(item => {
         imageList.push(item.img);
       });
       this.imageList = imageList;

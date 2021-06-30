@@ -31,13 +31,12 @@
 
     <el-table
       ref="tableSort"
-      :data="list"
+      :data="fillList"
       :height="height"
       @selection-change="setSelectRows"
       @sort-change="tableSortChange"
     >
-      <el-table-column show-overflow-tooltip label="编号/条码" prop="uuid" width="240">
-      </el-table-column>
+      <el-table-column show-overflow-tooltip label="编号/条码" prop="uuid"> </el-table-column>
       <el-table-column show-overflow-tooltip prop="name" label="名称"></el-table-column>
       <!-- <el-table-column show-overflow-tooltip label="图片">
         <template #default="{ row }">
@@ -55,13 +54,11 @@
         sortable
         sort-by="price"
       ></el-table-column>
-      <el-table-column
-        show-overflow-tooltip
-        label="库存"
-        prop="stock"
-        sortable
-        sort-by="stock"
-      ></el-table-column>
+      <el-table-column show-overflow-tooltip label="库存" sortable sort-by="stock">
+        <template #default="{ row }">
+          {{ row.stock + ' ' + (row.unit || '') }}
+        </template>
+      </el-table-column>
       <el-table-column show-overflow-tooltip label="生产商" prop="author"></el-table-column>
       <el-table-column show-overflow-tooltip label="所属类别" prop="type"></el-table-column>
     </el-table>
@@ -107,6 +104,14 @@ export default {
       allTypes: 'goods/getAllTypes',
       cartList: 'cart/getCartList',
     }),
+    fillList() {
+      return this.list.map(e => {
+        return {
+          ...e,
+          author: e.author || '--',
+        };
+      });
+    },
     height() {
       return this.$baseTableHeight();
     },
@@ -139,7 +144,7 @@ export default {
     }),
 
     mergeCartList() {
-      const list = this.list.map(e => {
+      const list = this.fillList.map(e => {
         const saled = this.cartList?.find(i => e.uuid === i.uuid)?.saled || 0;
         return { ...e, saled };
       });
@@ -181,7 +186,7 @@ export default {
       const Loading = this.$baseColorfullLoading(1);
       await this.setGoodsList();
       const imageList = [];
-      this.list.forEach(item => {
+      this.fillList.forEach(item => {
         imageList.push(item.img);
       });
       this.imageList = imageList;
