@@ -50,7 +50,7 @@
       @sort-change="tableSortChange"
     >
       <el-table-column show-overflow-tooltip type="selection" width="55"></el-table-column>
-      <el-table-column show-overflow-tooltip label="编号/条码" prop="uuid" min-width="240">
+      <el-table-column show-overflow-tooltip label="编号/条码" prop="uuid" min-width="200">
       </el-table-column>
       <el-table-column show-overflow-tooltip prop="name" label="名称"></el-table-column>
       <!-- <el-table-column show-overflow-tooltip label="图片">
@@ -63,14 +63,18 @@
         </template>
       </el-table-column> -->
 
-      <el-table-column show-overflow-tooltip prop="price" label="单价"></el-table-column>
       <el-table-column
         show-overflow-tooltip
-        label="库存"
-        prop="stock"
+        prop="price"
+        label="单价"
         sortable
-        min-width="80"
+        sort-by="price"
       ></el-table-column>
+      <el-table-column show-overflow-tooltip label="库存" sortable sort-by="stock" min-width="80">
+        <template #default="{ row }">
+          {{ row.stock + ' ' + (row.unit || '') }}
+        </template>
+      </el-table-column>
 
       <el-table-column show-overflow-tooltip label="生产商" prop="author"></el-table-column>
       <el-table-column show-overflow-tooltip label="状态">
@@ -87,11 +91,9 @@
         show-overflow-tooltip
         label="所属类别"
         prop="type"
-        sortable
-        sort-by="type"
         min-width="120"
       ></el-table-column>
-      <el-table-column show-overflow-tooltip label="录入时间" min-width="160">
+      <el-table-column show-overflow-tooltip label="录入时间" min-width="150">
         <template #default="{ row }">
           <span>{{ row.createTime | timeFilter }}</span>
         </template>
@@ -124,6 +126,7 @@ import { doDelete, doEdit } from '@/api/table';
 import TableEdit from './components/TableEdit';
 import { successCode } from '@/config';
 import { mapActions, mapGetters, mapMutations } from 'vuex';
+import { formatTime } from '@/utils/index.js';
 export default {
   name: 'ComprehensiveTable',
   components: {
@@ -134,8 +137,7 @@ export default {
       return status === 1 ? 'success' : 'info';
     },
     timeFilter(NS) {
-      return new Date(NS).toLocaleString();
-      // return NS;
+      return formatTime(new Date(NS), '{yy}-{mm}-{dd} {hh}:{ii}:{ss}');
     },
   },
   data() {
@@ -182,6 +184,11 @@ export default {
   },
   async created() {
     await this.fetchData();
+  },
+  async mounted() {
+    await this.$nextTick();
+    const { operate } = this.$route.query;
+    operate === 'add' && this.handleAdd();
   },
   methods: {
     ...mapMutations({

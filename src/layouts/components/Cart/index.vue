@@ -31,8 +31,8 @@
         <span>
           共<i class="custom-count-num">{{ allcartCount }}</i> 件
         </span>
-        <span class="discount-show-detail" v-show="discount !== 1">
-          折扣：{{ originPayPrice }} <i>×</i> {{ discount }}
+        <span class="discount-show-detail" v-show="computedDiscount !== 1">
+          折扣：{{ originPayPrice }} <i>×</i> {{ computedDiscount }}
         </span>
         <span>
           <span class="changedPrice" v-show="changedPrice !== ''">
@@ -168,9 +168,16 @@ export default {
       discount: 'cart/getDiscount',
       changedPrice: 'cart/getChangedPrice',
       orderCache: 'cart/getOrderCache',
-
       selectedVip: 'vip/getSelectedVip',
+      privilege: 'privilege/getPrivilege',
     }),
+    computedDiscount() {
+      return this.discount && this.discount !== 1
+        ? this.discount
+        : this.selectedVip
+        ? this.privilege.discount / 100
+        : 1;
+    },
     allcartCount() {
       return scaleTwoPrice(this.cartList.reduce((total, item) => (total += item.saled), 0));
     },
@@ -180,7 +187,7 @@ export default {
       );
     },
     allPayPrice() {
-      return scaleTwoPrice(this.originPayPrice * this.discount);
+      return scaleTwoPrice(this.originPayPrice * this.computedDiscount);
     },
     computedPrice() {
       return scaleTwoPrice(this.changedPrice || this.allPayPrice);
@@ -194,6 +201,7 @@ export default {
   methods: {
     ...mapActions({
       setCartList: 'cart/setCartList',
+      getPrivilege: 'privilege/getPrivilege',
     }),
     ...mapMutations({
       addCartItem: 'cart/addCartItem',
@@ -227,7 +235,7 @@ export default {
         const { msg, code } = await resetStock(this.cartList);
         await createOrder(
           Object.assign(params, {
-            discount: this.discount,
+            discount: this.computedDiscount,
             salesperson: this.username,
             purchase: this.cartList,
             originPayPrice: this.originPayPrice,
@@ -300,6 +308,7 @@ export default {
 
         case 'vip':
           {
+            this.getPrivilege();
             this.$refs.vipList.showEdit();
           }
           break;

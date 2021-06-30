@@ -43,7 +43,7 @@
         prop="integral"
         sortable
       ></el-table-column>
-      <el-table-column show-overflow-tooltip label="录入时间" min-width="160">
+      <el-table-column show-overflow-tooltip label="注册时间" min-width="160">
         <template #default="{ row }">
           <span>{{ row.createTime | timeFilter }}</span>
         </template>
@@ -69,10 +69,11 @@
 </template>
 
 <script>
-import { doDelete, doEdit } from '@/api/vip';
+import { doDelete } from '@/api/vip';
 import TableEdit from './components/TableEdit';
 import { successCode } from '@/config';
 import { mapActions, mapGetters, mapMutations } from 'vuex';
+import { formatTime } from '@/utils/index.js';
 export default {
   name: 'vipManagement',
   components: {
@@ -83,7 +84,7 @@ export default {
       return status === 1 ? 'success' : 'info';
     },
     timeFilter(NS) {
-      return new Date(NS).toLocaleString();
+      return formatTime(new Date(NS), '{yy}-{mm}-{dd} {hh}:{ii}:{ss}');
     },
   },
   data() {

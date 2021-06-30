@@ -42,8 +42,14 @@
                     :key="goods.uuid"
                   >
                     <el-card shadow="hover" :body-style="{ padding: '0px' }">
-                      <div class="card-body" @click="addToCart(goods)">
-                        <h3 class="goods-name">{{ goods.name }}</h3>
+                      <div
+                        class="card-body"
+                        :class="(goods.online === 2 || goods.stock === 0) && 'disabled'"
+                        @click="addToCart(goods)"
+                      >
+                        <h3 class="goods-name">
+                          {{ goods.name + (goods.online === 2 ? '（已下架）' : '') }}
+                        </h3>
                         <p class="goods-info-qrNumber">
                           <span>库存：{{ goods.stock }}</span>
                           <el-input-number
@@ -88,9 +94,9 @@ export default {
           link: '/vip/list?operate=add',
         },
         {
-          name: '次卡消费',
+          name: '会员活动',
           icon: 'id-card',
-          link: '',
+          link: '/vip/privilege',
         },
         {
           name: '销售查询',
@@ -103,9 +109,9 @@ export default {
           link: '',
         },
         {
-          name: '历史订单',
-          icon: 'book-reader',
-          link: '/data/order',
+          name: '创建商品',
+          icon: 'calendar-plus',
+          link: '/goods/create',
         },
         {
           name: '库存查询',
@@ -169,8 +175,12 @@ export default {
       Loading.close();
     },
     addToCart(row) {
+      if (row.online === 2) {
+        this.$baseMessage('下架商品不可销售哦！', 'info');
+        return false;
+      }
       if (row.stock === 0) {
-        this.$baseMessage('库存不足！', 'error');
+        this.$baseMessage('库存不足了哦！', 'error');
         return false;
       }
       row.stock -= 1;
@@ -247,6 +257,11 @@ export default {
         .card-body {
           padding: 8px 16px;
           cursor: pointer;
+          &.disabled {
+            cursor: not-allowed;
+            // color: #c0c4cc;
+            opacity: 0.4;
+          }
         }
         .bottom {
           font-size: 18px;

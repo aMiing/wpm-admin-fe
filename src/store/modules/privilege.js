@@ -26,7 +26,6 @@ const actions = {
     const {
       data
     } = await getPrivilege()
-    console.log('data', data)
     commit('setPrivilege', data[0])
   },
 }

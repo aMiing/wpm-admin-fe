@@ -85,6 +85,8 @@ export default {
   }
   .app-main-height {
     height: $base-app-main-height;
+    display: flex;
+    flex-direction: column;
   }
 
   .footer-copyright {

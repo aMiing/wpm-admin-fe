@@ -59,7 +59,7 @@ const mutations = {
   },
   resetBalance(state, item) {
     state.memberList.forEach(e => {
-      e.uuid === item.uuid && (e.balance = item.balance)
+      e.uuid === item.uuid && (e.balance = item.balance, e.integral = item.integral)
     });
   },
 }

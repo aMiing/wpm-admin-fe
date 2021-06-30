@@ -1,7 +1,8 @@
 /**
  * @description 导出默认通用配置
  */
-const pub_dir = __dirname.slice(0, -23) + '/fe-public/dist';
+const depart = __dirname.slice(0, 1)
+const pub_dir = __dirname.split(depart).slice(0, -3).concat(['fe-public', 'dist']).join(depart);
 const setting = {
   // 开发以及部署时的URL
   publicPath: '',
@@ -73,5 +74,7 @@ const setting = {
   templateFolder: 'project',
   //是否显示终端donation打印
   donation: true,
+  // 资源地址
+  excelUrl: 'http://localhost:3000/',
 }
 module.exports = setting

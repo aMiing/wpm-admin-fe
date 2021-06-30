@@ -2,10 +2,7 @@
  * @author amingxiansen 1006934861@qq.com
  * @description cli配置
  */
-
 const path = require('path')
-
-
 
 const {
   publicPath,
@@ -23,7 +20,6 @@ const {
   author
 } = require('./package.json')
 const Webpack = require('webpack')
-const FileManagerPlugin = require('filemanager-webpack-plugin')
 const CopyPlugin = require("copy-webpack-plugin");
 const dayjs = require('dayjs')
 const date = dayjs().format('YYYY_M_D')
@@ -153,15 +149,6 @@ module.exports = {
           },
         },
       })
-
-      config.module
-        .rule('images')
-        .use('image-webpack-loader')
-        .loader('image-webpack-loader')
-        .options({
-          bypassOnDebug: true,
-        })
-        .end()
     })
 
   },

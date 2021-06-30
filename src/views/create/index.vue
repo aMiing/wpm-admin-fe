@@ -3,26 +3,45 @@
     <div class="create-content">
       <el-row :gutter="30">
         <el-col :span="8" :offset="4">
-          <div class="grid-content single">手动输入</div>
+          <div class="grid-content single" @click="handleCreateType('manual')">手动输入</div>
         </el-col>
         <el-col :span="8">
-          <div class="grid-content qrcode">条码搜索</div>
+          <div class="grid-content qrcode" @click="handleCreateType('qrcode')">条码搜索</div>
         </el-col>
       </el-row>
 
       <el-row :gutter="20">
         <el-col :span="8" :offset="4">
-          <div class="grid-content batch">批量导入(excel)</div>
+          <div class="grid-content batch" @click="handleCreateType('batch')">批量导入(excel)</div>
         </el-col>
         <el-col :span="8">
           <div class="grid-content more">更多方式...</div>
         </el-col>
       </el-row>
     </div>
+    <table-edit ref="edit"></table-edit>
   </div>
 </template>
 <script>
-export default {};
+import tableEdit from './components/TableEdit';
+export default {
+  name: 'createGoods',
+  components: {
+    tableEdit,
+  },
+  data() {
+    return {};
+  },
+  methods: {
+    handleCreateType(type) {
+      if (type === 'manual') {
+        this.$router.push({ path: '/goods/stock', query: { operate: 'add' } });
+      } else {
+        this.$refs.edit.showEdit(type);
+      }
+    },
+  },
+};
 </script>
 <style lang="scss" scoped>
 .create {

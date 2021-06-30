@@ -48,30 +48,22 @@
           ></el-image>
         </template>
       </el-table-column> -->
-
-      <el-table-column show-overflow-tooltip prop="price" label="单价"></el-table-column>
-      <el-table-column show-overflow-tooltip label="库存" prop="stock" sortable></el-table-column>
-
-      <el-table-column show-overflow-tooltip label="生产商" prop="author"></el-table-column>
       <el-table-column
         show-overflow-tooltip
-        label="所属类别"
-        prop="type"
+        prop="price"
+        label="单价"
         sortable
-        sort-by="type"
+        sort-by="price"
       ></el-table-column>
-      <!-- <el-table-column label="加入购物车" width="160px">
-        <template #default="{ row }">
-          <el-input-number
-            v-model="row.saled"
-            :min="0"
-            :max="row.stock"
-            :step="1"
-            step-strictly
-            @change="addedChange(row)"
-          ></el-input-number>
-        </template>
-      </el-table-column> -->
+      <el-table-column
+        show-overflow-tooltip
+        label="库存"
+        prop="stock"
+        sortable
+        sort-by="stock"
+      ></el-table-column>
+      <el-table-column show-overflow-tooltip label="生产商" prop="author"></el-table-column>
+      <el-table-column show-overflow-tooltip label="所属类别" prop="type"></el-table-column>
     </el-table>
     <el-pagination
       :background="background"

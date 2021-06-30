@@ -19,9 +19,8 @@
         :class="payMethod === 'integral-pay' ? 'active' : ''"
       >
         <p class="title">积分抵扣（暂不支持）</p>
-        <span class="originValue" v-show="payMethod === 'integral-pay'">{{
-          selectedVip.integral
-        }}</span>
+        <i class="originValue" v-show="payMethod === 'integral-pay'">{{ selectedVip.integral }}</i>
+        <span>{{ selectedVip.integral }}</span>
       </div>
     </div>
     <el-divider content-position="left">待支付</el-divider>
@@ -65,6 +64,7 @@ export default {
   computed: {
     ...mapGetters({
       selectedVip: 'vip/getSelectedVip',
+      privilege: 'privilege/getPrivilege',
     }),
     balancePay() {
       if (this.payMethod === 'balance-pay') {
@@ -85,7 +85,7 @@ export default {
             : 0,
         );
       } else {
-        return this.computedPrice;
+        return this.selectedVip.balance;
       }
     },
     surplusPayment() {
@@ -98,6 +98,13 @@ export default {
       } else {
         return this.computedPrice;
       }
+    },
+    // 计算积分
+    computedIntegral() {
+      const _integral = this.selectedVip
+        ? Math.floor(this.computedPrice / this.privilege.cost_unit) * this.privilege.integrals
+        : 0;
+      return this.selectedVip.integral + _integral;
     },
   },
   methods: {
@@ -124,7 +131,11 @@ export default {
       });
       //修改余额
       this.selectedVip &&
-        (await this.updateBalance({ balance: this.afterBalance, uuid: this.selectedVip.uuid }));
+        this.updateBalance({
+          balance: this.afterBalance,
+          integral: this.computedIntegral,
+          uuid: this.selectedVip.uuid,
+        });
       this.close();
     },
   },

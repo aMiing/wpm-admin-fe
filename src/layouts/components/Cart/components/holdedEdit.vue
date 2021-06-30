@@ -1,10 +1,5 @@
 <template>
-  <el-dialog
-    title="挂起订单列表"
-    :visible.sync="dialogFormVisible"
-    width="640px"
-    @close="close"
-  >
+  <el-dialog title="挂起订单列表" :visible.sync="dialogFormVisible" width="640px" @close="close">
     <div class="order-cache-card-content">
       <el-row :gutter="20">
         <template v-if="holdedList.length">
@@ -12,16 +7,8 @@
             <el-card class="box-card">
               <div slot="header" class="clearfix">
                 <span>{{ order.time | timeFilter }}</span>
-                <el-popconfirm
-                  title="确定删除吗？"
-                  @confirm="delOrderCache(order)"
-                >
-                  <el-button
-                    slot="reference"
-                    icon="el-icon-delete"
-                    circle
-                    size="mini"
-                  ></el-button>
+                <el-popconfirm title="确定删除吗？" @confirm="delOrderCache(order)">
+                  <el-button slot="reference" icon="el-icon-delete" circle size="mini"></el-button>
                 </el-popconfirm>
                 <el-popconfirm
                   v-if="getCartList.length"
@@ -46,12 +33,8 @@
                   @click="useThisCache(order)"
                 ></el-button>
               </div>
-              <div
-                v-for="item in order.list"
-                :key="item.uuid"
-                class="text item"
-              >
-                {{ item.name + "*" + item.saled }}
+              <div v-for="item in order.list" :key="item.uuid" class="text item">
+                {{ item.name + '*' + item.saled }}
               </div>
             </el-card>
           </el-col>
@@ -63,10 +46,7 @@
       </el-row>
     </div>
     <div slot="footer" class="dialog-footer">
-      <el-button
-        type="danger"
-        :disabled="!holdedList.length"
-        @click="handleClearAllList"
+      <el-button type="danger" :disabled="!holdedList.length" @click="handleClearAllList"
         >清空全部</el-button
       >
       <el-button @click="close">取 消</el-button>
@@ -75,34 +55,34 @@
 </template>
 
 <script>
-import { successCode } from "@/config";
-import { mapActions, mapGetters, mapMutations } from "vuex";
-
+import { successCode } from '@/config';
+import { mapActions, mapGetters, mapMutations } from 'vuex';
+import { formatTime } from '@/utils/index.js';
 export default {
-  name: "discountEdit",
+  name: 'discountEdit',
   filters: {
     timeFilter(NS) {
-      return new Date(NS).toLocaleString();
+      return formatTime(new Date(NS), '{yy}-{mm}-{dd} {hh}:{ii}:{ss}');
     },
   },
   data() {
     return {
       form: {
-        discount: "",
+        discount: '',
       },
-      mode: "add",
+      mode: 'add',
       dialogFormVisible: false,
       preValue: [100, 95, 90, 88, 85, 80, 75, 70, 68, 65, 60, 50],
     };
   },
   computed: {
     ...mapGetters({
-      allGoodsList: "goods/getGoodsList",
-      orderCache: "cart/getOrderCache",
-      getCartList: "cart/getCartList",
+      allGoodsList: 'goods/getGoodsList',
+      orderCache: 'cart/getOrderCache',
+      getCartList: 'cart/getCartList',
     }),
     holdedList() {
-      return this.orderCache.map((e) => {
+      return this.orderCache.map(e => {
         return {
           ...e,
           list: JSON.parse(e.list),
@@ -112,10 +92,10 @@ export default {
   },
   methods: {
     ...mapMutations({
-      setCartList: "cart/setCartList",
-      delOrderCache: "cart/delOrderCache",
-      clearAllList: "cart/clearAllCache",
-      clearCartlist: "cart/clearCartlist",
+      setCartList: 'cart/setCartList',
+      delOrderCache: 'cart/delOrderCache',
+      clearAllList: 'cart/clearAllCache',
+      clearCartlist: 'cart/clearCartlist',
     }),
     showEdit() {
       this.discount !== 1 && (this.form.discount = this.discount * 100);
@@ -136,15 +116,15 @@ export default {
     },
     // 清空全部
     handleClearAllList() {
-      this.$baseConfirm("清空后不可恢复，确定清空吗？", null, () => {
+      this.$baseConfirm('清空后不可恢复，确定清空吗？', null, () => {
         this.clearAllList();
         this.close();
       });
     },
     mergeCurrentGoodsInfo(list) {
       const myList = [];
-      list.forEach((item) => {
-        this.allGoodsList.forEach((e) => {
+      list.forEach(item => {
+        this.allGoodsList.forEach(e => {
           if (e.uuid === item.uuid) {
             e.saled = item.saled;
             myList.push(e);
