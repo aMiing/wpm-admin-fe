@@ -75,6 +75,6 @@ const setting = {
   //是否显示终端donation打印
   donation: true,
   // 资源地址
-  excelUrl: 'http://localhost:3000/',
+  excelUrl: '/',
 }
 module.exports = setting
