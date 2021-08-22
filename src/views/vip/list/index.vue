@@ -2,7 +2,7 @@
   <div class="table-container">
     <el-row>
       <el-col :xs="24" :sm="24" :md="14" :lg="14" :xl="14">
-        <el-button icon="el-icon-plus" type="primary" @click="handleAdd"> 添加 </el-button>
+        <el-button icon="el-icon-plus" type="primary" @click="handleAdd"> 新增 </el-button>
         <el-button icon="el-icon-delete" type="danger" @click="handleDelete"> 批量删除 </el-button>
       </el-col>
       <el-col :xs="24" :sm="24" :md="10" :lg="10" :xl="10">

@@ -66,16 +66,16 @@ export const asyncRoutes = [{
       name: 'index',
       component: () => import('@/views/index'),
       meta: {
-        title: '查看商品',
-        icon: 'table'
+        title: '商品列表',
+        icon: 'gift'
       },
     }, {
       path: 'stock',
       name: 'stock',
       component: () => import('@/views/stock/index'),
       meta: {
-        title: '库存记录',
-        icon: 'warehouse',
+        title: '库存管理',
+        icon: 'box',
       },
     }, {
       path: 'create',
@@ -94,7 +94,7 @@ export const asyncRoutes = [{
     redirect: 'noRedirect',
     meta: {
       title: '会员管理',
-      icon: 'user-check',
+      icon: 'crown',
     },
     children: [{
       path: 'list',

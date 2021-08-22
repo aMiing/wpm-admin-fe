@@ -22,7 +22,11 @@
     </div>
 
     <el-table ref="tableSort" :data="list" :height="height" @sort-change="tableSortChange">
-      <el-table-column show-overflow-tooltip label="订单编号" prop="uuid"> </el-table-column>
+      <el-table-column show-overflow-tooltip label="订单编号">
+        <template #default="{ row }">
+          <span>{{ row.orderId || row.uuid }}</span>
+        </template>
+      </el-table-column>
       <el-table-column show-overflow-tooltip prop="purchase" label="购买商品"></el-table-column>
 
       <el-table-column show-overflow-tooltip label="销售员" prop="salesperson"></el-table-column>
