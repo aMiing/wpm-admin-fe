@@ -62,11 +62,11 @@ export const asyncRoutes = [{
       icon: 'volleyball-ball',
     },
     children: [{
-      path: 'index',
-      name: 'index',
-      component: () => import('@/views/index'),
+      path: 'classification',
+      name: 'classification',
+      component: () => import('@/views/classification/classification'),
       meta: {
-        title: '商品列表',
+        title: '分类列表',
         icon: 'gift'
       },
     }, {

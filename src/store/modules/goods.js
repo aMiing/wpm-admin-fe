@@ -5,43 +5,37 @@
 import {
   getList
 } from '@/api/table'
-
 const state = () => ({
   allGoodsList: [],
-  currentGoodsList: [],
   total: 0,
-  allTypes: []
+  typeTotal:0,
+  allTypes: [],
+  currentGoodsList:[]
 })
 const getters = {
-  getGoodsList: (state) => state.allGoodsList,
+  getGoodsList: (state) => state.allGoodsList,//所有商品列表
+  getTotal: state => state.total,//商品总条数
+  getAllTypes: state => state.allTypes, //商品分类
   getFiltList: (state) => state.currentGoodsList,
-  getTotal: state => state.total,
-  getAllTypes: state => state.allTypes,
+  gettypeTotal:state => state.typeTotal, //分类总条数
 }
 
 const mutations = {
+  //修改商品列表
   setGoodsList(state, allGoodsList) {
-    state.allGoodsList = allGoodsList
+    state.allGoodsList = allGoodsList.data
+    state.total = allGoodsList.total
   },
-  setCurrenList(state, list) {
-    state.currentGoodsList = list
-  },
-  updateAllTypes(state) {
-    let typeList = []
-    state.allGoodsList.forEach(e => {
-      const labelArr = e.type ? String(e.type).trim().split(',') : ['未分类'];
-      typeList = e.type ? typeList.concat(labelArr) : labelArr.concat(typeList)
-    })
-    state.allTypes = [...new Set(typeList)].map(e => {
-      return {
-        label: e,
-        select: false
-      }
-    })
+  //修改分类列表
+  AllTypes(state,typeList) {
+    console.log(typeList)
+    state.allTypes = typeList.data
+    state.typeTotal = typeList.total
   },
   addGoodsItem(state, item) {
     let index = -1;
     state.allGoodsList.forEach((e, ind) => {
+      e.createTime = new Date();
       if (e.uuid === item.uuid) {
         index = ind
       }
@@ -90,23 +84,23 @@ const mutations = {
   }
 }
 const actions = {
+  //获取商品列表
   async setGoodsList({
     commit
-  }) {
+  },list) {
     // 请求数据
     const {
       data
-    } = await getList()
+    } = await getList(list)
     commit('setGoodsList', data)
-    commit('updateAllTypes')
   },
   addGoodsItem({
     commit
   }, list) {
     commit('addGoodsItem', list)
-    commit('getFiltData', {
-      title: ""
-    })
+    // commit('getFiltData', {
+    //   title: ""
+    // })
   },
   delGoodsList({
     commit
@@ -114,9 +108,9 @@ const actions = {
     list.uuid.split(',').forEach(e => {
       commit('delGoodsList', e)
     })
-    commit('getFiltData', {
-      title: ""
-    })
+    // commit('getFiltData', {
+    //   title: ""
+    // })
   },
 }
 

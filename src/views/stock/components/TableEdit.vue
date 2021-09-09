@@ -70,6 +70,7 @@ export default {
         uuid: '',
         unit: '',
       },
+      allTypes:[],
       rules: {
         name: [{ required: true, trigger: 'blur', message: '请输入名称' }],
         price: [{ required: true, trigger: 'blur', message: '请输入单价' }],
@@ -80,25 +81,13 @@ export default {
       showMore: false,
     };
   },
-  computed: {
-    ...mapGetters({
-      allTypes: 'goods/getAllTypes',
-    }),
-  },
   methods: {
-    ...mapMutations({
-      updateAllTypes: 'goods/updateAllTypes',
-    }),
-    ...mapActions({
-      addGoodsItem: 'goods/addGoodsItem',
-      getFiltData: 'goods/getFiltData',
-    }),
     showEdit(row) {
       if (!row) {
         this.mode = 'add';
       } else {
         this.mode = 'edit';
-        this.form = Object.assign({}, row, { type: row.type.split(',') });
+        this.form = row;
       }
       this.dialogFormVisible = true;
     },
@@ -115,12 +104,13 @@ export default {
             type: this.form.type.join(','),
           });
           const { msg, code, data } = await doEdit(parames, this.mode);
-          if (successCode.includes(code)) {
-            data.forEach(async e => {
-              await this.addGoodsItem(e);
-            });
+          console.log(code)
+          if (code == 200) {
+            this.$emit('fetchData')
+            // data.forEach(async e => {
+            //   await this.addGoodsItem(e);
+            // });
           }
-          this.updateAllTypes();
           this.$baseMessage(msg, 'success');
           this.dialogFormVisible = false;
           this.$refs['form'].resetFields();

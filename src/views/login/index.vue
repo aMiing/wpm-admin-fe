@@ -18,27 +18,13 @@
             <span class="svg-container svg-container-admin">
               <vab-icon :icon="['fas', 'user']" />
             </span>
-            <el-input
-              v-model.trim="form.username"
-              v-focus
-              placeholder="请输入用户名"
-              tabindex="1"
-              type="text"
-            />
+            <el-input v-model.trim="form.username" v-focus placeholder="请输入用户名" tabindex="1" type="text" />
           </el-form-item>
           <el-form-item prop="password">
             <span class="svg-container">
               <vab-icon :icon="['fas', 'lock']" />
             </span>
-            <el-input
-              :key="passwordType"
-              ref="password"
-              v-model.trim="form.password"
-              :type="passwordType"
-              tabindex="2"
-              placeholder="请输入密码"
-              @keyup.enter.native="handleLogin"
-            />
+            <el-input :key="passwordType" ref="password" v-model.trim="form.password" :type="passwordType" tabindex="2" placeholder="请输入密码" @keyup.enter.native="handleLogin" />
             <span v-if="passwordType === 'password'" class="show-password" @click="handlePassword">
               <vab-icon :icon="['fas', 'eye-slash']"></vab-icon>
             </span>
@@ -46,9 +32,7 @@
               <vab-icon :icon="['fas', 'eye']"></vab-icon>
             </span>
           </el-form-item>
-          <el-button :loading="loading" class="login-btn" type="primary" @click="handleLogin">
-            登录
-          </el-button>
+          <el-button :loading="loading" class="login-btn" type="primary" @click="handleLogin"> 登录 </el-button>
           <router-link to="/register">
             <div style="margin-top: 20px">注册</div>
           </router-link>
@@ -59,28 +43,28 @@
 </template>
 
 <script>
-import { isPassword } from '@/utils/validate';
+import { isPassword } from "@/utils/validate";
 
 export default {
-  name: 'Login',
+  name: "Login",
   directives: {
     focus: {
       inserted(el) {
-        el.querySelector('input').focus();
+        el.querySelector("input").focus();
       },
     },
   },
   data() {
     const validateusername = (rule, value, callback) => {
-      if ('' == value) {
-        callback(new Error('用户名不能为空'));
+      if ("" == value) {
+        callback(new Error("用户名不能为空"));
       } else {
         callback();
       }
     };
     const validatePassword = (rule, value, callback) => {
       if (!isPassword(value)) {
-        callback(new Error('密码不能少于6位'));
+        callback(new Error("密码不能少于6位"));
       } else {
         callback();
       }
@@ -89,70 +73,67 @@ export default {
       nodeEnv: process.env.NODE_ENV,
       title: this.$baseTitle,
       form: {
-        username: '',
-        password: '',
+        username: "",
+        password: "",
       },
       rules: {
         username: [
           {
             required: true,
-            trigger: 'blur',
+            trigger: "blur",
             validator: validateusername,
           },
         ],
         password: [
           {
             required: true,
-            trigger: 'blur',
+            trigger: "blur",
             validator: validatePassword,
           },
         ],
       },
       loading: false,
-      passwordType: 'password',
+      passwordType: "password",
       redirect: undefined,
     };
   },
   watch: {
     $route: {
       handler(route) {
-        this.redirect = (route.query && route.query.redirect) || '/';
+        this.redirect = (route.query && route.query.redirect) || "/";
       },
       immediate: true,
     },
   },
   created() {
-    document.body.style.overflow = 'hidden';
+    document.body.style.overflow = "hidden";
   },
   beforeDestroy() {
-    document.body.style.overflow = 'auto';
+    document.body.style.overflow = "auto";
   },
   mounted() {
-    this.form.username = 'admin';
-    this.form.password = '123456';
+    this.form.username = "admin";
+    this.form.password = "123456";
     // setTimeout(() => {
     //   this.handleLogin()
     // }, 3000)
   },
   methods: {
     handlePassword() {
-      this.passwordType === 'password'
-        ? (this.passwordType = '')
-        : (this.passwordType = 'password');
+      this.passwordType === "password" ? (this.passwordType = "") : (this.passwordType = "password");
       this.$nextTick(() => {
         this.$refs.password.focus();
       });
     },
     handleLogin() {
-      const origin = this.$route.query.origin || '';
-      this.$refs.form.validate(valid => {
+      const origin = this.$route.query.origin || "";
+      this.$refs.form.validate((valid) => {
         if (valid) {
           this.loading = true;
           this.$store
-            .dispatch('user/login', Object.assign(this.form, { from: origin }))
+            .dispatch("user/login", Object.assign(this.form, { from: origin }))
             .then(() => {
-              const routerPath =
-                this.redirect === '/404' || this.redirect === '/401' ? '/' : this.redirect;
+              const routerPath = this.redirect === "/404" || this.redirect === "/401" ? "/" : this.redirect;
               this.$router.push(routerPath).catch(() => {});
               this.loading = false;
             })
@@ -171,7 +152,7 @@ export default {
 <style lang="scss" scoped>
 .login-container {
   height: 100vh;
-  background: url('~@/assets/login_images/background.jpg') center center fixed no-repeat;
+  background: url("~@/assets/login_images/background.jpg") center center fixed no-repeat;
   background-size: cover;
 
   .title {

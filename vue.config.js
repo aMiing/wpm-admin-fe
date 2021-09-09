@@ -79,7 +79,7 @@ module.exports = {
           to: outputDir,
           ignore: ['.*']
         }])
-      ],
+      ]
     }
   },
   chainWebpack(config) {

@@ -5,12 +5,7 @@
         <vab-nav-bar mode="simple" />
       </div>
       <div class="top-menu">
-        <div
-          class="menu-content"
-          v-for="(item, index) in topMenuList"
-          :key="index"
-          @click="handleClickMenu(item)"
-        >
+        <div class="menu-content" v-for="(item, index) in topMenuList" :key="index" @click="handleClickMenu(item)">
           <vab-icon :icon="['fas', item.icon]"></vab-icon>
           <span class="menu-name"> {{ item.name }} </span>
         </div>
@@ -23,42 +18,19 @@
       </div>
       <div class="goods-content">
         <div class="tab-content">
-          <el-tabs v-model="activeName" type="card">
-            <el-tab-pane
-              :label="type.label"
-              :name="type.label"
-              v-for="(type, index) in allTypes"
-              :key="index"
-            >
+          <el-tabs v-model="activeName" type="card" @tab-click="add">
+            <el-tab-pane :label="type.name" :name="type.uuid" v-for="(type, index) in allTypes" :key="index">
               <div class="tab-pannel-content">
                 <el-row :gutter="20">
-                  <el-col
-                    :xs="24"
-                    :sm="24"
-                    :md="12"
-                    :lg="6"
-                    :xl="6"
-                    v-for="goods in list"
-                    :key="goods.uuid"
-                  >
+                  <el-col :xs="24" :sm="24" :md="12" :lg="6" :xl="6" v-for="goods in list" :key="goods.uuid">
                     <el-card shadow="hover" :body-style="{ padding: '0px' }">
-                      <div
-                        class="card-body"
-                        :class="(goods.online === 2 || goods.stock === 0) && 'disabled'"
-                        @click="addToCart(goods)"
-                      >
+                      <div class="card-body" :class="(goods.online === 2 || goods.stock === 0) && 'disabled'" @click="addToCart(goods)">
                         <h3 class="goods-name">
-                          {{ goods.name + (goods.online === 2 ? '（已下架）' : '') }}
+                          {{ goods.name + (goods.online === 2 ? "（已下架）" : "") }}
                         </h3>
                         <p class="goods-info-qrNumber">
                           <span>库存：{{ goods.stock }}</span>
-                          <el-input-number
-                            v-show="false"
-                            v-model="goods.saled"
-                            :min="0"
-                            :step="1"
-                            step-strictly
-                          ></el-input-number>
+                          <el-input-number v-show="false" v-model="goods.saled" :min="0" :step="1" step-strictly></el-input-number>
                         </p>
                         <div class="bottom floatRight">
                           <span class="price">￥{{ goods.price }}</span>
@@ -76,71 +48,71 @@
   </div>
 </template>
 <script>
-import { mapActions, mapGetters, mapMutations } from 'vuex';
-
+import { mapActions, mapGetters, mapMutations } from "vuex";
+import { getList } from "@/api/table";
+import { getTypeList } from "@/api/classification";
 export default {
   data() {
     return {
-      activeName: '',
+      allTypes: [],
+      list: [],
+      activeName: "",
       topMenuList: [
         {
-          name: '零售',
-          icon: 'store',
-          link: '',
+          name: "零售",
+          icon: "store",
+          link: "",
         },
         {
-          name: '新增会员',
-          icon: 'user-plus',
-          link: '/vip/list?operate=add',
+          name: "新增会员",
+          icon: "user-plus",
+          link: "/vip/list?operate=add",
         },
         {
-          name: '会员活动',
-          icon: 'id-card',
-          link: '/vip/privilege',
+          name: "会员活动",
+          icon: "id-card",
+          link: "/vip/privilege",
         },
         {
-          name: '销售查询',
-          icon: 'calendar-alt',
-          link: '/data/order',
+          name: "销售查询",
+          icon: "calendar-alt",
+          link: "/data/order",
         },
         {
-          name: '交接班',
-          icon: 'exchange-alt',
-          link: '',
+          name: "交接班",
+          icon: "exchange-alt",
+          link: "",
         },
         {
-          name: '创建商品',
-          icon: 'calendar-plus',
-          link: '/goods/create',
+          name: "创建商品",
+          icon: "calendar-plus",
+          link: "/goods/create",
         },
         {
-          name: '库存查询',
-          icon: 'truck',
-          link: '/goods/stock',
+          name: "库存查询",
+          icon: "truck",
+          link: "/goods/stock",
         },
         {
-          name: '更多功能',
-          icon: 'th-large',
-          link: '/goods/index',
+          name: "更多功能",
+          icon: "th-large",
+          link: "/goods/index",
         },
         {
-          name: '后台管理',
-          icon: 'tv',
-          link: '/data/analyse',
+          name: "后台管理",
+          icon: "tv",
+          link: "/data/analyse",
         },
         {
-          name: '系统设置',
-          icon: 'cog',
-          link: '/management/systemInfo',
+          name: "系统设置",
+          icon: "cog",
+          link: "/management/systemInfo",
         },
       ],
     };
   },
-  computed: {
-    ...mapGetters({
-      allTypes: 'goods/getAllTypes',
-      list: 'goods/getFiltList',
-    }),
+  async created() {
+    await this.fetchData();
   },
   watch: {
     activeName(val) {
@@ -150,17 +122,11 @@ export default {
       val && this.getFiltData(params);
     },
   },
-  async created() {
-    await this.fetchData();
-  },
   methods: {
     ...mapMutations({
-      clearCartlist: 'cart/clearCartlist',
-      getFiltData: 'goods/getFiltData',
-      addCartItem: 'cart/addCartItem',
-    }),
-    ...mapActions({
-      setGoodsList: 'goods/setGoodsList',
+      clearCartlist: "cart/clearCartlist",
+      addCartItem: "cart/addCartItem",
+      getFiltData: "goods/getFiltData",
     }),
     handleClickMenu(item) {
       if (item.link) {
@@ -171,21 +137,32 @@ export default {
     },
     async fetchData() {
       const Loading = this.$baseColorfullLoading(1);
-      await this.setGoodsList();
+      await getTypeList().then((res) => {
+        if (res.code == 200) {
+          this.allTypes = res.data.data;
+        }
+      });
       Loading.close();
+    },
+    //分类点击，通过分类id去查找对应的商品
+    add(e) {
+      getList({ type: e.name }).then((res) => {
+        this.list = res.data.data;
+      });
     },
     addToCart(row) {
       if (row.online === 2) {
-        this.$baseMessage('下架商品不可销售哦！', 'info');
+        this.$baseMessage("下架商品不可销售哦！", "info");
         return false;
       }
       if (row.stock === 0) {
-        this.$baseMessage('库存不足了哦！', 'error');
+        this.$baseMessage("库存不足了哦！", "error");
         return false;
       }
       row.stock -= 1;
       row.saled = !row.saled ? 1 : Number(row.saled) + 1;
       this.addCartItem(row);
+      console.log(this.$store.state.goods.currentGoodsList)
     },
   },
 };
