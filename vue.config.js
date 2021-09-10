@@ -2,10 +2,7 @@
  * @author amingxiansen 1006934861@qq.com
  * @description cli配置
  */
-
 const path = require('path')
-
-
 
 const {
   publicPath,
@@ -14,10 +11,8 @@ const {
   lintOnSave,
   transpileDependencies,
   title,
-  abbreviation,
   devPort,
   providePlugin,
-  build7z,
 } = require('./src/config')
 
 const {
@@ -25,7 +20,6 @@ const {
   author
 } = require('./package.json')
 const Webpack = require('webpack')
-const FileManagerPlugin = require('filemanager-webpack-plugin')
 const CopyPlugin = require("copy-webpack-plugin");
 const dayjs = require('dayjs')
 const date = dayjs().format('YYYY_M_D')
@@ -65,6 +59,9 @@ module.exports = {
       },
       'customer-upload/': {
         target: 'http://localhost:3000',
+      },
+      '/example.xlsx': {
+        target: 'http://localhost:3000',
       }
     }
   },
@@ -82,7 +79,7 @@ module.exports = {
           to: outputDir,
           ignore: ['.*']
         }])
-      ],
+      ]
     }
   },
   chainWebpack(config) {
@@ -155,34 +152,8 @@ module.exports = {
           },
         },
       })
-
-      config.module
-        .rule('images')
-        .use('image-webpack-loader')
-        .loader('image-webpack-loader')
-        .options({
-          bypassOnDebug: true,
-        })
-        .end()
     })
 
-    // if (build7z) {
-    //   const zip_dir = __dirname.slice(0, -12)
-    //   config.when(process.env.NODE_ENV === 'production', (config) => {
-    //     config
-    //       .plugin('fileManager')
-    //       .use(FileManagerPlugin, [{
-    //         onEnd: {
-    //           delete: [`./${outputDir}/video`, `./${outputDir}/data`],
-    //           archive: [{
-    //             source: `./${outputDir}`,
-    //             destination: zip_dir + `wpm-fe-zip/${abbreviation}_${outputDir}_${date}.7z`,
-    //           }, ],
-    //         },
-    //       }, ])
-    //       .end()
-    //   })
-    // }
   },
   runtimeCompiler: true,
   productionSourceMap: false,

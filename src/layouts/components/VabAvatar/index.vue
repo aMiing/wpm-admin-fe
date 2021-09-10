@@ -2,7 +2,7 @@
   <el-dropdown @command="handleCommand">
     <span class="avatar-dropdown">
       <!--<el-avatar class="user-avatar" :src="avatar"></el-avatar>-->
-      <img class="user-avatar" :src="avatar" alt="" />
+      <img class="user-avatar" :src="avatar" alt="" v-if="mode !== 'simple'" />
       <div class="user-name">
         {{ username }}
         <i class="el-icon-arrow-down el-icon--right"></i>
@@ -22,6 +22,13 @@ import { recordRoute } from "@/config";
 
 export default {
   name: "VabAvatar",
+
+  props: {
+    mode: {
+      type: String,
+      default: "", //’‘||simple
+    },
+  },
   computed: {
     ...mapGetters({
       avatar: "user/avatar",

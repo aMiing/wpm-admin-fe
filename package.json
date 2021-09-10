@@ -66,6 +66,7 @@
     "vue-router": "^3.5.1",
     "vuex": "^3.6.2",
     "webpack": "^4.5.0",
+    "xlsx": "^0.17.0",
     "zx-count": "^0.3.7",
     "zx-layouts": "^0.6.25",
     "zx-magnifie": "^0.4.0",
@@ -84,7 +85,7 @@
     "body-parser": "^1.19.0",
     "chalk": "^4.1.1",
     "chokidar": "^3.5.1",
-    "eslint": "^7.27.0",
+    "eslint": "^7.32.0",
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-plugin-import": "^2.23.3",
     "eslint-plugin-prettier": "^3.4.0",
@@ -92,12 +93,12 @@
     "filemanager-webpack-plugin": "^2.0.5",
     "image-webpack-loader": "^7.0.1",
     "lint-staged": "^11.0.0",
+    "node-sass": "^4.13.0",
     "plop": "^2.7.4",
     "prettier": "^2.3.0",
     "pug": "^3.0.2",
     "pug-html-loader": "^1.1.5",
     "pug-plain-loader": "^1.1.0",
-    "node-sass": "^4.13.0",
     "sass-loader": "^10.1.1",
     "stylelint": "^13.13.1",
     "stylelint-config-prettier": "^8.0.2",
@@ -120,5 +121,8 @@
   "engines": {
     "node": ">=8.9",
     "npm": ">= 3.0.0"
-  }
+  },
+  "description": "<div align=\"center\"><img width=\"200\" src=\"https://gitee.com/amingxiansen/images/raw/master/logos/logo-common.png\"/> <h1> wpm（商品后台管理系统） </h1> </div>",
+  "main": "babel.config.js",
+  "license": "ISC"
 }

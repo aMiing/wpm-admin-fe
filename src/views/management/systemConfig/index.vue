@@ -7,32 +7,13 @@
       <el-row>
         <el-col :xs="24" :sm="24" :md="12" :lg="8" :xl="8">
           <div class="system-form-content">
-            <el-form
-              :model="ruleForm"
-              :rules="rules"
-              ref="ruleForm"
-              label-width="90px"
-            >
+            <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="90px">
               <el-form-item label="系统名称" prop="sys_name">
-                <el-input
-                  v-model="ruleForm.sys_name"
-                  placeholder="请输入系统名称（2-8个字符）"
-                ></el-input>
+                <el-input v-model="ruleForm.sys_name" placeholder="请输入系统名称（2-12个字符）"></el-input>
               </el-form-item>
               <el-form-item label="图标" prop="imageUrl">
-                <el-upload
-                  ref="logoUpload"
-                  class="avatar-uploader"
-                  action="/api/upload/uploadImg"
-                  :show-file-list="false"
-                  :on-success="handleAvatarSuccess"
-                  :before-upload="beforeAvatarUpload"
-                >
-                  <img
-                    v-if="ruleForm.sys_logo"
-                    :src="ruleForm.sys_logo"
-                    class="avatar"
-                  />
+                <el-upload ref="logoUpload" class="avatar-uploader" action="/api/upload/uploadImg" :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
+                  <img v-if="ruleForm.sys_logo" :src="ruleForm.sys_logo" class="avatar" />
                   <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                 </el-upload>
               </el-form-item>
@@ -42,17 +23,10 @@
                   <el-radio-button label="green">绿荫草场</el-radio-button>
                   <el-radio-button label="glory">荣耀典藏</el-radio-button>
                 </el-radio-group>
-                <el-button
-                  class="theme-color-preview"
-                  type="text"
-                  @click="previewTheme"
-                  >预览</el-button
-                >
+                <el-button class="theme-color-preview" type="text" @click="previewTheme">预览</el-button>
               </el-form-item>
               <el-form-item>
-                <el-button type="primary" @click="submitForm('ruleForm')"
-                  >更新</el-button
-                >
+                <el-button type="primary" @click="submitForm('ruleForm')">更新</el-button>
                 <el-button @click="resetForm('ruleForm')">重置</el-button>
               </el-form-item>
             </el-form>
@@ -83,7 +57,7 @@ export default {
             message: "请输入系统名称或点击重置恢复默认",
             trigger: "blur",
           },
-          { min: 2, max: 8, message: "长度在 2 到 8 个字符", trigger: "blur" },
+          { min: 2, max: 12, message: "长度在 2 到 12 个字符", trigger: "blur" },
         ],
       },
       loadFileName: "", //服务端返回的文件名
@@ -131,12 +105,7 @@ export default {
       this.ruleForm.sys_logo = URL.createObjectURL(file.raw);
     },
     beforeAvatarUpload(file) {
-      const isImage = [
-        "image/jpeg",
-        "image/jpg",
-        "image/png",
-        "image/gif",
-      ].includes(file.type);
+      const isImage = ["image/jpeg", "image/jpg", "image/png", "image/gif"].includes(file.type);
       const isLt2M = file.size / 1024 / 1024 < 2;
 
       if (!isImage) {
@@ -148,9 +117,7 @@ export default {
       return isImage && isLt2M;
     },
     previewTheme() {
-      document.getElementsByTagName(
-        "body"
-      )[0].className = `vue-admin-theme-${this.ruleForm.theme_name}`;
+      document.getElementsByTagName("body")[0].className = `vue-admin-theme-${this.ruleForm.theme_name}`;
     },
   },
 };

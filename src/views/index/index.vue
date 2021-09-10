@@ -1,66 +1,34 @@
 <template>
   <div class="table-container">
-    <vab-query-form>
-      <el-form
-        ref="form"
-        :model="queryForm"
-        :inline="true"
-        @submit.native.prevent
-        size="medium"
-      >
-        <el-form-item>
-          <el-input
-            v-model="queryForm.title"
-            placeholder="输入名称或编号搜索"
-            clearable
-            @clear="clearSearchKey"
-          />
-        </el-form-item>
-        <el-form-item>
-          <el-button
-            icon="el-icon-search"
-            type="primary"
-            native-type="submit"
-            @click="handleQuery"
-          >
-            查询
-          </el-button>
-        </el-form-item>
-      </el-form>
-    </vab-query-form>
+    <el-row>
+      <el-col :xs="24" :sm="24" :md="14" :lg="14" :xl="14">
+        <el-button icon="el-icon-plus" type="primary" @click="handleAdd"> 新建 </el-button>
+        <el-button icon="el-icon-delete" type="danger" @click="handleDelete"> 删除 </el-button>
+      </el-col>
+      <el-col :xs="24" :sm="24" :md="10" :lg="10" :xl="10">
+        <div class="right-panel">
+          <el-form ref="form" :model="queryForm" :inline="true" @submit.native.prevent>
+            <el-form-item>
+              <el-input v-model="queryForm.title" placeholder="输入名称或编号搜索" clearable @clear="clearSearchKey" />
+            </el-form-item>
+            <el-form-item>
+              <el-button icon="el-icon-search" type="primary" native-type="submit" @click="handleQuery"> 查询 </el-button>
+            </el-form-item>
+          </el-form>
+        </div>
+      </el-col>
+    </el-row>
     <div class="checkbox-content type-select">
       <span>按类型筛选：</span>
-      <el-checkbox
-        v-for="(type, index) in queryForm.filtType"
-        :key="index"
-        :label="type.label"
-        v-model="type.select"
-        border
-      ></el-checkbox>
-      <el-button class="select-all" type="text" @click="selectAllTypes"
-        >反选</el-button
-      >
+      <el-select v-model="value" placeholder="请选择">
+        <el-option v-for="(type, index) in queryForm.filtType" :key="index" :label="type.label"> </el-option>
+      </el-select>
     </div>
 
-    <el-table
-      ref="tableSort"
-      :data="list"
-      :height="height"
-      @selection-change="setSelectRows"
-      @sort-change="tableSortChange"
-    >
-      <el-table-column
-        show-overflow-tooltip
-        label="编号"
-        prop="uuid"
-        width="240"
-      >
-      </el-table-column>
-      <el-table-column
-        show-overflow-tooltip
-        prop="name"
-        label="名称"
-      ></el-table-column>
+    <el-table ref="tableSort" :data="fillList" :height="height" @selection-change="setSelectRows" @sort-change="tableSortChange">
+      <el-table-column show-overflow-tooltip type="selection" width="55"></el-table-column>
+      <el-table-column show-overflow-tooltip label="编号/条码" prop="uuid"> </el-table-column>
+      <el-table-column show-overflow-tooltip prop="name" label="名称"></el-table-column>
       <!-- <el-table-column show-overflow-tooltip label="图片">
         <template #default="{ row }">
           <el-image
@@ -70,61 +38,52 @@
           ></el-image>
         </template>
       </el-table-column> -->
-
-      <el-table-column
-        show-overflow-tooltip
-        prop="price"
-        label="单价"
-      ></el-table-column>
-      <el-table-column
-        show-overflow-tooltip
-        label="库存"
-        prop="stock"
-        sortable
-      ></el-table-column>
-
-      <el-table-column
-        show-overflow-tooltip
-        label="生产商"
-        prop="author"
-      ></el-table-column>
-      <el-table-column
-        show-overflow-tooltip
-        label="所属类别"
-        prop="type"
-        sortable
-        sort-by="type"
-      ></el-table-column>
-      <el-table-column label="加入购物车" width="160px">
+      <el-table-column show-overflow-tooltip prop="price" label="单价" sortable sort-by="price"></el-table-column>
+      <el-table-column show-overflow-tooltip label="库存" sortable sort-by="stock">
         <template #default="{ row }">
-          <el-input-number
-            v-model="row.saled"
-            :min="0"
-            :max="row.stock"
-            :step="1"
-            step-strictly
-            @change="addedChange(row)"
-          ></el-input-number>
+          {{ row.stock + " " + (row.unit || "") }}
+        </template>
+      </el-table-column>
+      <!-- <el-table-column show-overflow-tooltip label="状态">
+        <template #default="{ row }">
+          <el-tag :type="row.online | statusFilter">
+            {{ handleStatusText(row.online) }}
+          </el-tag>
+        </template>
+      </el-table-column> -->
+      <el-table-column show-overflow-tooltip label="生产商" prop="author"></el-table-column>
+      <el-table-column show-overflow-tooltip label="所属类别" prop="type"></el-table-column>
+      <el-table-column show-overflow-tooltip label="操作" min-width="150px">
+        <template #default="{ row }">
+          <el-button type="text" @click="handleEdit(row)">编辑</el-button>
+          <el-button type="text" @click="handleOffOrOn(row)">{{ row.online === 1 ? "下架" : "上架" }}</el-button>
+          <el-button type="text" @click="handleDelete(row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
-    <el-pagination
-      :background="background"
-      :current-page="queryForm.pageNo"
-      :layout="layout"
-      :page-size="queryForm.pageSize"
-      :total="total"
-      @current-change="handleCurrentChange"
-      @size-change="handleSizeChange"
-    ></el-pagination>
+    <el-pagination :background="background" :current-page="queryForm.pageNo" :layout="layout" :page-size="queryForm.pageSize" :total="queryForm.total" @current-change="handleCurrentChange" @size-change="handleSizeChange"></el-pagination>
+    <!-- <table-edit ref="edit"></table-edit> -->
   </div>
 </template>
 
 <script>
 import { mapActions, mapGetters, mapMutations } from "vuex";
+import { getList } from "@/api/table";
+// import TableEdit from "./components/TableEdit";
+import { formatTime } from '@/utils/index.js';
 export default {
   name: "Index",
-  filters: {},
+  // components: {
+  //   TableEdit,
+  // },
+  filters: {
+    statusFilter(status) {
+      return status === 1 ? "success" : "info";
+    },
+    timeFilter(NS) {
+      return NS ? formatTime(new Date(NS), "{yy}-{mm}-{dd} {hh}:{ii}:{ss}") : "--";
+    },
+  },
   data() {
     return {
       imgShow: true,
@@ -134,63 +93,26 @@ export default {
       background: true,
       selectRows: "",
       elementLoadingText: "正在加载...",
+      fillList: [],
+      value: "",
       queryForm: {
         pageNo: 1,
         pageSize: 20,
+        total: 100,
         title: "",
-        filtType: [
-          { label: "化妆品", select: true },
-          { label: "电子产品", select: true },
-        ],
+        filtType: [],
       },
     };
   },
   computed: {
-    ...mapGetters({
-      // allGoodsList: "goods/getGoodsList",
-      list: "goods/getFiltList",
-      total: "goods/getTotal",
-      allTypes: "goods/getAllTypes",
-      cartList: "cart/getCartList",
-    }),
     height() {
       return this.$baseTableHeight();
     },
   },
-  watch: {
-    allTypes(val) {
-      this.queryForm.filtType = val;
-    },
-    queryForm: {
-      handler(val) {
-        this.getFiltData(val);
-        this.mergeCartList();
-      },
-      deep: true,
-    },
-  },
   async created() {
     await this.fetchData();
-    this.mergeCartList();
   },
   methods: {
-    ...mapMutations({
-      addCartItem: "cart/addCartItem",
-      delCartItem: "cart/delCartItem",
-      getFiltData: "goods/getFiltData",
-      setCurrenList: "goods/setCurrenList",
-    }),
-    ...mapActions({
-      setGoodsList: "goods/setGoodsList",
-    }),
-
-    mergeCartList() {
-      const list = this.list.map((e) => {
-        const saled = this.cartList?.find((i) => e.uuid === i.uuid)?.saled || 0;
-        return { ...e, saled };
-      });
-      this.setCurrenList(list);
-    },
     addedChange(row) {
       Number(row.saled) > 0 ? this.addCartItem(row) : this.delCartItem(row);
     },
@@ -213,21 +135,30 @@ export default {
     handleEdit(row) {
       this.$refs["edit"].showEdit(row);
     },
-
+    handleStatusText(state) {
+      return state === 1 ? "在售" : "下架";
+    },
     handleSizeChange(val) {
       this.queryForm.pageSize = val;
+      this.fetchData();
     },
     handleCurrentChange(val) {
       this.queryForm.pageNo = val;
+      this.fetchData();
     },
     handleQuery() {
       this.queryForm.pageNo = 1;
+      this.fetchData();
     },
     async fetchData() {
       const Loading = this.$baseColorfullLoading(1);
-      await this.setGoodsList();
+      //获取商品列表数据
+      await getList({ pageSize: this.queryForm.pageSize, pageNo: this.queryForm.pageNo }).then((res) => {
+        this.fillList = res.data.data;
+        this.queryForm.total = res.data.total;
+      });
       const imageList = [];
-      this.list.forEach((item) => {
+      this.fillList.forEach((item) => {
         imageList.push(item.img);
       });
       this.imageList = imageList;
