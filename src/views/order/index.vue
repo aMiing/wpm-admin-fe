@@ -1,13 +1,7 @@
 <template>
   <div class="table-container">
     <vab-query-form>
-      <el-form
-        ref="form"
-        :model="queryForm"
-        :inline="true"
-        @submit.native.prevent
-        size="medium"
-      >
+      <el-form ref="form" :model="queryForm" :inline="true" @submit.native.prevent size="medium">
         <el-form-item>
           <el-input
             v-model="queryForm.title"
@@ -17,12 +11,7 @@
           />
         </el-form-item>
         <el-form-item>
-          <el-button
-            icon="el-icon-search"
-            type="primary"
-            native-type="submit"
-            @click="handleQuery"
-          >
+          <el-button icon="el-icon-search" type="primary" native-type="submit" @click="handleQuery">
             查询
           </el-button>
         </el-form-item>
@@ -32,44 +21,64 @@
       <select-date @setDateEmit="setDateEmit" />
     </div>
 
-    <el-table
-      ref="tableSort"
-      :data="list"
-      :height="height"
-      @sort-change="tableSortChange"
-    >
-      <el-table-column show-overflow-tooltip label="订单编号" prop="uuid">
+    <el-table ref="tableSort" :data="list" :height="height" @sort-change="tableSortChange">
+      <el-table-column show-overflow-tooltip label="订单编号">
+        <template #default="{ row }">
+          <span>{{ row.orderId || row.uuid }}</span>
+        </template>
       </el-table-column>
-      <el-table-column
-        show-overflow-tooltip
-        prop="purchase"
-        label="购买商品"
-      ></el-table-column>
+      <el-table-column show-overflow-tooltip prop="purchase" label="购买商品"></el-table-column>
+
+      <el-table-column show-overflow-tooltip label="销售员" prop="salesperson"></el-table-column>
 
       <el-table-column
         show-overflow-tooltip
-        label="销售员"
-        prop="salesperson"
-      ></el-table-column>
-
-      <el-table-column
-        show-overflow-tooltip
-        prop="allPayPrice"
-        label="订单金额"
-        sortable
-        sort-by="allPayPrice"
+        prop="originPayPrice"
+        label="订单总价(元)"
+        sort-by="originPayPrice"
       >
       </el-table-column>
 
-      <el-table-column show-overflow-tooltip label="订单状态">
+      <el-table-column show-overflow-tooltip prop="discount" label="折扣" min-width="40">
+      </el-table-column>
+
+      <el-table-column
+        show-overflow-tooltip
+        prop="realPayPrice"
+        label="折扣后总价(元)"
+        sort-by="realPayPrice"
+      >
+      </el-table-column>
+
+      <el-table-column show-overflow-tooltip label="支付方式">
+        <template #default="{ row }">
+          <span :class="row.payMethod">{{ row.payMethod | payMethodFilter }}</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column show-overflow-tooltip label="会员PN">
+        <template #default="{ row }">
+          <span>{{ row.PN || '--' }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column show-overflow-tooltip label="余额支付(元)">
+        <template #default="{ row }">
+          <span>{{ row.balancePay || '--' }}</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column show-overflow-tooltip prop="surplusPayment" label="当场支付(元)">
+      </el-table-column>
+
+      <!-- <el-table-column show-overflow-tooltip label="订单状态">
         <template #default="{ row }">
           <el-tag :type="row.state | statusFilter">
             {{ row.state | statusTextFilter }}
           </el-tag>
         </template>
-      </el-table-column>
+      </el-table-column> -->
 
-      <el-table-column show-overflow-tooltip label="订单生成时间">
+      <el-table-column show-overflow-tooltip label="订单生成时间" min-width="125">
         <template #default="{ row }">
           <span>{{ row.createTime | timeFilter }}</span>
         </template>
@@ -88,23 +97,30 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapMutations } from "vuex";
-// import { getList } from "@/api/order";
-import SelectDate from "@/components/SelectDate";
+import { mapActions, mapGetters, mapMutations } from 'vuex';
+import SelectDate from '@/components/SelectDate';
+import { formatTime } from '@/utils/index.js';
 export default {
-  name: "Order", //销售订单列表
+  name: 'Order', //销售订单列表
   components: {
     SelectDate,
   },
   filters: {
     statusFilter(status) {
-      return status === 1 ? "success" : "info";
+      return status === 1 ? 'success' : 'info';
     },
     statusTextFilter(status) {
-      return status === 1 ? "有效" : "无效";
+      return status === 1 ? '有效' : '无效';
     },
     timeFilter(NS) {
-      return new Date(NS).toLocaleString();
+      return formatTime(new Date(NS), '{yy}-{mm}-{dd} {hh}:{ii}:{ss}');
+    },
+    payMethodFilter(method) {
+      const payMethodMap = {
+        'balance-pay': '余额',
+        'integral-pay': '积分抵扣',
+      };
+      return payMethodMap[method] || '立即支付';
     },
   },
   data() {
@@ -112,24 +128,24 @@ export default {
       imgShow: true,
       imageList: [],
       listLoading: true,
-      layout: "total, sizes, prev, pager, next, jumper",
+      layout: 'total, sizes, prev, pager, next, jumper',
       background: true,
-      selectRows: "",
-      elementLoadingText: "正在加载...",
+      selectRows: '',
+      elementLoadingText: '正在加载...',
       queryForm: {
         pageNo: 1,
         pageSize: 20,
-        title: "",
+        title: '',
         filtType: [],
       },
-      initStartDate: "",
-      initSelectRadio: "今天",
+      initStartDate: '',
+      initSelectRadio: '今天',
     };
   },
   computed: {
     ...mapGetters({
-      list: "order/getFiltList",
-      total: "order/getTotal",
+      list: 'order/getFiltList',
+      total: 'order/getTotal',
     }),
     height() {
       return this.$baseTableHeight();
@@ -148,41 +164,12 @@ export default {
   },
   methods: {
     ...mapMutations({
-      getFiltData: "order/getFiltData",
-      setCurrenList: "order/setCurrenList",
+      getFiltData: 'order/getFiltData',
+      setCurrenList: 'order/setCurrenList',
     }),
     ...mapActions({
-      setOrderList: "order/setOrderList",
+      setOrderList: 'order/setOrderList',
     }),
-    // radioSelectChange(label) {
-    //   // 选中日期变化，更新数据
-    //   const today = new Date().toLocaleDateString();
-    //   const Now = new Date().getTime();
-    //   const Zero = new Date(today).getTime();
-    //   const oneDay = 1000 * 3600 * 24;
-    //   let timeRange = [];
-    //   switch (label) {
-    //     case "今天":
-    //       timeRange = [Zero, Now];
-    //       break;
-    //     case "昨天":
-    //       timeRange = [Zero - oneDay, Zero];
-    //       break;
-    //     case "近一周":
-    //       timeRange = [Now - 7 * oneDay, Now];
-    //       break;
-    //     case "近30天":
-    //       timeRange = [Now - 30 * oneDay, Now];
-    //       break;
-    //     case "近90天":
-    //       timeRange = [Now - 90 * oneDay, Now];
-    //       break;
-    //     default:
-    //       timeRange = [Zero, Now];
-    //       break;
-    //   }
-    //   this.pickerDateChange(timeRange);
-    // },
     async setDateEmit(dates) {
       this.setOrderList(dates);
     },
@@ -194,7 +181,7 @@ export default {
     },
     tableSortChange() {
       const imageList = [];
-      this.$refs.tableSort.tableData.forEach((item) => {
+      this.$refs.tableSort.tableData.forEach(item => {
         imageList.push(item.img);
       });
       this.imageList = imageList;
@@ -218,4 +205,12 @@ export default {
   },
 };
 </script>
+<style lang="scss" scoped>
+.balance-pay {
+  color: #67c23a;
+}
+.integral-pay {
+  color: #f56c6c;
+}
+</style>
 

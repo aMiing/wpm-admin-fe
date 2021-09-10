@@ -10,18 +10,19 @@ const state = () => ({
   orderList: [],
   currentOrderList: [],
   total: 0,
-  // lastWeekOrder: [],
-  // lastThirtyDayOrder: [],
-  // lastNinetyDayOrder: [],
+  queue: 0, //排队号，本地记录
 })
 const getters = {
   getOrderList: (state) => state.orderList,
   getFiltList: (state) => state.currentOrderList,
   getTotal: state => state.total,
-  // getAllTypes: state => state.allTypes,
+  getQueue: state => state.queue,
 }
 
 const mutations = {
+  setQueue(state) {
+    state.queue++;
+  },
   setOrderList(state, orderList) {
     state.orderList = orderList
   },
@@ -39,7 +40,7 @@ const mutations = {
       title = '', pageNo = 1, pageSize = 20
     } = config
     let mockList = title ? state.orderList.filter((item) => {
-      return ~(item.name + item.uuid).indexOf(title)
+      return ~(item.name + item.orderId).indexOf(title)
     }) : state.orderList;
     const pageList = mockList.filter((item, index) =>
       index < pageSize * pageNo && index >= pageSize * (pageNo - 1)

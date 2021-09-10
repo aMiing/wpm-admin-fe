@@ -11,59 +11,28 @@
         <div style="color: transparent">占位符</div>
       </el-col>
       <el-col :xs="24" :sm="24" :md="12" :lg="8" :xl="8">
-        <el-form
-          ref="form"
-          :model="form"
-          :rules="rules"
-          class="login-form"
-          label-position="left"
-        >
+        <el-form ref="form" :model="form" :rules="rules" class="login-form" label-position="left">
           <div class="title">hello !</div>
           <div class="title-tips">欢迎来到{{ title }}！</div>
           <el-form-item style="margin-top: 40px" prop="username">
             <span class="svg-container svg-container-admin">
               <vab-icon :icon="['fas', 'user']" />
             </span>
-            <el-input
-              v-model.trim="form.username"
-              v-focus
-              placeholder="请输入用户名"
-              tabindex="1"
-              type="text"
-            />
+            <el-input v-model.trim="form.username" v-focus placeholder="请输入用户名" tabindex="1" type="text" />
           </el-form-item>
           <el-form-item prop="password">
             <span class="svg-container">
               <vab-icon :icon="['fas', 'lock']" />
             </span>
-            <el-input
-              :key="passwordType"
-              ref="password"
-              v-model.trim="form.password"
-              :type="passwordType"
-              tabindex="2"
-              placeholder="请输入密码"
-              @keyup.enter.native="handleLogin"
-            />
-            <span
-              v-if="passwordType === 'password'"
-              class="show-password"
-              @click="handlePassword"
-            >
+            <el-input :key="passwordType" ref="password" v-model.trim="form.password" :type="passwordType" tabindex="2" placeholder="请输入密码" @keyup.enter.native="handleLogin" />
+            <span v-if="passwordType === 'password'" class="show-password" @click="handlePassword">
               <vab-icon :icon="['fas', 'eye-slash']"></vab-icon>
             </span>
             <span v-else class="show-password" @click="handlePassword">
               <vab-icon :icon="['fas', 'eye']"></vab-icon>
             </span>
           </el-form-item>
-          <el-button
-            :loading="loading"
-            class="login-btn"
-            type="primary"
-            @click="handleLogin"
-          >
-            登录
-          </el-button>
+          <el-button :loading="loading" class="login-btn" type="primary" @click="handleLogin"> 登录 </el-button>
           <router-link to="/register">
             <div style="margin-top: 20px">注册</div>
           </router-link>
@@ -151,24 +120,20 @@ export default {
   },
   methods: {
     handlePassword() {
-      this.passwordType === "password"
-        ? (this.passwordType = "")
-        : (this.passwordType = "password");
+      this.passwordType === "password" ? (this.passwordType = "") : (this.passwordType = "password");
       this.$nextTick(() => {
         this.$refs.password.focus();
       });
     },
     handleLogin() {
+      const origin = this.$route.query.origin || "";
       this.$refs.form.validate((valid) => {
         if (valid) {
           this.loading = true;
           this.$store
-            .dispatch("user/login", this.form)
+            .dispatch("user/login", Object.assign(this.form, { from: origin }))
             .then(() => {
-              const routerPath =
-                this.redirect === "/404" || this.redirect === "/401"
-                  ? "/"
-                  : this.redirect;
+              const routerPath = this.redirect === "/404" || this.redirect === "/401" ? "/" : this.redirect;
               this.$router.push(routerPath).catch(() => {});
               this.loading = false;
             })
@@ -187,8 +152,7 @@ export default {
 <style lang="scss" scoped>
 .login-container {
   height: 100vh;
-  background: url("~@/assets/login_images/background.jpg") center center fixed
-    no-repeat;
+  background: url("~@/assets/login_images/background.jpg") center center fixed no-repeat;
   background-size: cover;
 
   .title {

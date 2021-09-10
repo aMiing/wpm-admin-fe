@@ -154,6 +154,9 @@ export default {
   z-index: $base-z-index - 2;
   width: 100%;
   overflow: hidden;
+  .vab-main {
+    width: 98%;
+  }
 }
 
 .wpm-admin-wrapper {
@@ -174,7 +177,7 @@ export default {
 
     ::v-deep {
       .vab-main {
-        width: 88%;
+        width: 100%;
         margin: auto;
       }
 
@@ -195,8 +198,8 @@ export default {
 
       .main-padding {
         .app-main-container {
-          margin-top: $base-padding;
-          margin-bottom: $base-padding;
+          // margin-top: $base-padding;
+          // margin-bottom: $base-padding;
           background: $base-color-white;
         }
       }

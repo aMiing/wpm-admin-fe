@@ -102,12 +102,12 @@ export function paramObj(url) {
   }
   return JSON.parse(
     '{"' +
-      decodeURIComponent(search)
-        .replace(/"/g, '\\"')
-        .replace(/&/g, '","')
-        .replace(/=/g, '":"')
-        .replace(/\+/g, ' ') +
-      '"}'
+    decodeURIComponent(search)
+    .replace(/"/g, '\\"')
+    .replace(/&/g, '","')
+    .replace(/=/g, '":"')
+    .replace(/\+/g, ' ') +
+    '"}'
   )
 }
 
@@ -131,9 +131,9 @@ export function translateDataToTree(data) {
           const temp = JSON.parse(JSON.stringify(children))
           temp.splice(index, 1)
           translator([current], temp)
-          typeof parent.children !== 'undefined'
-            ? parent.children.push(current)
-            : (parent.children = [current])
+          typeof parent.children !== 'undefined' ?
+            parent.children.push(current) :
+            (parent.children = [current])
         }
       })
     })

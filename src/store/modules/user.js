@@ -25,6 +25,7 @@ import {
 const state = () => ({
   accessToken: getAccessToken(),
   username: '',
+  usercode: '',
   avatar: '',
   permissions: [],
   sys_name: '',
@@ -34,6 +35,7 @@ const state = () => ({
 const getters = {
   accessToken: (state) => state.accessToken,
   username: (state) => state.username,
+  usercode: (state) => state.usercode,
   avatar: (state) => state.avatar,
   permissions: (state) => state.permissions,
   getSysInfo: (state) => {
@@ -51,6 +53,9 @@ const mutations = {
   },
   setUsername(state, username) {
     state.username = username
+  },
+  setUsercode(state, usercode) {
+    state.usercode = usercode
   },
 
   setSysInfo(state, {
@@ -121,10 +126,13 @@ const actions = {
       sys_logo,
       sys_name,
       theme_name,
+      usercode,
+      id
     } = data
     if (permissions && name && Array.isArray(permissions)) {
       commit('setPermissions', permissions)
       commit('setUsername', name)
+      commit('setUsercode', usercode)
       commit('setAvatar', avatar)
       commit('setSysInfo', {
         sys_logo,

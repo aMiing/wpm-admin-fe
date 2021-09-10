@@ -15,11 +15,11 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
-import { copyright, footerCopyright, keepAliveMaxNum, title } from "@/config";
+import { mapActions, mapGetters } from 'vuex';
+import { copyright, footerCopyright, keepAliveMaxNum, title } from '@/config';
 
 export default {
-  name: "VabAppMain",
+  name: 'VabAppMain',
   data() {
     return {
       show: false,
@@ -33,12 +33,12 @@ export default {
   },
   computed: {
     ...mapGetters({
-      visitedRoutes: "tabsBar/visitedRoutes",
-      device: "settings/device",
+      visitedRoutes: 'tabsBar/visitedRoutes',
+      device: 'settings/device',
     }),
     cachedRoutes() {
       const cachedRoutesArr = [];
-      this.visitedRoutes.forEach((item) => {
+      this.visitedRoutes.forEach(item => {
         if (!item.meta.noKeepAlive) {
           cachedRoutesArr.push(item.name);
         }
@@ -52,14 +52,14 @@ export default {
   watch: {
     $route: {
       handler() {
-        if ("mobile" === this.device) this.foldSideBar();
+        if ('mobile' === this.device) this.foldSideBar();
       },
       immediate: true,
     },
   },
   created() {
     //重载所有路由
-    this.$baseEventBus.$on("reload-router-view", () => {
+    this.$baseEventBus.$on('reload-router-view', () => {
       this.routerView = false;
       this.$nextTick(() => {
         this.routerView = true;
@@ -69,7 +69,7 @@ export default {
   mounted() {},
   methods: {
     ...mapActions({
-      foldSideBar: "settings/foldSideBar",
+      foldSideBar: 'settings/foldSideBar',
     }),
   },
 };
@@ -84,7 +84,9 @@ export default {
     margin: $base-padding;
   }
   .app-main-height {
-    min-height: $base-app-main-height;
+    height: $base-app-main-height;
+    display: flex;
+    flex-direction: column;
   }
 
   .footer-copyright {
