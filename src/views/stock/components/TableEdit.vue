@@ -104,7 +104,6 @@ export default {
             type: this.form.type.join(','),
           });
           const { msg, code, data } = await doEdit(parames, this.mode);
-          console.log(code)
           if (code == 200) {
             this.$emit('fetchData')
             // data.forEach(async e => {

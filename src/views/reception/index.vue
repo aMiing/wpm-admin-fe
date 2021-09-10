@@ -162,7 +162,6 @@ export default {
       row.stock -= 1;
       row.saled = !row.saled ? 1 : Number(row.saled) + 1;
       this.addCartItem(row);
-      console.log(this.$store.state.goods.currentGoodsList)
     },
   },
 };

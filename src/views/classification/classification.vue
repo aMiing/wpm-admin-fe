@@ -114,13 +114,6 @@ export default {
     handleEdit(row) {
       this.$refs["edit"].showEdit(row);
     },
-    async handleOffOrOn(row) {
-      row.online = row.online === 1 ? 2 : 1;
-      const { msg, code } = await doEdit(row, "edit");
-      !successCode.includes(code) && (row.online = row.online === 1 ? 2 : 1);
-      this.$baseMessage(msg, "success");
-      // 请求数据更新
-    },
     handleDelete(row) {
       if (row.uuid) {
         this.$baseConfirm("你确定要删除当前项吗", null, async () => {

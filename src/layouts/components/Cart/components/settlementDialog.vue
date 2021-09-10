@@ -25,7 +25,6 @@
     </div>
     <el-divider content-position="left">待支付</el-divider>
     <div class="direct-pay">
-      <!-- <p>待支付：</p> -->
       <div class="direct-pay-value">
         <span class="unit">￥</span>
         <vab-count
@@ -34,6 +33,9 @@
           :duration="Number('500')"
           :decimals="Number('2')"
         />
+      </div>
+      <div class="print-select">
+        <el-checkbox v-model="printPaper">打印票据</el-checkbox>
       </div>
     </div>
 
@@ -59,6 +61,7 @@ export default {
     return {
       dialogFormVisible: false,
       payMethod: '',
+      printPaper: true,
     };
   },
   computed: {
@@ -101,8 +104,9 @@ export default {
     },
     // 计算积分
     computedIntegral() {
-      const _integral = this.selectedVip
-        ? Math.floor(this.computedPrice / this.privilege.cost_unit) * this.privilege.integrals
+      console.log('this.privilege', this.privilege)
+      const _integral = (this.selectedVip && this.privilege && this.privilege.cost_unit)
+        ? Math.floor(this.computedPrice / (this.privilege?.cost_unit || 1)) * this.privilege.integrals
         : 0;
       return this.selectedVip.integral + _integral;
     },
@@ -119,6 +123,10 @@ export default {
       this.dialogFormVisible = false;
     },
     selectPayMethod(type) {
+      if (!this.selectedVip.balance) {
+        this.$baseMessage('余额空空如也,快去充值吧~', 'warning');
+        return;
+      }
       this.payMethod = this.payMethod === type ? '' : type;
     },
     async submit() {
@@ -128,6 +136,7 @@ export default {
         balancePay: this.balancePay,
         surplusPayment: this.surplusPayment,
         PN: this.selectedVip?.PN,
+        printPaper: this.printPaper,
       });
       //修改余额
       this.selectedVip &&
@@ -196,15 +205,25 @@ export default {
     }
   }
 }
-.direct-pay-value {
-  font-size: 36px;
-  color: #41b584;
-  font-weight: bold;
-  font-style: italic;
-  // text-align: center;
-  .unit {
-    font-size: 20px;
-    color: #606266;
+.direct-pay {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  .direct-pay-value {
+    font-size: 36px;
+    color: #41b584;
+    font-weight: bold;
+    font-style: italic;
+    // text-align: center;
+    .unit {
+      font-size: 20px;
+      color: #606266;
+    }
+  }
+  .print-select {
+    // color: #409eff;
+    // display: flex;
+    // justify-content: flex-end;
   }
 }
 </style>

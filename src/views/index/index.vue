@@ -70,6 +70,7 @@
 import { mapActions, mapGetters, mapMutations } from "vuex";
 import { getList } from "@/api/table";
 // import TableEdit from "./components/TableEdit";
+import { formatTime } from '@/utils/index.js';
 export default {
   name: "Index",
   // components: {
@@ -153,7 +154,6 @@ export default {
       const Loading = this.$baseColorfullLoading(1);
       //获取商品列表数据
       await getList({ pageSize: this.queryForm.pageSize, pageNo: this.queryForm.pageNo }).then((res) => {
-        console.log(res);
         this.fillList = res.data.data;
         this.queryForm.total = res.data.total;
       });

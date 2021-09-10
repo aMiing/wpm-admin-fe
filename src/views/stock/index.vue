@@ -199,14 +199,12 @@ export default {
     },
     handleQuery() {
       this.queryForm.pageNo = 1;
-      console.log(this.queryForm.title);
       this.fetchData();
     },
     async fetchData() {
       const Loading = this.$baseColorfullLoading(1);
       //获取商品列表数据
       await getList(this.queryForm).then((res) => {
-        console.log(res)
         this.fillList = res.data.data;
         this.total = res.data.total;
       });

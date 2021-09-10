@@ -28,7 +28,6 @@ const mutations = {
   },
   //修改分类列表
   AllTypes(state,typeList) {
-    console.log(typeList)
     state.allTypes = typeList.data
     state.typeTotal = typeList.total
   },
