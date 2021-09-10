@@ -90,6 +90,7 @@
         <el-button type="danger" size="medium" @click="handleOperate('settlement')">结算</el-button>
       </div>
     </div>
+
     <discount-edit ref="discountEdit" />
     <change-price ref="changePrice" />
     <holded-edit ref="holdedEdit" />
@@ -164,19 +165,22 @@ export default {
   computed: {
     ...mapGetters({
       cartList: 'cart/getCartList',
-      username: 'user/username',
+      // username: 'user/username',
+      usercode: 'user/usercode',
       discount: 'cart/getDiscount',
       changedPrice: 'cart/getChangedPrice',
       orderCache: 'cart/getOrderCache',
       selectedVip: 'vip/getSelectedVip',
       privilege: 'privilege/getPrivilege',
+      queue: 'order/getQueue',
     }),
     computedDiscount() {
+      console.log('this.discount', this.discount, this.selectedVip, this.privilege);
       return this.discount && this.discount !== 1
         ? this.discount
-        : this.selectedVip
-        ? this.privilege.discount / 100
-        : 1;
+        : (this.selectedVip
+        ? (this.privilege?.discount || 100) / 100
+        : 1);
     },
     allcartCount() {
       return scaleTwoPrice(this.cartList.reduce((total, item) => (total += item.saled), 0));
@@ -210,6 +214,7 @@ export default {
       resetStockStore: 'goods/resetStock',
       setChangedPrice: 'cart/setChangedPrice',
       addOrderCache: 'cart/addOrderCache',
+      setQueue: 'order/setQueue',
     }),
     addedChange(row, add) {
       if (Number(row.saled) === 0) {
@@ -232,18 +237,15 @@ export default {
     // 更新库存
     async resetStock(params = {}) {
       try {
-        const { msg, code } = await resetStock(this.cartList);
-        await createOrder(
-          Object.assign(params, {
-            discount: this.computedDiscount,
-            salesperson: this.username,
-            purchase: this.cartList,
-            originPayPrice: this.originPayPrice,
-            realPayPrice: this.computedPrice,
-          }),
-        );
+        await resetStock(this.cartList);
+        this.setQueue();
+        const printPaper = params.printPaper;
+        delete params.printPaper;
+        const mixParams = this.toMixParams(params);
+        const { msg, code } = await createOrder(mixParams);
         this.$baseMessage(msg, 'success');
         if (successCode.includes(code)) {
+          printPaper && (await this.doPrintPaper(mixParams));
           this.clearCartlist();
           // 清空会员信息
           this.selectedVip && this.$refs.vipList.cancelSelect();
@@ -251,6 +253,22 @@ export default {
       } catch (err) {
         this.$baseMessage(err, 'error');
       }
+    },
+    /**mix订单参数
+     * 订单编号：时间戳+5位随机数字
+     *  */
+    toMixParams(params) {
+      const orderId = new Date().getTime() + Math.random().toString().slice(-5);
+      // const printTime = new Date().toLocaleString();
+      const mixParams = Object.assign(params, {
+        orderId,
+        discount: this.computedDiscount,
+        salesperson: this.usercode,
+        purchase: this.cartList,
+        originPayPrice: this.originPayPrice,
+        realPayPrice: this.computedPrice,
+      });
+      return mixParams;
     },
 
     // 操作组操作
@@ -321,6 +339,10 @@ export default {
         default:
           break;
       }
+    },
+    // 执行打印票据
+    doPrintPaper(params) {
+      // window.print();
     },
   },
 };
