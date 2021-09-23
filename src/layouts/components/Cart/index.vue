@@ -175,7 +175,6 @@ export default {
       queue: 'order/getQueue',
     }),
     computedDiscount() {
-      console.log('this.discount', this.discount, this.selectedVip, this.privilege);
       return this.discount && this.discount !== 1
         ? this.discount
         : (this.selectedVip

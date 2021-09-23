@@ -2,7 +2,10 @@
  * @author amingxiansen 1006934861@qq.com
  * @description cli配置
  */
+
+
 const path = require('path')
+
 
 const {
   publicPath,
@@ -22,7 +25,7 @@ const {
 const Webpack = require('webpack')
 const CopyPlugin = require("copy-webpack-plugin");
 const dayjs = require('dayjs')
-const date = dayjs().format('YYYY_M_D')
+// const date = dayjs().format('YYYY_M_D')
 const time = dayjs().format('YYYY-M-D HH:mm:ss')
 process.env.VUE_APP_TITLE = title || 'wpm-admin'
 process.env.VUE_APP_AUTHOR = author || 'amingxiansen 1006934861@qq.com'
