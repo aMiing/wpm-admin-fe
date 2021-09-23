@@ -44,21 +44,30 @@
                     <el-card shadow="hover" :body-style="{ padding: '0px' }">
                       <div
                         class="card-body"
-                        :class="(goods.online === 2 || goods.stock === 0) && 'disabled'"
+                        :class="
+                          (goods.online === 2 || goods.stock === 0) &&
+                          'disabled'
+                        "
                         @click="addToCart(goods)"
                       >
                         <h3 class="goods-name">
-                          {{ goods.name + (goods.online === 2 ? '（已下架）' : '') }}
+                          {{
+                            goods.name +
+                            (goods.online === 2 ? "（已下架）" : "")
+                          }}
                         </h3>
-                        <p class="goods-info-qrNumber">
+                        <div class="goods-info-qrcode">
+                          <span>条码：{{ goods.qrcode }}</span>
+                        </div>
+                        <p class="goods-info-stock">
                           <span>库存：{{ goods.stock }}</span>
-                          <el-input-number
+                          <!-- <el-input-number
                             v-show="false"
                             v-model="goods.saled"
                             :min="0"
                             :step="1"
                             step-strictly
-                          ></el-input-number>
+                          ></el-input-number> -->
                         </p>
                         <div class="bottom floatRight">
                           <span class="price">￥{{ goods.price }}</span>
@@ -71,75 +80,81 @@
             </el-tab-pane>
           </el-tabs>
         </div>
+        <div class="qrcode-input">
+          <label class="label">条码输入：</label>
+          <div class="input-content">
+            <el-input autofocus placeholder="请输入或扫描商品条形码"></el-input>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 <script>
-import { mapActions, mapGetters, mapMutations } from 'vuex';
+import { mapActions, mapGetters, mapMutations } from "vuex";
 
 export default {
   data() {
     return {
-      activeName: '',
+      activeName: "",
       topMenuList: [
         {
-          name: '零售',
-          icon: 'store',
-          link: '',
+          name: "零售",
+          icon: "store",
+          link: "",
         },
         {
-          name: '新增会员',
-          icon: 'user-plus',
-          link: '/vip/list?operate=add',
+          name: "新增会员",
+          icon: "user-plus",
+          link: "/vip/list?operate=add",
         },
         {
-          name: '会员活动',
-          icon: 'id-card',
-          link: '/vip/privilege',
+          name: "会员活动",
+          icon: "id-card",
+          link: "/vip/privilege",
         },
         {
-          name: '销售查询',
-          icon: 'calendar-alt',
-          link: '/data/order',
+          name: "销售查询",
+          icon: "calendar-alt",
+          link: "/data/order",
         },
         {
-          name: '交接班',
-          icon: 'exchange-alt',
-          link: '',
+          name: "交接班",
+          icon: "exchange-alt",
+          link: "",
         },
         {
-          name: '创建商品',
-          icon: 'calendar-plus',
-          link: '/goods/create',
+          name: "创建商品",
+          icon: "calendar-plus",
+          link: "/goods/create",
         },
         {
-          name: '库存查询',
-          icon: 'truck',
-          link: '/goods/stock',
+          name: "库存查询",
+          icon: "truck",
+          link: "/goods/stock",
         },
         {
-          name: '更多功能',
-          icon: 'th-large',
-          link: '/goods/index',
+          name: "更多功能",
+          icon: "th-large",
+          link: "/goods/index",
         },
         {
-          name: '后台管理',
-          icon: 'tv',
-          link: '/data/analyse',
+          name: "后台管理",
+          icon: "tv",
+          link: "/data/analyse",
         },
         {
-          name: '系统设置',
-          icon: 'cog',
-          link: '/management/systemInfo',
+          name: "系统设置",
+          icon: "cog",
+          link: "/management/systemInfo",
         },
       ],
     };
   },
   computed: {
     ...mapGetters({
-      allTypes: 'goods/getAllTypes',
-      list: 'goods/getFiltList',
+      allTypes: "goods/getAllTypes",
+      list: "goods/getFiltList",
     }),
   },
   watch: {
@@ -155,12 +170,12 @@ export default {
   },
   methods: {
     ...mapMutations({
-      clearCartlist: 'cart/clearCartlist',
-      getFiltData: 'goods/getFiltData',
-      addCartItem: 'cart/addCartItem',
+      clearCartlist: "cart/clearCartlist",
+      getFiltData: "goods/getFiltData",
+      addCartItem: "cart/addCartItem",
     }),
     ...mapActions({
-      setGoodsList: 'goods/setGoodsList',
+      setGoodsList: "goods/setGoodsList",
     }),
     handleClickMenu(item) {
       if (item.link) {
@@ -176,11 +191,11 @@ export default {
     },
     addToCart(row) {
       if (row.online === 2) {
-        this.$baseMessage('下架商品不可销售哦！', 'info');
+        this.$baseMessage("下架商品不可销售哦！", "info");
         return false;
       }
       if (row.stock === 0) {
-        this.$baseMessage('库存不足了哦！', 'error');
+        this.$baseMessage("库存不足了哦！", "error");
         return false;
       }
       row.stock -= 1;
@@ -252,14 +267,18 @@ export default {
     .goods-content {
       flex: 1;
       overflow: hidden;
-      padding: 0 16px 16px;
+      // padding: 0 16px;
+      position: relative;
       .tab-content {
+        position: relative;
+        height: calc(100% - 50px);
+        overflow: hidden;
+        padding: 0 16px;
         .card-body {
           padding: 8px 16px;
           cursor: pointer;
           &.disabled {
             cursor: not-allowed;
-            // color: #c0c4cc;
             opacity: 0.4;
           }
         }
@@ -270,6 +289,39 @@ export default {
         }
         .floatRight {
           text-align: right;
+        }
+        .goods-name {
+          margin-bottom: 10px;
+        }
+        .goods-info-qrcode {
+          font-size: 13px;
+          color: #909399;
+        }
+      }
+      .qrcode-input {
+        display: flex;
+        justify-content: flex-start;
+        align-items: baseline;
+        padding: 10px;
+        background: #fff;
+        border-top: 1px solid #ccc;
+        z-index: 9;
+        .label {
+          flex: 0 0 70px;
+          font-weight: bold;
+        }
+        .input-content {
+          width: 40%;
+          max-width: 420px;
+          min-width: 160px;
+        }
+      }
+      /deep/ .el-tabs {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        .el-tabs__content {
+          overflow-y: auto;
         }
       }
     }

@@ -36,7 +36,7 @@
       @selection-change="setSelectRows"
       @sort-change="tableSortChange"
     >
-      <el-table-column show-overflow-tooltip label="编号/条码" prop="uuid"> </el-table-column>
+      <el-table-column show-overflow-tooltip label="编号/条码" prop="qrcode"> </el-table-column>
       <el-table-column show-overflow-tooltip prop="name" label="名称"></el-table-column>
       <!-- <el-table-column show-overflow-tooltip label="图片">
         <template #default="{ row }">

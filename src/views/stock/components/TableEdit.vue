@@ -6,14 +6,17 @@
     @close="close"
   >
     <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+      <el-form-item label="条码信息" prop="qrcode">
+        <el-input v-model.trim="form.qrcode" autocomplete="off" placeholder="扫描商品条码将自动填充" autofocus="true"></el-input>
+      </el-form-item>
       <el-form-item label="名称" prop="name">
-        <el-input v-model.trim="form.name" autocomplete="off"></el-input>
+        <el-input v-model.trim="form.name" autocomplete="off" placeholder="输入商品名称"></el-input>
       </el-form-item>
       <el-form-item label="单价" prop="price">
-        <el-input v-model.trim="form.price" autocomplete="off"></el-input>
+        <el-input v-model.trim="form.price" autocomplete="off" placeholder="输入单价金额"></el-input>
       </el-form-item>
       <el-form-item label="库存" prop="stock">
-        <el-input v-model.trim.number="form.stock" autocomplete="off"></el-input>
+        <el-input v-model.trim.number="form.stock" autocomplete="off" placeholder="输入当前库存"></el-input>
       </el-form-item>
       <el-form-item label="分类" prop="type">
         <el-select
@@ -35,10 +38,10 @@
       </el-form-item>
       <span v-show="showMore">
         <el-form-item label="计量单位" prop="unit">
-          <el-input v-model.trim="form.unit" autocomplete="on"></el-input>
+          <el-input v-model.trim="form.unit" autocomplete="on" placeholder="输入商品计量单位，例如个/盒/盘等"></el-input>
         </el-form-item>
         <el-form-item label="生产商" prop="author">
-          <el-input v-model.trim="form.author" autocomplete="off"></el-input>
+          <el-input v-model.trim="form.author" autocomplete="off" placeholder="商品生产商，非必填"></el-input>
         </el-form-item>
       </span>
     </el-form>
@@ -62,6 +65,7 @@ export default {
   data() {
     return {
       form: {
+        qrcode: '',
         name: '',
         author: '',
         price: '',
