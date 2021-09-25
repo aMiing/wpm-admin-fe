@@ -5,12 +5,7 @@
         <vab-nav-bar mode="simple" />
       </div>
       <div class="top-menu">
-        <div
-          class="menu-content"
-          v-for="(item, index) in topMenuList"
-          :key="index"
-          @click="handleClickMenu(item)"
-        >
+        <div class="menu-content" v-for="(item, index) in topMenuList" :key="index" @click="handleClickMenu(item)">
           <vab-icon :icon="['fas', item.icon]"></vab-icon>
           <span class="menu-name"> {{ item.name }} </span>
         </div>
@@ -23,25 +18,13 @@
       </div>
       <div class="goods-content">
         <div class="tab-content">
-          <el-tabs v-model="activeName" type="card">
-            <el-tab-pane
-              :label="type.label"
-              :name="type.label"
-              v-for="(type, index) in allTypes"
-              :key="index"
-            >
+          <el-tabs v-model="activeName" type="card" @tab-click="add">
+            <el-tab-pane :label="type.name" :name="type.uuid" v-for="(type, index) in allTypes" :key="index">
               <div class="tab-pannel-content">
                 <el-row :gutter="20">
-                  <el-col
-                    :xs="24"
-                    :sm="24"
-                    :md="12"
-                    :lg="6"
-                    :xl="6"
-                    v-for="goods in list"
-                    :key="goods.uuid"
-                  >
+                  <el-col :xs="24" :sm="24" :md="12" :lg="6" :xl="6" v-for="goods in list" :key="goods.uuid">
                     <el-card shadow="hover" :body-style="{ padding: '0px' }">
+
                       <div
                         class="card-body"
                         :class="
@@ -55,6 +38,7 @@
                             goods.name +
                             (goods.online === 2 ? "（已下架）" : "")
                           }}
+
                         </h3>
                         <div class="goods-info-qrcode">
                           <span>条码：{{ goods.qrcode }}</span>
@@ -68,6 +52,7 @@
                             :step="1"
                             step-strictly
                           ></el-input-number> -->
+
                         </p>
                         <div class="bottom floatRight">
                           <span class="price">￥{{ goods.price }}</span>
@@ -99,6 +84,7 @@ export default {
     return {
       activeName: "",
       searchQrcode: "",
+
       topMenuList: [
         {
           name: "零售",
@@ -153,12 +139,14 @@ export default {
       ],
     };
   },
+
   computed: {
     ...mapGetters({
       allTypes: "goods/getAllTypes",
       list: "goods/getFiltList",
       getGoodsList: "goods/getGoodsList"
     })
+
   },
   watch: {
     allTypes(val) {
@@ -171,9 +159,6 @@ export default {
       val && this.getFiltData(params);
     },
   },
-  async created() {
-    await this.fetchData();
-  },
   methods: {
     ...mapMutations({
       clearCartlist: "cart/clearCartlist",
@@ -182,6 +167,7 @@ export default {
     }),
     ...mapActions({
       setGoodsList: "goods/setGoodsList",
+
     }),
     handleClickMenu(item) {
       if (item.link) {
@@ -192,8 +178,18 @@ export default {
     },
     async fetchData() {
       const Loading = this.$baseColorfullLoading(1);
-      await this.setGoodsList();
+      await getTypeList().then((res) => {
+        if (res.code == 200) {
+          this.allTypes = res.data.data;
+        }
+      });
       Loading.close();
+    },
+    //分类点击，通过分类id去查找对应的商品
+    add(e) {
+      getList({ type: e.name }).then((res) => {
+        this.list = res.data.data;
+      });
     },
     addToCart(row) {
       if (row.online === 2) {
