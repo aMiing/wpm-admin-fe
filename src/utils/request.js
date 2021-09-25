@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import axios from 'axios'
 import {
-  baseURL,
+  // baseURL,
   contentType,
   debounce,
   invalidCode,
@@ -48,7 +48,7 @@ const handleCode = (code, msg) => {
 }
 
 const instance = axios.create({
-  baseURL,
+  // baseURL,
   timeout: requestTimeout,
   headers: {
     'Content-Type': contentType,
@@ -72,6 +72,7 @@ instance.interceptors.request.use(
       'application/x-www-form-urlencoded;charset=UTF-8'
     )
       config.data = qs.stringify(config.data)
+      config.url = 'http://localhost:3000/api' + config.url
     if (debounce.some((item) => config.url.includes(item)))
       loadingInstance = Vue.prototype.$baseLoading()
     return config

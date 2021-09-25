@@ -104,7 +104,6 @@ export default {
     },
     // 计算积分
     computedIntegral() {
-      console.log('this.privilege', this.privilege)
       const _integral = (this.selectedVip && this.privilege && this.privilege.cost_unit)
         ? Math.floor(this.computedPrice / (this.privilege?.cost_unit || 1)) * this.privilege.integrals
         : 0;

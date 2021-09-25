@@ -1,8 +1,9 @@
 /**
  * @description 导出默认通用配置
  */
-const depart = __dirname.slice(0, 1)
-const pub_dir = __dirname.split(depart).slice(0, -3).concat(['fe-public', 'dist']).join(depart);
+ const os=require('os');
+ const path = require('path')
+const pub_dir = path.join(__dirname, '../../../fe-public/dist');
 const setting = {
   // 开发以及部署时的URL
   publicPath: '',
@@ -15,8 +16,7 @@ const setting = {
   // 进行编译的依赖
   transpileDependencies: [],
   // 默认的接口地址 如果是开发环境和生产环境走vab-mock-server，当然你也可以选择自己配置成需要的接口地址
-  baseURL: process.env.NODE_ENV === 'development' ?
-    'vab-mock-server' : 'api',
+  baseURL:  'api',
   //标题 （包括初次加载雪花屏的标题 页面的标题 浏览器的标题）
   title: '商品管理系统',
   //简写
@@ -25,8 +25,7 @@ const setting = {
   devPort: '80',
   //版本号
   version: process.env.VUE_APP_VERSION,
-  //这一项非常重要！请务必保留MIT协议下package.json及copyright作者信息 即可免费商用，不遵守此项约定你将无法使用该框架，如需自定义版权信息请联系QQ1204505056
-  copyright: 'vab',
+  // copyright: 'vab',
   //是否显示页面底部自定义版权信息
   footerCopyright: false,
   //是否显示顶部进度条

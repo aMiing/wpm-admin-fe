@@ -24,13 +24,35 @@
                 <el-row :gutter="20">
                   <el-col :xs="24" :sm="24" :md="12" :lg="6" :xl="6" v-for="goods in list" :key="goods.uuid">
                     <el-card shadow="hover" :body-style="{ padding: '0px' }">
-                      <div class="card-body" :class="(goods.online === 2 || goods.stock === 0) && 'disabled'" @click="addToCart(goods)">
+
+                      <div
+                        class="card-body"
+                        :class="
+                          (goods.online === 2 || goods.stock === 0) &&
+                          'disabled'
+                        "
+                        @click="addToCart(goods)"
+                      >
                         <h3 class="goods-name">
-                          {{ goods.name + (goods.online === 2 ? "（已下架）" : "") }}
+                          {{
+                            goods.name +
+                            (goods.online === 2 ? "（已下架）" : "")
+                          }}
+
                         </h3>
-                        <p class="goods-info-qrNumber">
+                        <div class="goods-info-qrcode">
+                          <span>条码：{{ goods.qrcode }}</span>
+                        </div>
+                        <p class="goods-info-stock">
                           <span>库存：{{ goods.stock }}</span>
-                          <el-input-number v-show="false" v-model="goods.saled" :min="0" :step="1" step-strictly></el-input-number>
+                          <!-- <el-input-number
+                            v-show="false"
+                            v-model="goods.saled"
+                            :min="0"
+                            :step="1"
+                            step-strictly
+                          ></el-input-number> -->
+
                         </p>
                         <div class="bottom floatRight">
                           <span class="price">￥{{ goods.price }}</span>
@@ -43,20 +65,26 @@
             </el-tab-pane>
           </el-tabs>
         </div>
+        <div class="qrcode-input">
+          <el-form label-width="80px" @keyup.enter.native="qrcodeKeyUp">
+            <el-form-item label="条码输入:">
+                <el-input v-model="searchQrcode" autofocus placeholder="请输入或扫描商品条形码,按enter键确认" ></el-input>
+            </el-form-item>
+          </el-form>
+        </div>
       </div>
     </div>
   </div>
 </template>
 <script>
 import { mapActions, mapGetters, mapMutations } from "vuex";
-import { getList } from "@/api/table";
-import { getTypeList } from "@/api/classification";
+
 export default {
   data() {
     return {
-      allTypes: [],
-      list: [],
       activeName: "",
+      searchQrcode: "",
+
       topMenuList: [
         {
           name: "零售",
@@ -111,10 +139,19 @@ export default {
       ],
     };
   },
-  async created() {
-    await this.fetchData();
+
+  computed: {
+    ...mapGetters({
+      allTypes: "goods/getAllTypes",
+      list: "goods/getFiltList",
+      getGoodsList: "goods/getGoodsList"
+    })
+
   },
   watch: {
+    allTypes(val) {
+      val.length && (this.activeName = this.allTypes[0].label)
+    },
     activeName(val) {
       const params = {
         filtType: [{ label: val, select: true }],
@@ -125,8 +162,12 @@ export default {
   methods: {
     ...mapMutations({
       clearCartlist: "cart/clearCartlist",
-      addCartItem: "cart/addCartItem",
       getFiltData: "goods/getFiltData",
+      addCartItem: "cart/addCartItem",
+    }),
+    ...mapActions({
+      setGoodsList: "goods/setGoodsList",
+
     }),
     handleClickMenu(item) {
       if (item.link) {
@@ -163,6 +204,10 @@ export default {
       row.saled = !row.saled ? 1 : Number(row.saled) + 1;
       this.addCartItem(row);
     },
+    qrcodeKeyUp() {
+      const row = this.getGoodsList.find(e => e.qrcode === this.searchQrcode)
+      row && this.addToCart(row)
+    }
   },
 };
 </script>
@@ -228,14 +273,18 @@ export default {
     .goods-content {
       flex: 1;
       overflow: hidden;
-      padding: 0 16px 16px;
+      // padding: 0 16px;
+      position: relative;
       .tab-content {
+        position: relative;
+        height: calc(100% - 50px);
+        overflow: hidden;
+        padding: 0 16px;
         .card-body {
           padding: 8px 16px;
           cursor: pointer;
           &.disabled {
             cursor: not-allowed;
-            // color: #c0c4cc;
             opacity: 0.4;
           }
         }
@@ -246,6 +295,35 @@ export default {
         }
         .floatRight {
           text-align: right;
+        }
+        .goods-name {
+          margin-bottom: 10px;
+        }
+        .goods-info-qrcode {
+          font-size: 13px;
+          color: #909399;
+        }
+      }
+      .qrcode-input {
+        display: flex;
+        justify-content: flex-start;
+        align-items: baseline;
+        padding: 10px;
+        background: #fff;
+        border-top: 1px solid #ccc;
+        z-index: 9;
+        /deep/ .el-form {
+          width: 40%;
+          max-width: 420px;
+          min-width: 160px;
+        }
+      }
+      /deep/ .el-tabs {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        .el-tabs__content {
+          overflow-y: auto;
         }
       }
     }
