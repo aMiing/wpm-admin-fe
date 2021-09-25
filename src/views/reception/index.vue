@@ -81,10 +81,11 @@
           </el-tabs>
         </div>
         <div class="qrcode-input">
-          <label class="label">条码输入：</label>
-          <div class="input-content">
-            <el-input autofocus placeholder="请输入或扫描商品条形码"></el-input>
-          </div>
+          <el-form label-width="80px" @keyup.enter.native="qrcodeKeyUp">
+            <el-form-item label="条码输入:">
+                <el-input v-model="searchQrcode" autofocus placeholder="请输入或扫描商品条形码,按enter键确认" ></el-input>
+            </el-form-item>
+          </el-form>
         </div>
       </div>
     </div>
@@ -97,6 +98,7 @@ export default {
   data() {
     return {
       activeName: "",
+      searchQrcode: "",
       topMenuList: [
         {
           name: "零售",
@@ -155,9 +157,13 @@ export default {
     ...mapGetters({
       allTypes: "goods/getAllTypes",
       list: "goods/getFiltList",
-    }),
+      getGoodsList: "goods/getGoodsList"
+    })
   },
   watch: {
+    allTypes(val) {
+      val.length && (this.activeName = this.allTypes[0].label)
+    },
     activeName(val) {
       const params = {
         filtType: [{ label: val, select: true }],
@@ -202,6 +208,10 @@ export default {
       row.saled = !row.saled ? 1 : Number(row.saled) + 1;
       this.addCartItem(row);
     },
+    qrcodeKeyUp() {
+      const row = this.getGoodsList.find(e => e.qrcode === this.searchQrcode)
+      row && this.addToCart(row)
+    }
   },
 };
 </script>
@@ -306,11 +316,7 @@ export default {
         background: #fff;
         border-top: 1px solid #ccc;
         z-index: 9;
-        .label {
-          flex: 0 0 70px;
-          font-weight: bold;
-        }
-        .input-content {
+        /deep/ .el-form {
           width: 40%;
           max-width: 420px;
           min-width: 160px;
