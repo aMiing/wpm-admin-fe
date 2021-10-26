@@ -50,21 +50,21 @@ module.exports = {
       errors: true,
     },
     proxy: {
-      '/vab-mock-server': {
-        // target: 'http://49.235.109.180:3000',
-        target: 'http://localhost:3000',
-        pathRewrite: {
-          '^/vab-mock-server': '/api'
-        }
+      '/api': {
+        target: 'http://49.235.109.180:3000',
+        // target: 'http://localhost:3000',
+        // pathRewrite: {
+        //   '^/vab-mock-server': '/api'
+        // }
       },
       '/api/upload/': {
-        target: 'http://localhost:3000',
+        target: 'http://49.235.109.180:3000',
       },
       'customer-upload/': {
-        target: 'http://localhost:3000',
+        target: 'http://49.235.109.180:3000',
       },
       '/example.xlsx': {
-        target: 'http://localhost:3000',
+        target: 'http://49.235.109.180:3000',
       }
     }
   },

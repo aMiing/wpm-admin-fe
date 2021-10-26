@@ -45,13 +45,14 @@
                         </div>
                         <p class="goods-info-stock">
                           <span>库存：{{ goods.stock }}</span>
-                          <!-- <el-input-number
+                          <!-- 不可删除，会引起试图更新问题 -->
+                          <el-input-number
                             v-show="false"
                             v-model="goods.saled"
                             :min="0"
                             :step="1"
                             step-strictly
-                          ></el-input-number> -->
+                          ></el-input-number>
 
                         </p>
                         <div class="bottom floatRight">
