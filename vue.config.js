@@ -3,7 +3,6 @@
  * @description cli配置
  */
 
-
 const path = require('path')
 
 
@@ -34,6 +33,8 @@ process.env.VUE_APP_VERSION = version
 
 
 const resolve = (dir) => path.join(__dirname, dir)
+const proxyUri = 'http://49.235.109.180:3000'
+// const proxyUri = 'http://localhost:3000'
 module.exports = {
   publicPath,
   assetsDir,
@@ -51,20 +52,13 @@ module.exports = {
     },
     proxy: {
       '/api': {
-        target: 'http://49.235.109.180:3000',
-        // target: 'http://localhost:3000',
-        // pathRewrite: {
-        //   '^/vab-mock-server': '/api'
-        // }
-      },
-      '/api/upload/': {
-        target: 'http://49.235.109.180:3000',
+        target: proxyUri,
       },
       'customer-upload/': {
-        target: 'http://49.235.109.180:3000',
+        target: proxyUri,
       },
       '/example.xlsx': {
-        target: 'http://49.235.109.180:3000',
+        target: proxyUri,
       }
     }
   },
