@@ -5,7 +5,7 @@ const baseUrl = '/goods/'
 export function getList(data) {
   return request({
     url: baseUrl + 'getList',
-    method: 'get',
+    method: 'post',
     data,
   })
 }
