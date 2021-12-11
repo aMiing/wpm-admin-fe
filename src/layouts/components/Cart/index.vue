@@ -4,10 +4,18 @@
       <div class="custom-drawer-body">
         <el-table ref="tableSort" :data="cartList" :min-height="tableHeight">
           <el-table-column show-overflow-tooltip prop="name" label="商品"></el-table-column>
-          <el-table-column label="数量" min-width="120px">
+          <el-table-column label="数量/重量" min-width="120px">
             <template #default="{ row }">
               <!-- <span>{{ row.saled }}</span> -->
               <el-input-number
+                v-if="row.measureType === 'weight'"
+                v-model="row.saled"
+                :precision="3"
+                :controls="false"
+                :disabled="true"
+              ></el-input-number>
+              <el-input-number
+                v-else
                 v-model="row.saled"
                 :min="0"
                 :step="1"
@@ -122,6 +130,7 @@ export default {
       tableHeight: 200,
       imageList: [],
       saveLoading: false,
+      currentWeight: 6.23,
       cartOperates: [
         {
           name: '清空',
@@ -178,9 +187,9 @@ export default {
       console.log('this.discount', this.discount, this.selectedVip, this.privilege);
       return this.discount && this.discount !== 1
         ? this.discount
-        : (this.selectedVip
+        : this.selectedVip
         ? (this.privilege?.discount || 100) / 100
-        : 1);
+        : 1;
     },
     allcartCount() {
       return scaleTwoPrice(this.cartList.reduce((total, item) => (total += item.saled), 0));
@@ -237,6 +246,7 @@ export default {
     // 更新库存
     async resetStock(params = {}) {
       try {
+        this.resetStockStore(this.cartList)
         await resetStock(this.cartList);
         this.setQueue();
         const printPaper = params.printPaper;

@@ -54,7 +54,7 @@ export default {
         pageNo: 1,
         pageSize: 20,
         title: '',
-        filtType: [],
+        filterType: [],
       },
       currentRow: null,
     };

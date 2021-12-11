@@ -317,6 +317,8 @@ export default {
     font-weight: bold;
     font-style: italic;
     text-align: center;
+    font-family: 'UnidreamLED';
+
     .unit {
       font-size: 20px;
       color: #606266;

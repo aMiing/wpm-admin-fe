@@ -60,7 +60,7 @@ export default {
     ...mapGetters({}),
   },
   methods: {
-    ...mapMutations({ addVipList: 'vip/addItem', getFiltData: 'vip/getFiltData' }),
+    ...mapMutations({ addVipList: 'vip/addItem', getFilterData: 'vip/getFilterData' }),
     ...mapActions({}),
     showEdit(row) {
       if (!row) {
@@ -86,7 +86,7 @@ export default {
             });
           }
           this.$baseMessage(msg, 'success');
-          this.getFiltData({});
+          this.getFilterData({});
           this.dialogFormVisible = false;
           this.$refs['form'].resetFields();
           this.form = this.$options.data().form;

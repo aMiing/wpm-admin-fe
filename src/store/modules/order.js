@@ -35,7 +35,7 @@ const mutations = {
     });
     ~index ? state.orderList[index] = item : state.orderList.unshift(item)
   },
-  getFiltData(state, config) {
+  getFilterData(state, config) {
     const {
       title = '', pageNo = 1, pageSize = 20
     } = config
@@ -58,7 +58,7 @@ const actions = {
       data
     } = await getList(config || [])
     commit('setOrderList', data)
-    commit('getFiltData', {})
+    commit('getFilterData', {})
   },
   getSalesPreview({
     commit
@@ -70,7 +70,7 @@ const actions = {
   //   commit
   // }, list) {
   //   commit('addGoodsItem', list)
-  //   commit('getFiltData', {
+  //   commit('getFilterData', {
   //     title: ""
   //   })
   // },

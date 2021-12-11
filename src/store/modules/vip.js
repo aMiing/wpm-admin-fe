@@ -41,7 +41,7 @@ const mutations = {
     });
     ~index && state.memberList.splice(index, 1)
   },
-  getFiltData(state, config) {
+  getFilterData(state, config) {
     const {
       title = '', pageNo = 1, pageSize = 20
     } = config
@@ -72,14 +72,14 @@ const actions = {
       data
     } = await getList(config || [])
     commit('setList', data)
-    commit('getFiltData', {})
+    commit('getFilterData', {})
   },
   async updateBalance({
     commit
   }, item) {
     await doEdit(item, 'edit')
     commit('resetBalance', item)
-    commit('getFiltData', {})
+    commit('getFilterData', {})
   },
 }
 

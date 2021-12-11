@@ -1,0 +1,10 @@
+@font-face {
+    font-family: 'UnidreamLED';
+    src: url(UnidreamLED.eot);
+    /***兼容ie9***/
+    src: url(UnidreamLED.eot?#iefix)format('embedded-opentype'),
+        /***兼容ie6-ie8***/
+        url('UnidreamLED.woff') format('woff'),
+        local('UnidreamLED'), url("UnidreamLED.woff");
+    /***默认使用本地的***/
+}

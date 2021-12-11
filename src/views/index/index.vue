@@ -21,7 +21,7 @@
     <div class="checkbox-content type-select">
       <span>按类型筛选：</span>
       <el-select v-model="value" placeholder="请选择">
-        <el-option v-for="(type, index) in queryForm.filtType" :key="index" :label="type.label"> </el-option>
+        <el-option v-for="(type, index) in queryForm.filterType" :key="index" :label="type.label"> </el-option>
       </el-select>
     </div>
 
@@ -105,7 +105,7 @@ export default {
         pageSize: 20,
         total: 100,
         title: "",
-        filtType: [],
+        filterType: [],
       },
     };
   },
@@ -172,7 +172,7 @@ export default {
       }, 500);
     },
     selectAllTypes() {
-      this.queryForm.filtType = this.queryForm.filtType.map((e) => {
+      this.queryForm.filterType = this.queryForm.filterType.map((e) => {
         return Object.assign(e, { select: !e.select });
       });
     },

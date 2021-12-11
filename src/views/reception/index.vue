@@ -5,7 +5,12 @@
         <vab-nav-bar mode="simple" />
       </div>
       <div class="top-menu">
-        <div class="menu-content" v-for="(item, index) in topMenuList" :key="index" @click="handleClickMenu(item)">
+        <div
+          class="menu-content"
+          v-for="(item, index) in topMenuList"
+          :key="index"
+          @click="handleClickMenu(item)"
+        >
           <vab-icon :icon="['fas', item.icon]"></vab-icon>
           <span class="menu-name"> {{ item.name }} </span>
         </div>
@@ -18,42 +23,57 @@
       </div>
       <div class="goods-content">
         <div class="tab-content">
-          <el-tabs v-model="activeName" type="card" @tab-click="add">
-            <el-tab-pane :label="type.name" :name="type.uuid" v-for="(type, index) in allTypes" :key="index">
-              <div class="tab-pannel-content">
-                <el-row :gutter="20">
-                  <el-col :xs="24" :sm="24" :md="12" :lg="6" :xl="6" v-for="goods in list" :key="goods.uuid">
+          <el-tabs v-model="activeTypeId" type="card">
+            <el-tab-pane
+              :label="type.name"
+              :name="type.uuid"
+              v-for="(type, index) in allTypes"
+              :key="index"
+            >
+              <div class="tab-panne-content">
+                <el-row :gutter="20" v-if="(dataByType[activeTypeId] || []).length">
+                  <el-col
+                    :xs="24"
+                    :sm="24"
+                    :md="12"
+                    :lg="6"
+                    :xl="6"
+                    v-for="goods in dataByType[activeTypeId]"
+                    :key="goods.uuid"
+                  >
                     <el-card shadow="hover" :body-style="{ padding: '0px' }">
-
+                      <div slot="header" class="clearfix">
+                        <strong>{{ goods.name + (goods.online === 2 ? '（已下架）' : '') }}</strong>
+                        <el-tag
+                          v-if="goods.measureType === 'weight'"
+                          size="mini"
+                          style="float: right"
+                          effect="plain"
+                        >
+                          称重
+                        </el-tag>
+                        <el-tag v-else size="mini" style="float: right" type="info" effect="plain">
+                          计数
+                        </el-tag>
+                      </div>
                       <div
                         class="card-body"
-                        :class="
-                          (goods.online === 2 || goods.stock === 0) &&
-                          'disabled'
-                        "
+                        :class="(goods.online === 2 || goods.stock === 0) && 'disabled'"
                         @click="addToCart(goods)"
                       >
-                        <h3 class="goods-name">
-                          {{
-                            goods.name +
-                            (goods.online === 2 ? "（已下架）" : "")
-                          }}
-
-                        </h3>
                         <div class="goods-info-qrcode">
-                          <span>条码：{{ goods.qrcode }}</span>
+                          <span>条码：{{ goods.qrcode || '--' }}</span>
                         </div>
                         <p class="goods-info-stock">
-                          <span>库存：{{ goods.stock }}</span>
+                          <span>库存：{{ goods.stock + (goods.unit ? goods.unit : '') }}</span>
                           <!-- 不可删除，会引起试图更新问题 -->
                           <el-input-number
                             v-show="false"
                             v-model="goods.saled"
                             :min="0"
                             :step="1"
-                            step-strictly
+                            :precision="3"
                           ></el-input-number>
-
                         </p>
                         <div class="bottom floatRight">
                           <span class="price">￥{{ goods.price }}</span>
@@ -62,14 +82,27 @@
                     </el-card>
                   </el-col>
                 </el-row>
+                <el-empty v-else description="该分类下暂无商品">
+                  <el-button type="primary" @click="handleClickMenu({ link: '/goods/create' })"
+                    >去创建</el-button
+                  >
+                </el-empty>
               </div>
             </el-tab-pane>
           </el-tabs>
         </div>
         <div class="qrcode-input">
+          <div v-if="currentWeight" class="weight-content">
+            <span>{{ currentWeight }}<i style="font-size: 24px">kg</i></span>
+          </div>
+          <el-button v-else size="medium" type="info" @click="getSerialPort">连接电子秤</el-button>
           <el-form label-width="80px" @keyup.enter.native="qrcodeKeyUp">
             <el-form-item label="条码输入:">
-                <el-input v-model="searchQrcode" autofocus placeholder="请输入或扫描商品条形码,按enter键确认" ></el-input>
+              <el-input
+                v-model="searchQRcode"
+                autofocus
+                placeholder="请输入或扫描商品条形码,按enter键确认"
+              ></el-input>
             </el-form-item>
           </el-form>
         </div>
@@ -78,97 +111,54 @@
   </div>
 </template>
 <script>
-import { mapActions, mapGetters, mapMutations } from "vuex";
+import { mapActions, mapGetters, mapMutations } from 'vuex';
+import { getList } from '@/api/table';
+import { topMenuList } from './config';
+import mixin from './mixin';
 
 export default {
+  mixins: [mixin],
   data() {
     return {
-      activeName: "",
-      searchQrcode: "",
-
-      topMenuList: [
-        {
-          name: "零售",
-          icon: "store",
-          link: "",
-        },
-        {
-          name: "新增会员",
-          icon: "user-plus",
-          link: "/vip/list?operate=add",
-        },
-        {
-          name: "会员活动",
-          icon: "id-card",
-          link: "/vip/privilege",
-        },
-        {
-          name: "销售查询",
-          icon: "calendar-alt",
-          link: "/data/order",
-        },
-        {
-          name: "交接班",
-          icon: "exchange-alt",
-          link: "",
-        },
-        {
-          name: "创建商品",
-          icon: "calendar-plus",
-          link: "/goods/create",
-        },
-        {
-          name: "库存查询",
-          icon: "truck",
-          link: "/goods/stock",
-        },
-        {
-          name: "更多功能",
-          icon: "th-large",
-          link: "/goods/index",
-        },
-        {
-          name: "后台管理",
-          icon: "tv",
-          link: "/data/analyse",
-        },
-        {
-          name: "系统设置",
-          icon: "cog",
-          link: "/management/systemInfo",
-        },
-      ],
+      topMenuList,
+      searchQRcode: '',
+      list: [],
+      currentWeight: null,
+      activeTypeId: '',
     };
   },
 
   computed: {
     ...mapGetters({
-      allTypes: "goods/getAllTypes",
-      list: "goods/getFiltList",
-      getGoodsList: "goods/getGoodsList"
-    })
-
+      allTypes: 'classification/getAllTypes',
+      goodsList: 'goods/getGoodsList',
+    }),
+    // 不同分类下的商品数据
+    dataByType() {
+      const data = {};
+      this.allTypes.forEach(e => {
+        data[e.uuid] = this.goodsList.filter(goods => goods.type.split(',').includes(e.uuid));
+      });
+      return data;
+    },
   },
   watch: {
     allTypes(val) {
-      val.length && (this.activeName = this.allTypes[0].label)
+      val.length && (this.activeTypeId = this.allTypes[0].uuid);
     },
-    activeName(val) {
-      const params = {
-        filtType: [{ label: val, select: true }],
-      };
-      val && this.getFiltData(params);
-    },
+  },
+  created() {
+    this.setTypeList();
+    // 请求全部的商品数据
+    this.setGoodsList();
   },
   methods: {
     ...mapMutations({
-      clearCartlist: "cart/clearCartlist",
-      getFiltData: "goods/getFiltData",
-      addCartItem: "cart/addCartItem",
+      addCartItem: 'cart/addCartItem',
     }),
     ...mapActions({
-      setGoodsList: "goods/setGoodsList",
-
+      setGoodsList: 'goods/setGoodsList',
+      setTypeList: 'classification/setTypeList',
     }),
     handleClickMenu(item) {
       if (item.link) {
@@ -177,38 +167,34 @@ export default {
         console.log(item.name);
       }
     },
-    async fetchData() {
-      const Loading = this.$baseColorfullLoading(1);
-      await getTypeList().then((res) => {
-        if (res.code == 200) {
-          this.allTypes = res.data.data;
-        }
-      });
-      Loading.close();
-    },
     //分类点击，通过分类id去查找对应的商品
     add(e) {
-      getList({ type: e.name }).then((res) => {
+      getList({ type: e.name }).then(res => {
         this.list = res.data.data;
       });
     },
     addToCart(row) {
       if (row.online === 2) {
-        this.$baseMessage("下架商品不可销售哦！", "info");
+        this.$baseMessage('下架商品不可销售哦！', 'info');
         return false;
       }
       if (row.stock === 0) {
-        this.$baseMessage("库存不足了哦！", "error");
+        this.$baseMessage('库存不足了哦！', 'error');
         return false;
       }
-      row.stock -= 1;
-      row.saled = !row.saled ? 1 : Number(row.saled) + 1;
+      if (row.measureType === 'weight') {
+        row.saled = this.currentWeight || 0.000;
+      } else {
+        row.stock -= 1;
+        row.saled = !row.saled ? 1 : Number(row.saled) + 1;
+      }
+      console.log('row', row, this.currentWeight);
       this.addCartItem(row);
     },
     qrcodeKeyUp() {
-      const row = this.getGoodsList.find(e => e.qrcode === this.searchQrcode)
-      row && this.addToCart(row)
-    }
+      const row = this.getGoodsList.find(e => e.qrcode === this.searchQRcode);
+      row && this.addToCart(row);
+    },
   },
 };
 </script>
@@ -278,7 +264,7 @@ export default {
       position: relative;
       .tab-content {
         position: relative;
-        height: calc(100% - 50px);
+        height: calc(100% - 52px);
         overflow: hidden;
         padding: 0 16px;
         .card-body {
@@ -308,15 +294,31 @@ export default {
       .qrcode-input {
         display: flex;
         justify-content: flex-start;
-        align-items: baseline;
-        padding: 10px;
+        align-items: center;
+        padding: 4px 10px;
         background: #fff;
         border-top: 1px solid #ccc;
         z-index: 9;
+        .weight-content {
+          flex-basis: 180px;
+          background: linear-gradient(to bottom right, #909399, rgb(196, 184, 196), #909399);
+          height: 44px;
+          line-height: 44px;
+          border-radius: 4px;
+          color: #fff;
+          font-size: 38px;
+          font-family: 'UnidreamLED';
+          padding: 0 12px;
+          letter-spacing: 0.1em;
+          text-align: center;
+        }
         /deep/ .el-form {
           width: 40%;
           max-width: 420px;
           min-width: 160px;
+          .el-form-item {
+            margin-bottom: 0;
+          }
         }
       }
       /deep/ .el-tabs {

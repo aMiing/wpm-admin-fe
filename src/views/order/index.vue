@@ -136,7 +136,7 @@ export default {
         pageNo: 1,
         pageSize: 20,
         title: '',
-        filtType: [],
+        filterType: [],
       },
       initStartDate: '',
       initSelectRadio: '今天',
@@ -154,7 +154,7 @@ export default {
   watch: {
     queryForm: {
       handler(val) {
-        this.getFiltData(val);
+        this.getFilterData(val);
       },
       deep: true,
     },
@@ -164,7 +164,7 @@ export default {
   },
   methods: {
     ...mapMutations({
-      getFiltData: 'order/getFiltData',
+      getFilterData: 'order/getFilterData',
       setCurrenList: 'order/setCurrenList',
     }),
     ...mapActions({

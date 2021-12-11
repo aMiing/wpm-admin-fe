@@ -99,7 +99,7 @@ export default {
         pageNo: 1,
         pageSize: 20,
         title: '',
-        filtType: [],
+        filterType: [],
       },
     };
   },
@@ -116,7 +116,7 @@ export default {
   watch: {
     queryForm: {
       handler(val) {
-        this.getFiltData(val);
+        this.getFilterData(val);
       },
       deep: true,
     },
@@ -132,7 +132,7 @@ export default {
   methods: {
     ...mapMutations({
       addCartItem: 'vip/addItem',
-      getFiltData: 'vip/getFiltData',
+      getFilterData: 'vip/getFilterData',
     }),
     ...mapActions({
       setList: 'vip/setList',
@@ -192,7 +192,7 @@ export default {
     },
 
     selectAllTypes() {
-      this.queryForm.filtType = this.queryForm.filtType.map(e => {
+      this.queryForm.filterType = this.queryForm.filterType.map(e => {
         return Object.assign(e, { select: !e.select });
       });
     },

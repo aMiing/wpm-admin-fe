@@ -11,6 +11,7 @@ export default {
 };
 </script>
 <style lang="scss">
+@import './styles/fonts/fonts.css';
 *{
   box-sizing: border-box;
 }
