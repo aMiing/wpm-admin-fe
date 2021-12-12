@@ -3,5 +3,9 @@
  * @param {*} price 
  */
 export function scaleTwoPrice(price) {
-    return Math.round(price * 100) / 100
+    return toFixedFloat(price, 2)
+}
+
+export function toFixedFloat(float, digits) {
+    return Math.round(float * Math.pow(10, digits)) /  Math.pow(10, digits)
 }

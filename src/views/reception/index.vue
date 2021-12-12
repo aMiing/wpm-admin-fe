@@ -147,6 +147,7 @@ export default {
       val.length && (this.activeTypeId = this.allTypes[0].uuid);
     },
   },
+
   created() {
     this.setTypeList();
     // 请求全部的商品数据
@@ -183,7 +184,11 @@ export default {
         return false;
       }
       if (row.measureType === 'weight') {
-        row.saled = this.currentWeight || 0.000;
+        if (!parseFloat(this.currentWeight)) {
+          this.$baseMessage('商品重量不足或未放置商品！', 'error');
+          return;
+        }
+        row.saled = parseFloat(this.currentWeight || '00.000');
       } else {
         row.stock -= 1;
         row.saled = !row.saled ? 1 : Number(row.saled) + 1;

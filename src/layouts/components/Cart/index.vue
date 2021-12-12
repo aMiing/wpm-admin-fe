@@ -29,7 +29,7 @@
           <el-table-column show-overflow-tooltip label="小计">
             <template #default="{ row }">
               <span class="littleCount">
-                {{ row.price * row.saled }}
+                {{ toFixedFloat(row.price * row.saled, 3) }}
               </span>
             </template>
           </el-table-column>
@@ -37,7 +37,7 @@
       </div>
       <div class="custom-count">
         <span>
-          共<i class="custom-count-num">{{ allcartCount }}</i> 件
+          共<i class="custom-count-num">{{ allcartCount }}</i> 单位
         </span>
         <span class="discount-show-detail" v-show="computedDiscount !== 1">
           折扣：{{ originPayPrice }} <i>×</i> {{ computedDiscount }}
@@ -121,7 +121,7 @@ import DiscountEdit from './components/discountEdit.vue';
 import HoldedEdit from './components/holdedEdit.vue';
 import VipList from './components/vipList.vue';
 import SettlementDialog from './components/settlementDialog.vue';
-import { scaleTwoPrice } from '@/utils/price.js';
+import { scaleTwoPrice, toFixedFloat } from '@/utils/price.js';
 export default {
   name: 'cart',
   components: { DiscountEdit, ChangePrice, HoldedEdit, VipList, SettlementDialog },
@@ -184,7 +184,6 @@ export default {
       queue: 'order/getQueue',
     }),
     computedDiscount() {
-      console.log('this.discount', this.discount, this.selectedVip, this.privilege);
       return this.discount && this.discount !== 1
         ? this.discount
         : this.selectedVip
@@ -225,6 +224,7 @@ export default {
       addOrderCache: 'cart/addOrderCache',
       setQueue: 'order/setQueue',
     }),
+    toFixedFloat,
     addedChange(row, add) {
       if (Number(row.saled) === 0) {
         this.$baseConfirm(
