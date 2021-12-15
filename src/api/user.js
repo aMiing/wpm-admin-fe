@@ -9,10 +9,11 @@ import {
 
 export async function login(data) {
   if (loginRSA) {
-    data = await encryptedData(data)
+    const _data = await encryptedData(data)
+    console.log('data', data);
   }
   return request({
-    url: '/login',
+    url: '/user/login',
     method: 'post',
     data,
   })
@@ -20,7 +21,7 @@ export async function login(data) {
 
 export function getUserInfo(accessToken) {
   return request({
-    url: '/userInfo',
+    url: '/user/userInfo',
     method: 'post',
     data: {
       [tokenName]: accessToken,
@@ -30,14 +31,14 @@ export function getUserInfo(accessToken) {
 
 export function logout() {
   return request({
-    url: '/logout',
+    url: '/user/logout',
     method: 'get',
   })
 }
 
 export function register(data) {
   return request({
-    url: '/register',
+    url: '/user/register',
     method: 'post',
     data,
   })
@@ -45,7 +46,7 @@ export function register(data) {
 
 export function updateSysInfo(data) {
   return request({
-    url: '/updateSysInfo',
+    url: '/user/updateSysInfo',
     method: 'post',
     data,
   })

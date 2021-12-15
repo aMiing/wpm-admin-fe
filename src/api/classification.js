@@ -1,10 +1,10 @@
 
 import request from '@/utils/request'
-
+const baseUrl = '/categories/'
 //获取分类列表
 export function getTypeList(data) {
   return request({
-    url: '/classification/getTypeList',
+    url: baseUrl+'getTypeList',
     method: 'post',
     data
   })
@@ -13,7 +13,7 @@ export function getTypeList(data) {
 export function doEditType(data,mode) {
   const uri = mode === 'edit' ? 'update' : 'create'
   return request({
-    url: '/classification/'+ uri,
+    url: baseUrl+''+ uri,
     method: 'POST',
     data
   })
@@ -21,7 +21,7 @@ export function doEditType(data,mode) {
 //删除分类
 export function DeleteTypes(data) {
   return request({
-    url: '/classification/delete',
+    url: baseUrl+'delete',
     method: 'POST',
     data
   })

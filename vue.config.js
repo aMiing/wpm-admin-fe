@@ -34,7 +34,8 @@ process.env.VUE_APP_VERSION = version
 
 const resolve = (dir) => path.join(__dirname, dir)
 // const proxyUri = 'http://49.235.109.180:3000'
-const proxyUri = 'http://localhost:3000'
+// const proxyUri = 'http://localhost:3000'
+const proxyUri ='https://a90d7599-56ca-479d-9251-8d75d82c3896.bspapp.com'
 module.exports = {
   publicPath,
   assetsDir,
@@ -53,6 +54,9 @@ module.exports = {
     proxy: {
       '/api': {
         target: proxyUri,
+        // pathRewrite: {
+        //   '^/api': '/service/api'
+        // }
       },
       'customer-upload/': {
         target: proxyUri,
