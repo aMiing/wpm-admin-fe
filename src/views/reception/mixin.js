@@ -1,24 +1,23 @@
 // 电子秤相关的逻辑
 export default {
     async mounted() {
-        console.log('mounted');
         let [port] = await navigator.serial.getPorts();
-        if (!port) {
-            this.$confirm('要链接电子秤吗?', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'info',
-                })
-                .then(async () => {
-                    this.getSerialPort();
-                })
-                .catch(() => {
-                    this.currentWeight = '';
-                    console.log('不连接串口！');
-                });
-        } else {
-            this.connectPort(port);
-        }
+        // if (!port) {
+        //     this.$confirm('要链接电子秤吗?', '提示', {
+        //             confirmButtonText: '确定',
+        //             cancelButtonText: '取消',
+        //             type: 'info',
+        //         })
+        //         .then(async () => {
+        //             this.getSerialPort();
+        //         })
+        //         .catch(() => {
+        //             this.currentWeight = '';
+        //             console.log('不连接串口！');
+        //         });
+        // } else {
+        //     this.connectPort(port);
+        // }
     },
 
     methods: {

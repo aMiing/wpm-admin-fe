@@ -186,11 +186,9 @@ export default {
       updateAllTypes: 'classification/AllTypes',
     }),
     handleTypes(val) {
-      const ids = val.split(',') || [];
-      const types = (this.allTypes || [])
-        .filter(e => ids.includes(e.uuid))
-        .map(e => e.name)
-        .join(',');
+      console.log(val, this.allTypes);
+      const ids = val || [];
+      const types = ids.map(e => this.allTypes.find(t => t._id === e).name).join(',');
       return types;
     },
     handleStatusText(state) {

@@ -19,7 +19,7 @@
       </el-form-item>
       <el-form-item label="单价" prop="price">
         <el-input
-          v-model.trim="form.price"
+          v-model.trim.number="form.price"
           autocomplete="off"
           placeholder="输入单价金额"
         ></el-input>
@@ -100,7 +100,6 @@ export default {
         price: '',
         stock: '',
         type: [],
-        uuid: '',
         unit: '个',
         measureType: 'count',
       },
@@ -145,9 +144,7 @@ export default {
     commit() {
       this.$refs['form'].validate(async valid => {
         if (valid) {
-          const parames = Object.assign(this.form, {
-            type: this.form.type.join(','),
-          });
+          const parames = Object.assign(this.form, {});
           const { msg, code, data } = await doEdit(parames, this.mode);
           if (successCode.includes(code)) {
             this.$emit('fetchData');

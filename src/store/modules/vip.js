@@ -48,6 +48,7 @@ const mutations = {
     let mockList = title ? state.memberList.filter((item) => {
       return ~(item.name + item.PN).indexOf(title)
     }) : state.memberList;
+    console.log(state.memberList, 'mockList', 'title', title);
     const pageList = mockList.filter((item, index) =>
       index < pageSize * pageNo && index >= pageSize * (pageNo - 1)
     )

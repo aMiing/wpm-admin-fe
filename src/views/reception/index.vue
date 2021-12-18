@@ -136,8 +136,9 @@ export default {
     // 不同分类下的商品数据
     dataByType() {
       const data = {};
+      console.log('this.allTypes', this.allTypes);
       this.allTypes.forEach(e => {
-        data[e.uuid] = this.goodsList.filter(goods => goods.type.split(',').includes(e.uuid));
+        data[e.uuid] = this.goodsList.filter(goods => goods.category_id.includes(e.uuid));
       });
       return data;
     },
