@@ -2,7 +2,8 @@
   <el-dialog
     :title="mode == 'edit' ? '编辑' : '添加'"
     :visible.sync="dialogFormVisible"
-    width="500px"
+    width="600px"
+    destroy-on-close
     @close="close"
   >
     <el-form ref="form" :model="form" :rules="rules" label-width="80px">
@@ -18,11 +19,20 @@
         <el-input v-model.trim="form.name" autocomplete="off" placeholder="输入商品名称"></el-input>
       </el-form-item>
       <el-form-item label="单价" prop="price">
-        <el-input
-          v-model.trim="form.price"
-          autocomplete="off"
-          placeholder="输入单价金额"
-        ></el-input>
+        <el-radio-group v-model="priceType" @change="form.price = ''">
+          <el-radio-button label="single">统一价</el-radio-button>
+          <el-radio-button label="multiple">阶梯价</el-radio-button>
+        </el-radio-group>
+        <div class="single-box price-form-content" v-if="priceType === 'single'">
+          <el-input
+            v-model.trim="form.price"
+            autocomplete="off"
+            placeholder="输入单价金额"
+          ></el-input>
+        </div>
+        <div class="multiple-box price-form-content" v-else>
+          <multiple-price-form ref="multipleForm" :priceRange="priceRange"></multiple-price-form>
+        </div>
       </el-form-item>
       <el-form-item label="库存" prop="stock">
         <el-input
@@ -88,9 +98,13 @@
 import { doEdit } from '@/api/table';
 import { successCode } from '@/config';
 import { mapActions, mapGetters, mapMutations } from 'vuex';
+import multiplePriceForm from './multiplePriceForm';
 
 export default {
   name: 'TableEdit',
+  components: {
+    multiplePriceForm,
+  },
   data() {
     return {
       form: {
@@ -104,6 +118,8 @@ export default {
         unit: '个',
         measureType: 'count',
       },
+      priceType: 'single',
+      priceRange: [],
       rules: {
         name: [{ required: true, trigger: 'blur', message: '请输入名称' }],
         price: [{ required: true, trigger: 'blur', message: '请输入单价' }],
@@ -133,6 +149,10 @@ export default {
       } else {
         this.mode = 'edit';
         this.form = row;
+        if(row.priceRange) {
+          this.priceType = 'multiple';
+          this.priceRange = JSON.parse(row.priceRange)
+        }
       }
       this.dialogFormVisible = true;
     },
@@ -143,11 +163,17 @@ export default {
       this.form = this.$options.data().form;
     },
     commit() {
+      const multiplePrice = this.$refs.multipleForm.validateData();
+      if (this.priceType === 'multiple' && multiplePrice) {
+        this.form.price = multiplePrice.slice(-1)[0].price;
+      }
       this.$refs['form'].validate(async valid => {
         if (valid) {
           const parames = Object.assign(this.form, {
             type: this.form.type.join(','),
+            priceRange: JSON.stringify(multiplePrice || [0, this.form.price])
           });
+
           const { msg, code, data } = await doEdit(parames, this.mode);
           if (successCode.includes(code)) {
             this.$emit('fetchData');
@@ -163,3 +189,8 @@ export default {
   },
 };
 </script>
+<style scoped lang="scss">
+.price-form-content {
+  margin-top: 4px;
+}
+</style>

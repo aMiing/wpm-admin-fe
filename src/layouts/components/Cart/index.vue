@@ -24,7 +24,11 @@
               ></el-input-number>
             </template>
           </el-table-column>
-          <el-table-column show-overflow-tooltip prop="price" label="单价"></el-table-column>
+          <el-table-column show-overflow-tooltip prop="price" label="单价">
+            <template #default="{ row }">
+              <span class="price">￥{{ transformPrice(row) }}</span>
+            </template>
+          </el-table-column>
 
           <el-table-column show-overflow-tooltip label="小计">
             <template #default="{ row }">
@@ -125,6 +129,7 @@ import { scaleTwoPrice, toFixedFloat } from '@/utils/price.js';
 export default {
   name: 'cart',
   components: { DiscountEdit, ChangePrice, HoldedEdit, VipList, SettlementDialog },
+
   data() {
     return {
       tableHeight: 200,
@@ -225,6 +230,13 @@ export default {
       setQueue: 'order/setQueue',
     }),
     toFixedFloat,
+    transformPrice(row) {
+      const list = JSON.parse(row.priceRange);
+      let index = list.findIndex(e => e.unitRange[1] > row.saled);
+      index = index == -1 ? (list.length-1) : index;
+      row.price = list[index].price;
+      return row.price;
+    },
     addedChange(row, add) {
       if (Number(row.saled) === 0) {
         this.$baseConfirm(
@@ -246,7 +258,7 @@ export default {
     // 更新库存
     async resetStock(params = {}) {
       try {
-        this.resetStockStore(this.cartList)
+        this.resetStockStore(this.cartList);
         await resetStock(this.cartList);
         this.setQueue();
         const printPaper = params.printPaper;

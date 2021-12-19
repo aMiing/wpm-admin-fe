@@ -66,13 +66,12 @@
         </template>
       </el-table-column> -->
 
-      <el-table-column
-        show-overflow-tooltip
-        prop="price"
-        label="单价"
-        sortable
-        sort-by="price"
-      ></el-table-column>
+      <el-table-column show-overflow-tooltip prop="price" label="单价" sortable sort-by="price">
+        <template #default="{ row }">
+          <span class="price" v-if="row.priceRange">￥{{ row.priceRange | priceRangeFilter }}</span>
+          <span class="price" v-else>￥{{ row.price }}</span>
+        </template>
+      </el-table-column>
       <el-table-column show-overflow-tooltip label="库存" sortable sort-by="stock" min-width="80">
         <template #default="{ row }">
           {{ row.stock + ' ' + (row.unit || '') }}
@@ -142,6 +141,14 @@ export default {
     timeFilter(NS) {
       return NS ? formatTime(new Date(NS), '{yy}-{mm}-{dd} {hh}:{ii}:{ss}') : '--';
     },
+    priceRangeFilter(list) {
+      list = JSON.parse(list);
+      let res = list[0].price;
+      if (list.length > 1) {
+        res = list[list.length - 1].price + '~' + res;
+      }
+      return res;
+    },
   },
   data() {
     return {
@@ -210,7 +217,7 @@ export default {
       this.$refs['edit'].showEdit();
     },
     handleEdit(row) {
-      this.$refs['edit'].showEdit(row);
+      this.$refs['edit'].showEdit({...row});
     },
     async handleOffOrOn(row) {
       row.online = row.online === 1 ? 2 : 1;

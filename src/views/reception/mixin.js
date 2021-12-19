@@ -1,7 +1,6 @@
 // 电子秤相关的逻辑
 export default {
     async mounted() {
-        console.log('mounted');
         let [port] = await navigator.serial.getPorts();
         if (!port) {
             this.$confirm('要链接电子秤吗?', '提示', {

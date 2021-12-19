@@ -76,7 +76,10 @@
                           ></el-input-number>
                         </p>
                         <div class="bottom floatRight">
-                          <span class="price">￥{{ goods.price }}</span>
+                          <span class="price" v-if="goods.priceRange"
+                            >￥{{ goods.priceRange | priceRangeFilter }}</span
+                          >
+                          <span class="price" v-else>￥{{ goods.price }}</span>
                         </div>
                       </div>
                     </el-card>
@@ -118,6 +121,16 @@ import mixin from './mixin';
 
 export default {
   mixins: [mixin],
+  filters: {
+    priceRangeFilter(list) {
+      list = JSON.parse(list);
+      let res = list[0].price;
+      if (list.length > 1) {
+        res = list[list.length - 1].price + '~' + res;
+      }
+      return res;
+    },
+  },
   data() {
     return {
       topMenuList,
@@ -193,7 +206,6 @@ export default {
         row.stock -= 1;
         row.saled = !row.saled ? 1 : Number(row.saled) + 1;
       }
-      console.log('row', row, this.currentWeight);
       this.addCartItem(row);
     },
     qrcodeKeyUp() {
