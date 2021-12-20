@@ -3,7 +3,7 @@
  */
  const os=require('os');
  const path = require('path')
-const pub_dir = path.join(__dirname, '../../../fe-public/dist');
+const pub_dir = path.join(__dirname, '../../../wpm-server/public');
 const setting = {
   // 开发以及部署时的URL
   publicPath: '',
