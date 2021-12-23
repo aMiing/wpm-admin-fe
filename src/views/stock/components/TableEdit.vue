@@ -163,7 +163,7 @@ export default {
       this.form = this.$options.data().form;
     },
     commit() {
-      const multiplePrice = this.$refs.multipleForm.validateData();
+      const multiplePrice = this.$refs.multipleForm?.validateData();
       if (this.priceType === 'multiple' && multiplePrice) {
         this.form.price = multiplePrice.slice(-1)[0].price;
       }
@@ -171,7 +171,7 @@ export default {
         if (valid) {
           const parames = Object.assign(this.form, {
             type: this.form.type.join(','),
-            priceRange: JSON.stringify(multiplePrice || [0, this.form.price])
+            price: this.form.price
           });
 
           const { msg, code, data } = await doEdit(parames, this.mode);
