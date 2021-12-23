@@ -437,7 +437,7 @@ export default {
     height: 100%;
     display: flex;
     flex-direction: column;
-    background: #fff;
+    background: var(--grey-13);
     .custom-drawer-body {
       flex: 1;
     }
@@ -483,7 +483,7 @@ export default {
   border-top: 1px solid #e4e7ed;
   font-weight: 800;
   i.custom-count-price {
-    color: #f56c6c;
+    color: var(--red-6);
     font-size: 24px;
   }
 }

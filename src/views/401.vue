@@ -267,7 +267,7 @@
           height: 36px;
           font-size: 14px;
           line-height: 36px;
-          color: #fff;
+          color: var(--grey-13);
           text-align: center;
           cursor: pointer;
           background: $base-color-blue;

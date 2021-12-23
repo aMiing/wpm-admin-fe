@@ -225,15 +225,15 @@ export default {
     .nav-bar-container {
       height: 30px;
       background-color: #409eff;
-      color: #fff;
+      color: var(--grey-13);
       .left-panel,
       .right-panel {
         height: 30px !important;
         svg {
-          color: #fff;
+          color: var(--grey-13);
         }
         .user-name {
-          color: #fff;
+          color: var(--grey-13);
         }
       }
     }
@@ -248,7 +248,7 @@ export default {
       flex-basis: 100px;
       text-align: center;
       padding: 12px 6px 6px;
-      color: #fff;
+      color: var(--grey-13);
       cursor: pointer;
       &:hover {
         color: #eee;
@@ -295,7 +295,7 @@ export default {
         .bottom {
           font-size: 18px;
           font-weight: bold;
-          color: #f56c6c;
+          color: var(--red-6);
         }
         .floatRight {
           text-align: right;

@@ -17,7 +17,7 @@ $base-menu-color-active: hsla(0, 0%, 100%, 0.95);
 //菜单选中背景色
 $base-menu-background-active: $base-color-default;
 //标题颜色
-$base-title-color: #fff;
+$base-title-color: var(--grey-13);
 //字体大小配置
 $base-font-size-small: 12px;
 $base-font-size-default: 14px;
@@ -27,7 +27,7 @@ $base-font-size-max: 22px;
 $base-font-color: #606266;
 $base-color-blue: $base-color-default;
 $base-color-green: #47ba80;
-$base-color-white: #fff;
+$base-color-white: var(--grey-13);
 $base-color-black: #000;
 $base-color-yellow: #fac858;
 $base-color-orange: #ff6700;
