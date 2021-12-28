@@ -58,7 +58,7 @@ export default {
       box-shadow: 0 0 1px red;
       margin: 15px 0;
       text-align: center;
-      color: var(--grey-13);
+      color: #fff;
       font-size: 26px;
       font-weight: bold;
       cursor: pointer;

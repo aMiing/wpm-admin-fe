@@ -210,7 +210,7 @@ export default {
   color: #67c23a;
 }
 .integral-pay {
-  color: var(--red-6);
+  color: #f56c6c;
 }
 </style>
 

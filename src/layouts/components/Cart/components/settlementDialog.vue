@@ -162,7 +162,7 @@ export default {
   .pay-method-item {
     flex: 200px 0 0;
     margin: 0 8px;
-    border: 1px solid var(--grey-13);
+    border: 1px solid #fff;
     border-radius: 2px;
     padding: 4px 16px 8px;
     text-align: center;
@@ -183,7 +183,7 @@ export default {
       background: #ecf5ff;
       border-color: #b3d8ff;
       &.active {
-        color: var(--grey-13);
+        color: #fff;
         background-color: #409eff;
         border-color: #409eff;
       }
@@ -197,7 +197,7 @@ export default {
       border-color: #d3d4d6;
       cursor: not-allowed;
       // &.active {
-      //   color: var(--grey-13);
+      //   color: #fff;
       //   background-color: #e6a23c;
       //   border-color: #e6a23c;
       // }

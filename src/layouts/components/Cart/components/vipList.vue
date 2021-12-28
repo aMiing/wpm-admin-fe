@@ -121,7 +121,7 @@ export default {
   .el-table__body tr.current-row > td {
     background-color: #41b584;
     .cell {
-      color: var(--grey-13);
+      color: #ffffff;
     }
   }
 }

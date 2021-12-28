@@ -215,7 +215,7 @@ export default {
       height: 36px;
       font-size: 20px;
       line-height: 36px;
-      color: var(--grey-13);
+      color: #fff;
       text-align: center;
       cursor: pointer;
       background: #bbc1ce;
@@ -225,7 +225,7 @@ export default {
       width: 120px;
       height: 36px;
       font-size: 14px;
-      color: var(--grey-13);
+      color: #fff;
       border-radius: 3px;
     }
   }

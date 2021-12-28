@@ -71,7 +71,7 @@
       z-index: 99;
       width: 300px;
       font-size: 32px;
-      color: var(--grey-13);
+      color: #fff;
       text-align: center;
     }
 

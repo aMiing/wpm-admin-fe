@@ -100,7 +100,7 @@ export default {
     }
     &::before {
       content: '←前台';
-      color: var(--grey-13);
+      color: #fff;
       cursor: pointer;
       font-size: 17px;
     }
