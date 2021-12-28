@@ -1,9 +1,9 @@
 import request from '@/utils/request'
 
-export function getList(data) {
+export function requestPay(data) {
   return request({
-    url: '/ad/getList',
-    method: 'get',
+    url: '/pay',
+    method: 'post',
     data,
   })
 }

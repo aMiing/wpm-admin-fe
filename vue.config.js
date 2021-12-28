@@ -34,7 +34,8 @@ process.env.VUE_APP_VERSION = version
 
 const resolve = (dir) => path.join(__dirname, dir)
 // const proxyUri = 'http://49.235.109.180:3000'
-const proxyUri = 'http://localhost:3000'
+const proxyUri = 'http://localhost:3000';
+const payPath = 'https://shq-api.51fubei.com/gateway/agent';
 module.exports = {
   publicPath,
   assetsDir,
@@ -57,8 +58,12 @@ module.exports = {
       'customer-upload/': {
         target: proxyUri,
       },
-      '/example.xlsx': {
-        target: proxyUri,
+      '/pay': {
+        target: payPath,
+        pathRewrite: {
+          '^/pay': ''
+        },
+        changeOrigin: true,
       }
     }
   },

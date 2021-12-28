@@ -116,6 +116,7 @@
 <script>
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 import { getList } from '@/api/table';
+import { requestPay } from '@/api/pay';
 import { topMenuList } from './config';
 import mixin from './mixin';
 
@@ -165,6 +166,18 @@ export default {
     this.setTypeList();
     // 请求全部的商品数据
     this.setGoodsList();
+
+    requestPay({
+      app_id: '20211227195258718731',
+      biz_content: {
+        store_order_sn: 'XS-4843-20190326161857202',
+        store_id: '1152309',
+      },
+      method: 'fbpay.order.query',
+      nonce: 'd93d37224ac0eb877e31b92637d6473e',
+      sign: ('app_id=20211227195258718731&biz_content={store_order_sn:XS-4843-20190326161857202&store_id=1152309}&method=fbpay.order.query&nonce=d93d37224ac0eb877e31b92637d6473e455fdd16ddcd3763a6802ccf64639e5f'),
+      
+    });
   },
   methods: {
     ...mapMutations({
