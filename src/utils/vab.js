@@ -4,7 +4,6 @@ import {
   messageDuration,
   title
 } from '@/config'
-import * as lodash from 'lodash'
 import {
   Loading,
   Message,
@@ -176,8 +175,6 @@ const install = (Vue) => {
     })
   }
 
-  /* 全局lodash */
-  Vue.prototype.$baseLodash = lodash
   /* 全局事件总线 */
   Vue.prototype.$baseEventBus = new Vue()
 }

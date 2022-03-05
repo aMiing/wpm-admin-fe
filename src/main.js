@@ -4,10 +4,10 @@ import store from './store';
 import router from './router';
 import './plugins';
 import '@/layouts/export';
-import '@/assets/style/common.scss'
+import '@/assets/style/common.scss';
 /**
  * @author
- * @description 
+ * @description
  */
 
 Vue.config.productionTip = false;
@@ -16,5 +16,5 @@ new Vue({
   el: '#app',
   router,
   store,
-  render: (h) => h(App),
+  render: h => h(App),
 });

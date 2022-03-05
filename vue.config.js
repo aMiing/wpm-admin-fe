@@ -3,8 +3,7 @@
  * @description cli配置
  */
 
-const path = require('path')
-
+const path = require('path');
 
 const {
   publicPath,
@@ -15,26 +14,23 @@ const {
   title,
   devPort,
   providePlugin,
-} = require('./src/config')
+} = require('./src/config');
 
-const {
-  version,
-  author
-} = require('./package.json')
-const Webpack = require('webpack')
-const CopyPlugin = require("copy-webpack-plugin");
-const dayjs = require('dayjs')
+const { version, author } = require('./package.json');
+const Webpack = require('webpack');
+const CopyPlugin = require('copy-webpack-plugin');
+const dayjs = require('dayjs');
 // const date = dayjs().format('YYYY_M_D')
-const time = dayjs().format('YYYY-M-D HH:mm:ss')
-process.env.VUE_APP_TITLE = title || 'wpm-admin'
-process.env.VUE_APP_AUTHOR = author || 'amingxiansen 1006934861@qq.com'
-process.env.VUE_APP_UPDATE_TIME = time
-process.env.VUE_APP_VERSION = version
+const time = dayjs().format('YYYY-M-D HH:mm:ss');
+process.env.VUE_APP_TITLE = title || 'wpm-admin';
+process.env.VUE_APP_AUTHOR = author || 'amingxiansen 1006934861@qq.com';
+process.env.VUE_APP_UPDATE_TIME = time;
+process.env.VUE_APP_VERSION = version;
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
-
-const resolve = (dir) => path.join(__dirname, dir)
-// const proxyUri = 'http://49.235.109.180:3000'
-const proxyUri = 'http://localhost:3000';
+const resolve = dir => path.join(__dirname, dir);
+const proxyUri = 'http://47.99.144.112:3000';
+// const proxyUri = 'http://localhost:3000';
 const payPath = 'https://shq-api.51fubei.com/gateway/agent';
 module.exports = {
   publicPath,
@@ -61,11 +57,11 @@ module.exports = {
       '/pay': {
         target: payPath,
         pathRewrite: {
-          '^/pay': ''
+          '^/pay': '',
         },
         changeOrigin: true,
-      }
-    }
+      },
+    },
   },
   configureWebpack() {
     return {
@@ -76,22 +72,25 @@ module.exports = {
       },
       plugins: [
         new Webpack.ProvidePlugin(providePlugin),
-        new CopyPlugin([{
-          from: path.resolve(__dirname, "./favicon.ico"),
-          to: outputDir,
-          ignore: ['.*']
-        }])
-      ]
-    }
+        new CopyPlugin([
+          {
+            from: path.resolve(__dirname, './favicon.ico'),
+            to: outputDir,
+            ignore: ['.*'],
+          },
+        ]),
+        new BundleAnalyzerPlugin(),
+      ],
+    };
   },
   chainWebpack(config) {
-    config.plugins.delete('preload')
-    config.plugins.delete('prefetch')
+    config.plugins.delete('preload');
+    config.plugins.delete('prefetch');
     config.module
       .rule('svg')
       .exclude.add(resolve('src/remixIcon'))
       .add(resolve('src/colorfulIcon'))
-      .end()
+      .end();
 
     config.module
       .rule('remixIcon')
@@ -101,9 +100,9 @@ module.exports = {
       .use('svg-sprite-loader')
       .loader('svg-sprite-loader')
       .options({
-        symbolId: 'remix-icon-[name]'
+        symbolId: 'remix-icon-[name]',
       })
-      .end()
+      .end();
 
     config.module
       .rule('colorfulIcon')
@@ -113,26 +112,27 @@ module.exports = {
       .use('svg-sprite-loader')
       .loader('svg-sprite-loader')
       .options({
-        symbolId: 'colorful-icon-[name]'
+        symbolId: 'colorful-icon-[name]',
       })
-      .end()
-    config.module.rule('pug')
+      .end();
+    config.module
+      .rule('pug')
       .test(/\.pug$/)
       .use('pug-html-loader')
       .loader('pug-html-loader')
-      .end()
+      .end();
     config.module
       .rule('htmlLoader')
       .test(/\.html$/)
       .use('html-loader')
       .loader('html-loader')
-      .end()
+      .end();
     /*  config.when(process.env.NODE_ENV === "development", (config) => {
       config.devtool("source-map");
     }); */
-    config.when(process.env.NODE_ENV !== 'development', (config) => {
-      config.performance.set('hints', false)
-      config.devtool('none')
+    config.when(process.env.NODE_ENV !== 'development', config => {
+      config.performance.set('hints', false);
+      config.devtool('none');
       config.optimization.splitChunks({
         chunks: 'all',
         cacheGroups: {
@@ -147,15 +147,19 @@ module.exports = {
             priority: 20,
             test: /[\\/]node_modules[\\/]_?element-ui(.*)/,
           },
-          fortawesome: {
-            name: 'chunk-fortawesome',
-            priority: 20,
-            test: /[\\/]node_modules[\\/]_?@fortawesome(.*)/,
+          vabIcon: {
+            name: 'vab-icon',
+            priority: 30,
+            test: /[\\/]node_modules[\\/]_?vab-icon(.*)/,
+          },
+          maptalks: {
+            name: 'maptalks',
+            priority: 40,
+            test: /[\\/]node_modules[\\/]_?maptalks(.*)/,
           },
         },
-      })
-    })
-
+      });
+    });
   },
   runtimeCompiler: true,
   productionSourceMap: false,
@@ -169,19 +173,14 @@ module.exports = {
 
         /*sass-loader 9.0写法，感谢github用户 shaonialife*/
         additionalData(content, loaderContext) {
-          const {
-            resourcePath,
-            rootContext
-          } = loaderContext
-          const relativePath = path.relative(rootContext, resourcePath)
-          if (
-            relativePath.replace(/\\/g, '/') !== 'src/styles/variables.scss'
-          ) {
-            return '@import "~@/styles/variables.scss";' + content
+          const { resourcePath, rootContext } = loaderContext;
+          const relativePath = path.relative(rootContext, resourcePath);
+          if (relativePath.replace(/\\/g, '/') !== 'src/styles/variables.scss') {
+            return '@import "~@/styles/variables.scss";' + content;
           }
-          return content
+          return content;
         },
       },
     },
   },
-}
+};
