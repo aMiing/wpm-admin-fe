@@ -1,7 +1,7 @@
 <template>
   <div class="table-container">
     <vab-query-form>
-      <el-form ref="form" :model="queryForm" :inline="true" @submit.native.prevent size="medium">
+      <el-form ref="form" :model="queryForm" :inline="true" size="medium" @submit.native.prevent>
         <el-form-item>
           <el-input
             v-model="queryForm.title"
@@ -27,28 +27,25 @@
           <span>{{ row.orderId || row.uuid }}</span>
         </template>
       </el-table-column>
-      <el-table-column show-overflow-tooltip prop="purchase" label="购买商品"></el-table-column>
+      <el-table-column show-overflow-tooltip prop="purchase" label="购买商品" />
 
-      <el-table-column show-overflow-tooltip label="销售员" prop="salesperson"></el-table-column>
+      <el-table-column show-overflow-tooltip label="销售员" prop="salesperson" />
 
       <el-table-column
         show-overflow-tooltip
         prop="originPayPrice"
         label="订单总价(元)"
         sort-by="originPayPrice"
-      >
-      </el-table-column>
+      />
 
-      <el-table-column show-overflow-tooltip prop="discount" label="折扣" min-width="40">
-      </el-table-column>
+      <el-table-column show-overflow-tooltip prop="discount" label="折扣" min-width="40" />
 
       <el-table-column
         show-overflow-tooltip
         prop="realPayPrice"
         label="折扣后总价(元)"
         sort-by="realPayPrice"
-      >
-      </el-table-column>
+      />
 
       <el-table-column show-overflow-tooltip label="支付方式">
         <template #default="{ row }">
@@ -67,8 +64,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column show-overflow-tooltip prop="surplusPayment" label="当场支付(元)">
-      </el-table-column>
+      <el-table-column show-overflow-tooltip prop="surplusPayment" label="当场支付(元)" />
 
       <!-- <el-table-column show-overflow-tooltip label="订单状态">
         <template #default="{ row }">
@@ -92,7 +88,7 @@
       :total="total"
       @current-change="handleCurrentChange"
       @size-change="handleSizeChange"
-    ></el-pagination>
+    />
   </div>
 </template>
 
@@ -213,4 +209,3 @@ export default {
   color: #f56c6c;
 }
 </style>
-

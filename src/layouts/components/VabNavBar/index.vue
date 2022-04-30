@@ -2,16 +2,16 @@
   <div class="nav-bar-container">
     <el-row :gutter="15">
       <el-col :xs="4" :sm="12" :md="12" :lg="12" :xl="12">
-        <div class="left-panel" v-if="mode === 'simple'">
+        <div v-if="mode === 'simple'" class="left-panel">
           {{ getSysInfo.sys_name }}
         </div>
-        <div class="left-panel" v-else>
+        <div v-else class="left-panel">
           <i
             :class="collapse ? 'el-icon-s-unfold' : 'el-icon-s-fold'"
             :title="collapse ? '展开' : '收起'"
             class="fold-unfold"
             @click="handleCollapse"
-          ></i>
+          />
           <vab-breadcrumb class="hidden-xs-only" />
         </div>
       </el-col>
@@ -39,14 +39,14 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters } from 'vuex';
 
 export default {
-  name: "VabNavBar",
+  name: 'VabNavBar',
   props: {
     mode: {
       type: String,
-      default: "", //’‘||simple
+      default: '', //’‘||simple
     },
   },
 
@@ -57,22 +57,22 @@ export default {
   },
   computed: {
     ...mapGetters({
-      collapse: "settings/collapse",
-      visitedRoutes: "tabsBar/visitedRoutes",
-      device: "settings/device",
-      routes: "routes/routes",
-      getSysInfo: "user/getSysInfo",
+      collapse: 'settings/collapse',
+      visitedRoutes: 'tabsBar/visitedRoutes',
+      device: 'settings/device',
+      routes: 'routes/routes',
+      getSysInfo: 'user/getSysInfo',
     }),
   },
   methods: {
     ...mapActions({
-      changeCollapse: "settings/changeCollapse",
+      changeCollapse: 'settings/changeCollapse',
     }),
     handleCollapse() {
       this.changeCollapse();
     },
     async refreshRoute() {
-      this.$baseEventBus.$emit("reload-router-view");
+      this.$baseEventBus.$emit('reload-router-view');
       this.pulse = true;
       setTimeout(() => {
         this.pulse = false;

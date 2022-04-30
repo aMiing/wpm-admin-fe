@@ -1,7 +1,7 @@
 <template>
   <el-dialog :title="title" :visible.sync="dialogFormVisible" width="600px" @close="close">
     <div class="main">
-      <div class="pre_page" v-if="!tableData.length">
+      <div v-if="!tableData.length" class="pre_page">
         <div class="example">
           <span>1、先下载模板文件</span>
           <a :href="excelUrl">批量导入商品模板.xlsx</a>
@@ -10,20 +10,20 @@
         <div class="upload">
           <span>3、上传文件</span>
           <el-upload
-            class="drag-upload"
             ref="upload"
+            class="drag-upload"
             drag
             action=""
             accept=".xls,.xlsx"
             :on-progress="processFile"
           >
-            <i class="el-icon-upload"></i>
+            <i class="el-icon-upload" />
             <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-            <div class="el-upload__tip" slot="tip">只能上传xls/xlsx文件，且不超过1M</div>
+            <div slot="tip" class="el-upload__tip">只能上传xls/xlsx文件，且不超过1M</div>
           </el-upload>
         </div>
       </div>
-      <div class="table_content" v-else>
+      <div v-else class="table_content">
         <span>数据预览：</span>
         <el-table :data="tableData">
           <el-table-column
@@ -31,8 +31,7 @@
             :key="head.prop"
             :prop="head.prop"
             :label="head.label"
-          >
-          </el-table-column>
+          />
         </el-table>
       </div>
     </div>
@@ -42,8 +41,8 @@
       <el-input clearable placeholder="请输入/扫描条码或输入名称检索" v-model="qrInput"></el-input>
     </div> -->
     <div slot="footer" class="dialog-footer">
-      <el-button @click="close">取 消</el-button>
-      <el-button type="primary" @click="save">确 定</el-button>
+      <el-button @click="close"> 取 消 </el-button>
+      <el-button type="primary" @click="save"> 确 定 </el-button>
     </div>
   </el-dialog>
 </template>

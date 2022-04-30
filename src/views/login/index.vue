@@ -40,10 +40,10 @@
               @keyup.enter.native="handleLogin"
             />
             <span v-if="passwordType === 'password'" class="show-password" @click="handlePassword">
-              <vab-icon :icon="['fas', 'eye-slash']"></vab-icon>
+              <vab-icon :icon="['fas', 'eye-slash']" />
             </span>
             <span v-else class="show-password" @click="handlePassword">
-              <vab-icon :icon="['fas', 'eye']"></vab-icon>
+              <vab-icon :icon="['fas', 'eye']" />
             </span>
           </el-form-item>
           <el-button :loading="loading" class="login-btn" type="primary" @click="handleLogin">

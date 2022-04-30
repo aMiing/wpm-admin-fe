@@ -7,25 +7,21 @@
   >
     <el-form ref="form" :model="form" :rules="rules" label-width="80px">
       <el-form-item label="手机号" prop="PN">
-        <el-input v-model.number="form.PN" autocomplete="off"></el-input>
+        <el-input v-model.number="form.PN" autocomplete="off" />
       </el-form-item>
       <el-form-item label="昵称" prop="name">
-        <el-input v-model.trim="form.name" autocomplete="off"></el-input>
+        <el-input v-model.trim="form.name" autocomplete="off" />
       </el-form-item>
       <el-form-item label="充值余额" prop="balance">
-        <el-input
-          v-model.trim="form.balance"
-          autocomplete="off"
-          @blur="InputNumber('balance')"
-        ></el-input>
+        <el-input v-model.trim="form.balance" autocomplete="off" @blur="InputNumber('balance')" />
       </el-form-item>
       <el-form-item label="剩余积分" prop="integral">
-        <el-input v-model.number="form.integral" autocomplete="off"></el-input>
+        <el-input v-model.number="form.integral" autocomplete="off" />
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
-      <el-button @click="close">取 消</el-button>
-      <el-button type="primary" @click="save">确 定</el-button>
+      <el-button @click="close"> 取 消 </el-button>
+      <el-button type="primary" @click="save"> 确 定 </el-button>
     </div>
   </el-dialog>
 </template>

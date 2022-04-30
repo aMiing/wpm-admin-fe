@@ -1,12 +1,12 @@
-import request from '@/utils/request'
+import request from '@/utils/request';
 
-const baseUrl = '/vip/'
+const baseUrl = '/vip/';
 
 export function getList() {
   return request({
     url: baseUrl + 'getList',
     method: 'post',
-  })
+  });
 }
 
 export function create(data) {
@@ -14,16 +14,16 @@ export function create(data) {
     url: baseUrl + 'create',
     method: 'post',
     data,
-  })
+  });
 }
 
 export function doEdit(data, mode) {
-  const uri = mode === 'edit' ? 'update' : 'create'
+  const uri = mode === 'edit' ? 'update' : 'create';
   return request({
     url: baseUrl + uri,
     method: 'post',
     data,
-  })
+  });
 }
 
 export function doDelete(data) {
@@ -31,7 +31,7 @@ export function doDelete(data) {
     url: baseUrl + 'delete',
     method: 'post',
     data,
-  })
+  });
 }
 
 // export function updateBalance(data) {

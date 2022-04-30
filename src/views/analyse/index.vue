@@ -7,13 +7,13 @@
     </el-row>
     <el-row :gutter="20">
       <el-col
+        v-for="card in salesData"
+        :key="card.label"
         :xs="24"
         :sm="24"
         :md="12"
         :lg="6"
         :xl="6"
-        v-for="card in salesData"
-        :key="card.label"
       >
         <el-card shadow="never">
           <div slot="header">
@@ -50,7 +50,7 @@
       >
         <router-link :to="item.link" target="_blank">
           <el-card class="icon-panel" shadow="never">
-            <vab-icon :style="{ color: item.color }" :icon="['fas', item.icon]"></vab-icon>
+            <vab-icon :style="{ color: item.color }" :icon="['fas', item.icon]" />
             <p>{{ item.title }}</p>
           </el-card>
         </router-link>
@@ -61,7 +61,7 @@
         <span class="title">数据统计</span>
       </div>
       <div class="checkbox-content time-select">
-        <select-date initSelect="近一周" @setDateEmit="setDateEmit" />
+        <select-date init-select="近一周" @setDateEmit="setDateEmit" />
       </div>
     </el-row>
     <el-row :gutter="20">

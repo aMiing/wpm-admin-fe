@@ -1,22 +1,22 @@
-import request from '@/utils/request'
+import request from '@/utils/request';
 
-const baseUrl = '/goods/'
+const baseUrl = '/goods/';
 
 export function getList(data) {
   return request({
     url: baseUrl + 'getList',
     method: 'post',
     data,
-  })
+  });
 }
 
 export function doEdit(data, mode) {
-  const uri = mode === 'edit' ? 'update' : 'create'
+  const uri = mode === 'edit' ? 'update' : 'create';
   return request({
     url: baseUrl + uri,
     method: 'post',
     data,
-  })
+  });
 }
 
 export function doDelete(data) {
@@ -24,19 +24,19 @@ export function doDelete(data) {
     url: baseUrl + 'delete',
     method: 'post',
     data,
-  })
+  });
 }
 export function doOffOrOn(data) {
   return request({
     url: baseUrl + 'doOffOrOn',
     method: 'post',
     data,
-  })
+  });
 }
 export function resetStock(data) {
   return request({
     url: baseUrl + 'resetStock',
     method: 'post',
     data,
-  })
+  });
 }

@@ -3,15 +3,15 @@
     <div class="amount-money">
       <p>总消费金额： {{ computedPrice }}</p>
     </div>
-    <el-divider content-position="left" v-if="selectedVip">选择支付方式</el-divider>
-    <div class="payment-type-content" v-if="selectedVip">
+    <el-divider v-if="selectedVip" content-position="left"> 选择支付方式 </el-divider>
+    <div v-if="selectedVip" class="payment-type-content">
       <div
         class="balance-pay pay-method-item"
         :class="payMethod === 'balance-pay' ? 'active' : ''"
         @click="selectPayMethod('balance-pay')"
       >
         <p class="title">余额支付（推荐）</p>
-        <i class="originValue" v-show="payMethod === 'balance-pay'">{{ selectedVip.balance }}</i>
+        <i v-show="payMethod === 'balance-pay'" class="originValue">{{ selectedVip.balance }}</i>
         <span>{{ afterBalance }}</span>
       </div>
       <div
@@ -19,11 +19,11 @@
         :class="payMethod === 'integral-pay' ? 'active' : ''"
       >
         <p class="title">积分抵扣（暂不支持）</p>
-        <i class="originValue" v-show="payMethod === 'integral-pay'">{{ selectedVip.integral }}</i>
+        <i v-show="payMethod === 'integral-pay'" class="originValue">{{ selectedVip.integral }}</i>
         <span>{{ selectedVip.integral }}</span>
       </div>
     </div>
-    <el-divider content-position="left">待支付</el-divider>
+    <el-divider content-position="left"> 待支付 </el-divider>
     <div class="direct-pay">
       <div class="direct-pay-value">
         <span class="unit">￥</span>
@@ -35,13 +35,13 @@
         />
       </div>
       <div class="print-select">
-        <el-checkbox v-model="printPaper">打印票据</el-checkbox>
+        <el-checkbox v-model="printPaper"> 打印票据 </el-checkbox>
       </div>
     </div>
 
     <div slot="footer" class="dialog-footer">
-      <el-button @click="close">取 消</el-button>
-      <el-button type="primary" @click="submit">确 定</el-button>
+      <el-button @click="close"> 取 消 </el-button>
+      <el-button type="primary" @click="submit"> 确 定 </el-button>
     </div>
   </el-dialog>
 </template>
@@ -50,7 +50,7 @@
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 import { scaleTwoPrice } from '@/utils/price.js';
 export default {
-  name: 'settlementDialog',
+  name: 'SettlementDialog',
   props: {
     computedPrice: {
       type: [String, Number],
@@ -104,9 +104,11 @@ export default {
     },
     // 计算积分
     computedIntegral() {
-      const _integral = (this.selectedVip && this.privilege && this.privilege.cost_unit)
-        ? Math.floor(this.computedPrice / (this.privilege?.cost_unit || 1)) * this.privilege.integrals
-        : 0;
+      const _integral =
+        this.selectedVip && this.privilege && this.privilege.cost_unit
+          ? Math.floor(this.computedPrice / (this.privilege?.cost_unit || 1)) *
+            this.privilege.integrals
+          : 0;
       return this.selectedVip.integral + _integral;
     },
   },
@@ -218,11 +220,6 @@ export default {
       font-size: 20px;
       color: #606266;
     }
-  }
-  .print-select {
-    // color: #409eff;
-    // display: flex;
-    // justify-content: flex-end;
   }
 }
 </style>

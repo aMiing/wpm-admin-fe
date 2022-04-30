@@ -1,28 +1,27 @@
-
-import request from '@/utils/request'
+import request from '@/utils/request';
 
 //获取分类列表
 export function getTypeList(data) {
   return request({
     url: '/classification/getTypeList',
     method: 'post',
-    data
-  })
-} 
+    data,
+  });
+}
 //编辑、创建分类
-export function doEditType(data,mode) {
-  const uri = mode === 'edit' ? 'update' : 'create'
+export function doEditType(data, mode) {
+  const uri = mode === 'edit' ? 'update' : 'create';
   return request({
-    url: '/classification/'+ uri,
+    url: '/classification/' + uri,
     method: 'POST',
-    data
-  })
+    data,
+  });
 }
 //删除分类
 export function DeleteTypes(data) {
   return request({
     url: '/classification/delete',
     method: 'POST',
-    data
-  })
+    data,
+  });
 }

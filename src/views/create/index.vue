@@ -19,13 +19,13 @@
         </el-col>
       </el-row>
     </div>
-    <table-edit ref="edit"></table-edit>
+    <table-edit ref="edit" />
   </div>
 </template>
 <script>
 import tableEdit from './components/TableEdit';
 export default {
-  name: 'createGoods',
+  name: 'CreateGoods',
   components: {
     tableEdit,
   },

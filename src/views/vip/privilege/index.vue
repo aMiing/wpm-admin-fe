@@ -7,16 +7,16 @@
       <el-row>
         <el-col :xs="24" :sm="24" :md="12" :lg="8" :xl="8">
           <div class="system-form-content">
-            <el-form :model="form" ref="form" label-width="90px">
+            <el-form ref="form" :model="form" label-width="90px">
               <el-form-item label="会员折扣" prop="discount">
                 <el-input v-model.trim="form.discount" autocomplete="off">
-                  <template slot="append">%</template>
+                  <template slot="append"> % </template>
                 </el-input>
                 <div class="preValue">
                   <div
-                    class="preValue-list"
                     v-for="val in preValue"
                     :key="val"
+                    class="preValue-list"
                     @click="preValueClick(val)"
                   >
                     {{ val }}
@@ -27,19 +27,19 @@
                 <div class="integral-input">
                   <span>每消费</span>
                   <div class="input">
-                    <el-input v-model.number="form.cost_unit"></el-input>
+                    <el-input v-model.number="form.cost_unit" />
                   </div>
                   <span>元积</span>
                   <div class="input">
-                    <el-input v-model.number="form.integrals"></el-input>
+                    <el-input v-model.number="form.integrals" />
                   </div>
                   <span>分</span>
                 </div>
               </el-form-item>
 
               <el-form-item>
-                <el-button @click="resetForm('form')">重置</el-button>
-                <el-button type="primary" @click="submitForm('form')">确定</el-button>
+                <el-button @click="resetForm('form')"> 重置 </el-button>
+                <el-button type="primary" @click="submitForm('form')"> 确定 </el-button>
               </el-form-item>
             </el-form>
           </div>
@@ -52,7 +52,7 @@
 const { updatePrivilege } = require('@/api/privilege');
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 export default {
-  name: 'privilege',
+  name: 'Privilege',
   data() {
     return {
       form: {

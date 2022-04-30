@@ -3,7 +3,7 @@
     <div class="custom-drawer-content">
       <div class="custom-drawer-body">
         <el-table ref="tableSort" :data="cartList" :min-height="tableHeight">
-          <el-table-column show-overflow-tooltip prop="name" label="商品"></el-table-column>
+          <el-table-column show-overflow-tooltip prop="name" label="商品" />
           <el-table-column label="数量/重量" min-width="120px">
             <template #default="{ row }">
               <!-- <span>{{ row.saled }}</span> -->
@@ -13,7 +13,7 @@
                 :precision="3"
                 :controls="false"
                 :disabled="true"
-              ></el-input-number>
+              />
               <el-input-number
                 v-else
                 v-model="row.saled"
@@ -21,7 +21,7 @@
                 :step="1"
                 step-strictly
                 @change="(current, oldV) => addedChange(row, current - oldV)"
-              ></el-input-number>
+              />
             </template>
           </el-table-column>
           <el-table-column show-overflow-tooltip prop="price" label="单价">
@@ -43,18 +43,18 @@
         <span>
           共<i class="custom-count-num">{{ allcartCount }}</i> 单位
         </span>
-        <span class="discount-show-detail" v-show="computedDiscount !== 1">
+        <span v-show="computedDiscount !== 1" class="discount-show-detail">
           折扣：{{ originPayPrice }} <i>×</i> {{ computedDiscount }}
         </span>
         <span>
-          <span class="changedPrice" v-show="changedPrice !== ''">
+          <span v-show="changedPrice !== ''" class="changedPrice">
             {{ allPayPrice }}
           </span>
           <i class="custom-count-price">{{ computedPrice }}</i>
           元
         </span>
       </div>
-      <div class="vip-info" v-if="selectedVip">
+      <div v-if="selectedVip" class="vip-info">
         <div class="vip-info-name-content">
           <span>
             会员：<i class="vip-info-name">{{ selectedVip.PN || selectedVip.name || '' }}</i>
@@ -73,19 +73,20 @@
 
     <div class="cart-right">
       <div class="operate-content">
-        <div class="operate-btn" v-for="operate in cartOperates" :key="operate.type">
+        <div v-for="operate in cartOperates" :key="operate.type" class="operate-btn">
           <el-badge
+            v-if="operate.bedge && orderCache.length"
             :value="orderCache.length"
             class="item"
-            v-if="operate.bedge && orderCache.length"
           >
             <el-button
               size="medium"
               type="primary"
               :icon="operate.icon"
               @click="handleOperate(operate.type)"
-              >{{ operate.name }}</el-button
             >
+              {{ operate.name }}
+            </el-button>
           </el-badge>
 
           <el-button
@@ -94,12 +95,15 @@
             type="primary"
             :icon="operate.icon"
             @click="handleOperate(operate.type)"
-            >{{ operate.name }}</el-button
           >
+            {{ operate.name }}
+          </el-button>
         </div>
       </div>
       <div class="settlement">
-        <el-button type="danger" size="medium" @click="handleOperate('settlement')">结算</el-button>
+        <el-button type="danger" size="medium" @click="handleOperate('settlement')">
+          结算
+        </el-button>
       </div>
     </div>
 
@@ -109,7 +113,7 @@
     <vip-list ref="vipList" />
     <settlement-dialog
       ref="settlementDialog"
-      :computedPrice="computedPrice"
+      :computed-price="computedPrice"
       @resetStock="resetStock"
     />
   </div>
@@ -127,7 +131,7 @@ import VipList from './components/vipList.vue';
 import SettlementDialog from './components/settlementDialog.vue';
 import { scaleTwoPrice, toFixedFloat } from '@/utils/price.js';
 export default {
-  name: 'cart',
+  name: 'Cart',
   components: { DiscountEdit, ChangePrice, HoldedEdit, VipList, SettlementDialog },
 
   data() {
@@ -233,7 +237,7 @@ export default {
     transformPrice(row) {
       const list = JSON.parse(row.priceRange);
       let index = list.findIndex(e => e.unitRange[1] > row.saled);
-      index = index == -1 ? (list.length-1) : index;
+      index = index == -1 ? list.length - 1 : index;
       row.price = list[index].price;
       return row.price;
     },

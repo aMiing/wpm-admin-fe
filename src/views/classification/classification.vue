@@ -38,10 +38,9 @@
       @selection-change="setSelectRows"
       @sort-change="tableSortChange"
     >
-      <el-table-column show-overflow-tooltip type="selection" width="55"></el-table-column>
-      <el-table-column show-overflow-tooltip label="编号/条码" prop="uuid" min-width="200">
-      </el-table-column>
-      <el-table-column show-overflow-tooltip prop="name" label="名称"></el-table-column>
+      <el-table-column show-overflow-tooltip type="selection" width="55" />
+      <el-table-column show-overflow-tooltip label="编号/条码" prop="uuid" min-width="200" />
+      <el-table-column show-overflow-tooltip prop="name" label="名称" />
       <el-table-column show-overflow-tooltip label="图片" width="150">
         <template #default="{ row }">
           <el-image v-if="imgShow" :preview-src-list="imageList" :src="row.img">
@@ -56,8 +55,8 @@
       </el-table-column>
       <el-table-column show-overflow-tooltip label="操作" min-width="150px">
         <template #default="{ row }">
-          <el-button type="text" @click="handleEdit(row)">编辑</el-button>
-          <el-button type="text" @click="handleDelete(row)">删除</el-button>
+          <el-button type="text" @click="handleEdit(row)"> 编辑 </el-button>
+          <el-button type="text" @click="handleDelete(row)"> 删除 </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -69,8 +68,8 @@
       :total="total"
       @current-change="handleCurrentChange"
       @size-change="handleSizeChange"
-    ></el-pagination>
-    <table-edit ref="edit" @fetchData="fetchData"></table-edit>
+    />
+    <table-edit ref="edit" @fetchData="fetchData" />
   </div>
 </template>
 

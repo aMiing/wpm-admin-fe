@@ -1,21 +1,16 @@
-import request from '@/utils/request'
-import {
-  encryptedData
-} from '@/utils/encrypt'
-import {
-  loginRSA,
-  tokenName
-} from '@/config'
+import request from '@/utils/request';
+import { encryptedData } from '@/utils/encrypt';
+import { loginRSA, tokenName } from '@/config';
 
 export async function login(data) {
   if (loginRSA) {
-    data = await encryptedData(data)
+    data = await encryptedData(data);
   }
   return request({
     url: '/login',
     method: 'post',
     data,
-  })
+  });
 }
 
 export function getUserInfo(accessToken) {
@@ -25,14 +20,14 @@ export function getUserInfo(accessToken) {
     data: {
       [tokenName]: accessToken,
     },
-  })
+  });
 }
 
 export function logout() {
   return request({
     url: '/logout',
     method: 'get',
-  })
+  });
 }
 
 export function register(data) {
@@ -40,7 +35,7 @@ export function register(data) {
     url: '/register',
     method: 'post',
     data,
-  })
+  });
 }
 
 export function updateSysInfo(data) {
@@ -48,5 +43,5 @@ export function updateSysInfo(data) {
     url: '/updateSysInfo',
     method: 'post',
     data,
-  })
+  });
 }

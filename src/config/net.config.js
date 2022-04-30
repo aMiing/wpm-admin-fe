@@ -14,5 +14,5 @@ const network = {
   invalidCode: 403,
   //无权限code
   noPermissionCode: 401,
-}
-module.exports = network
+};
+module.exports = network;

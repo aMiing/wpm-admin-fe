@@ -32,17 +32,11 @@
     </el-row>
 
     <el-table ref="tableSort" :data="list" :height="height" @selection-change="setSelectRows">
-      <el-table-column show-overflow-tooltip type="selection" width="55"></el-table-column>
-      <el-table-column show-overflow-tooltip label="手机号" prop="PN" width="160"></el-table-column>
-      <el-table-column show-overflow-tooltip label="昵称" prop="name" width="160">
-      </el-table-column>
-      <el-table-column show-overflow-tooltip prop="balance" sortable label="余额"></el-table-column>
-      <el-table-column
-        show-overflow-tooltip
-        label="积分"
-        prop="integral"
-        sortable
-      ></el-table-column>
+      <el-table-column show-overflow-tooltip type="selection" width="55" />
+      <el-table-column show-overflow-tooltip label="手机号" prop="PN" width="160" />
+      <el-table-column show-overflow-tooltip label="昵称" prop="name" width="160" />
+      <el-table-column show-overflow-tooltip prop="balance" sortable label="余额" />
+      <el-table-column show-overflow-tooltip label="积分" prop="integral" sortable />
       <el-table-column show-overflow-tooltip label="注册时间" min-width="160">
         <template #default="{ row }">
           <span>{{ row.createTime | timeFilter }}</span>
@@ -50,8 +44,8 @@
       </el-table-column>
       <el-table-column show-overflow-tooltip label="操作" min-width="150px">
         <template #default="{ row }">
-          <el-button type="text" @click="handleEdit(row)">编辑</el-button>
-          <el-button type="text" @click="handleDelete(row)">删除</el-button>
+          <el-button type="text" @click="handleEdit(row)"> 编辑 </el-button>
+          <el-button type="text" @click="handleDelete(row)"> 删除 </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -63,8 +57,8 @@
       :total="total"
       @current-change="handleCurrentChange"
       @size-change="handleSizeChange"
-    ></el-pagination>
-    <table-edit ref="edit"></table-edit>
+    />
+    <table-edit ref="edit" />
   </div>
 </template>
 
@@ -75,7 +69,7 @@ import { successCode } from '@/config';
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 import { formatTime } from '@/utils/index.js';
 export default {
-  name: 'vipManagement',
+  name: 'VipManagement',
   components: {
     TableEdit,
   },

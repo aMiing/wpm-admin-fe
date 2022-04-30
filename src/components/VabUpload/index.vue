@@ -11,7 +11,7 @@
         :closable="false"
         :title="`支持jpg、jpeg、png格式，单次可最多选择${limit}张图片，每张不可大于${size}M，如果大于${size}M会自动为您过滤`"
         type="info"
-      ></el-alert>
+      />
       <br />
       <el-upload
         ref="upload"
@@ -35,12 +35,8 @@
         class="upload-content"
         list-type="picture-card"
       >
-        <i slot="trigger" class="el-icon-plus"></i>
-        <el-dialog
-          :visible.sync="dialogVisible"
-          append-to-body
-          title="查看大图"
-        >
+        <i slot="trigger" class="el-icon-plus" />
+        <el-dialog :visible.sync="dialogVisible" append-to-body title="查看大图">
           <div>
             <img :src="dialogImageUrl" alt="" width="100%" />
           </div>
@@ -52,15 +48,10 @@
       class="dialog-footer"
       style="position: relative; padding-right: 15px; text-align: right"
     >
-      <div
-        v-if="show"
-        style="position: absolute; top: 10px; left: 15px; color: #999"
-      >
-        正在上传中... 当前上传成功数:{{ imgSuccessNum }}张 当前上传失败数:{{
-          imgErrorNum
-        }}张
+      <div v-if="show" style="position: absolute; top: 10px; left: 15px; color: #999">
+        正在上传中... 当前上传成功数:{{ imgSuccessNum }}张 当前上传失败数:{{ imgErrorNum }}张
       </div>
-      <el-button type="primary" @click="handleClose">关闭</el-button>
+      <el-button type="primary" @click="handleClose"> 关闭 </el-button>
       <el-button
         :loading="loading"
         size="small"
@@ -76,16 +67,16 @@
 
 <script>
 export default {
-  name: "VabUpload",
+  name: 'VabUpload',
   props: {
     url: {
       type: String,
-      default: "/upload",
+      default: '/upload',
       required: true,
     },
     name: {
       type: String,
-      default: "file",
+      default: 'file',
       required: true,
     },
     limit: {
@@ -104,16 +95,16 @@ export default {
       show: false,
       loading: false,
       dialogVisible: false,
-      dialogImageUrl: "",
-      action: "https://vab-unicloud-3a9da9.service.tcloudbase.com/upload",
+      dialogImageUrl: '',
+      action: 'https://vab-unicloud-3a9da9.service.tcloudbase.com/upload',
       headers: {},
       fileList: [],
-      picture: "picture",
+      picture: 'picture',
       imgNum: 0,
       imgSuccessNum: 0,
       imgErrorNum: 0,
       typeList: null,
-      title: "上传",
+      title: '上传',
       dialogFormVisible: false,
       data: {},
     };
@@ -149,10 +140,7 @@ export default {
       this.imgSuccessNum = this.imgSuccessNum + 1;
       if (fileList.length === this.imgNum) {
         setTimeout(() => {
-          this.$baseMessage(
-            `上传完成! 共上传${fileList.length}张图片`,
-            "success"
-          );
+          this.$baseMessage(`上传完成! 共上传${fileList.length}张图片`, 'success');
         }, 1000);
       }
 
@@ -165,11 +153,8 @@ export default {
       this.imgNum = this.imgNum + 1;
       this.imgErrorNum = this.imgErrorNum + 1;
       this.$baseMessage(
-        `文件[${file.raw.name}]上传失败,文件大小为${Math.round(
-          file.raw.size / 1024,
-          0
-        )}KB`,
-        "error"
+        `文件[${file.raw.name}]上传失败,文件大小为${Math.round(file.raw.size / 1024, 0)}KB`,
+        'error',
       );
       setTimeout(() => {
         this.loading = false;
@@ -189,17 +174,17 @@ export default {
         `当前限制选择 ${this.limit} 个文件，本次选择了
              ${files.length}
              个文件`,
-        "error"
+        'error',
       );
     },
     handleShow(data) {
-      this.title = "上传";
+      this.title = '上传';
       this.data = data;
       this.dialogFormVisible = true;
     },
     handleClose() {
       this.fileList = [];
-      this.picture = "picture";
+      this.picture = 'picture';
       this.allImgNum = 0;
       this.imgNum = 0;
       this.imgSuccessNum = 0;

@@ -33,14 +33,13 @@
     <div class="checkbox-content type-select">
       <span>按类型筛选：</span>
       <el-select v-model="queryForm.type" placeholder="请选择">
-        <el-option label="全部" :value="0"> </el-option>
+        <el-option label="全部" :value="0" />
         <el-option
           v-for="(type, index) in allTypes"
           :key="index"
           :label="type.name"
           :value="type.uuid"
-        >
-        </el-option>
+        />
       </el-select>
     </div>
 
@@ -51,11 +50,10 @@
       @selection-change="setSelectRows"
       @sort-change="tableSortChange"
     >
-      <el-table-column show-overflow-tooltip type="selection" width="55"></el-table-column>
-      <el-table-column show-overflow-tooltip label="编号/条码" prop="qrcode" min-width="60">
-      </el-table-column>
+      <el-table-column show-overflow-tooltip type="selection" width="55" />
+      <el-table-column show-overflow-tooltip label="编号/条码" prop="qrcode" min-width="60" />
 
-      <el-table-column show-overflow-tooltip prop="name" label="名称"></el-table-column>
+      <el-table-column show-overflow-tooltip prop="name" label="名称" />
       <!-- <el-table-column show-overflow-tooltip label="图片">
         <template #default="{ row }">
           <el-image
@@ -68,8 +66,8 @@
 
       <el-table-column show-overflow-tooltip prop="price" label="单价" sortable sort-by="price">
         <template #default="{ row }">
-          <span class="price" v-if="row.priceRange">￥{{ row.priceRange | priceRangeFilter }}</span>
-          <span class="price" v-else>￥{{ row.price }}</span>
+          <span v-if="row.priceRange" class="price">￥{{ row.priceRange | priceRangeFilter }}</span>
+          <span v-else class="price">￥{{ row.price }}</span>
         </template>
       </el-table-column>
       <el-table-column show-overflow-tooltip label="库存" sortable sort-by="stock" min-width="80">
@@ -101,11 +99,11 @@
       </el-table-column>
       <el-table-column show-overflow-tooltip label="操作" min-width="150">
         <template #default="{ row }">
-          <el-button type="text" @click="handleEdit(row)">编辑</el-button>
-          <el-button type="text" @click="handleOffOrOn(row)">{{
-            row.online === 1 ? '下架' : '上架'
-          }}</el-button>
-          <el-button type="text" @click="handleDelete(row)">删除</el-button>
+          <el-button type="text" @click="handleEdit(row)"> 编辑 </el-button>
+          <el-button type="text" @click="handleOffOrOn(row)">
+            row.online === 1 ? '下架' : '上架' }}
+          </el-button>
+          <el-button type="text" @click="handleDelete(row)"> 删除 </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -117,8 +115,8 @@
       :total="total"
       @current-change="handleCurrentChange"
       @size-change="handleSizeChange"
-    ></el-pagination>
-    <table-edit ref="edit" @fetchData="fetchData"></table-edit>
+    />
+    <table-edit ref="edit" @fetchData="fetchData" />
   </div>
 </template>
 
@@ -217,7 +215,7 @@ export default {
       this.$refs['edit'].showEdit();
     },
     handleEdit(row) {
-      this.$refs['edit'].showEdit({...row});
+      this.$refs['edit'].showEdit({ ...row });
     },
     async handleOffOrOn(row) {
       row.online = row.online === 1 ? 2 : 1;

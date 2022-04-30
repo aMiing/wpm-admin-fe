@@ -10,5 +10,5 @@ const theme = {
   themeBar: true,
   //是否显示多标签页
   tabsBar: false,
-}
-module.exports = theme
+};
+module.exports = theme;

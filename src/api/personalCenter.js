@@ -1,11 +1,11 @@
-import request from '@/utils/request'
+import request from '@/utils/request';
 
 export function getList(data) {
   return request({
     url: '/personalCenter/getList',
     method: 'post',
     data,
-  })
+  });
 }
 
 export function doEdit(data) {
@@ -13,7 +13,7 @@ export function doEdit(data) {
     url: '/personalCenter/doEdit',
     method: 'post',
     data,
-  })
+  });
 }
 
 export function doDelete(data) {
@@ -21,5 +21,5 @@ export function doDelete(data) {
     url: '/personalCenter/doDelete',
     method: 'post',
     data,
-  })
+  });
 }

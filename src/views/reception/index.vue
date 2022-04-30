@@ -6,12 +6,12 @@
       </div>
       <div class="top-menu">
         <div
-          class="menu-content"
           v-for="(item, index) in topMenuList"
           :key="index"
+          class="menu-content"
           @click="handleClickMenu(item)"
         >
-          <vab-icon :icon="['fas', item.icon]"></vab-icon>
+          <vab-icon :icon="['fas', item.icon]" />
           <span class="menu-name"> {{ item.name }} </span>
         </div>
       </div>
@@ -25,21 +25,21 @@
         <div class="tab-content">
           <el-tabs v-model="activeTypeId" type="card">
             <el-tab-pane
-              :label="type.name"
-              :name="type.uuid"
               v-for="(type, index) in allTypes"
               :key="index"
+              :label="type.name"
+              :name="type.uuid"
             >
               <div class="tab-panne-content">
-                <el-row :gutter="20" v-if="(dataByType[activeTypeId] || []).length">
+                <el-row v-if="(dataByType[activeTypeId] || []).length" :gutter="20">
                   <el-col
+                    v-for="goods in dataByType[activeTypeId]"
+                    :key="goods.uuid"
                     :xs="24"
                     :sm="24"
                     :md="12"
                     :lg="6"
                     :xl="6"
-                    v-for="goods in dataByType[activeTypeId]"
-                    :key="goods.uuid"
                   >
                     <el-card shadow="hover" :body-style="{ padding: '0px' }">
                       <div slot="header" class="clearfix">
@@ -73,22 +73,22 @@
                             :min="0"
                             :step="1"
                             :precision="3"
-                          ></el-input-number>
+                          />
                         </p>
                         <div class="bottom floatRight">
-                          <span class="price" v-if="goods.priceRange"
+                          <span v-if="goods.priceRange" class="price"
                             >￥{{ goods.priceRange | priceRangeFilter }}</span
                           >
-                          <span class="price" v-else>￥{{ goods.price }}</span>
+                          <span v-else class="price">￥{{ goods.price }}</span>
                         </div>
                       </div>
                     </el-card>
                   </el-col>
                 </el-row>
                 <el-empty v-else description="该分类下暂无商品">
-                  <el-button type="primary" @click="handleClickMenu({ link: '/goods/create' })"
-                    >去创建</el-button
-                  >
+                  <el-button type="primary" @click="handleClickMenu({ link: '/goods/create' })">
+                    去创建
+                  </el-button>
                 </el-empty>
               </div>
             </el-tab-pane>
@@ -98,14 +98,16 @@
           <div v-if="currentWeight" class="weight-content">
             <span>{{ currentWeight }}<i style="font-size: 24px">kg</i></span>
           </div>
-          <el-button v-else size="medium" type="info" @click="getSerialPort">连接电子秤</el-button>
+          <el-button v-else size="medium" type="info" @click="getSerialPort">
+            连接电子秤
+          </el-button>
           <el-form label-width="80px" @keyup.enter.native="qrcodeKeyUp">
             <el-form-item label="条码输入:">
               <el-input
                 v-model="searchQRcode"
                 autofocus
                 placeholder="请输入或扫描商品条形码,按enter键确认"
-              ></el-input>
+              />
             </el-form-item>
           </el-form>
         </div>
@@ -120,7 +122,6 @@ import { topMenuList } from './config';
 import mixin from './mixin';
 
 export default {
-  mixins: [mixin],
   filters: {
     priceRangeFilter(list) {
       list = JSON.parse(list);
@@ -131,6 +132,7 @@ export default {
       return res;
     },
   },
+  mixins: [mixin],
   data() {
     return {
       topMenuList,

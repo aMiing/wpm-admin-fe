@@ -3,12 +3,12 @@
     <div class="order-cache-card-content">
       <el-row :gutter="20">
         <template v-if="holdedList.length">
-          <el-col :span="12" v-for="order in holdedList" :key="order.time">
+          <el-col v-for="order in holdedList" :key="order.time" :span="12">
             <el-card class="box-card">
               <div slot="header" class="clearfix">
                 <span>{{ order.time | timeFilter }}</span>
                 <el-popconfirm title="确定删除吗？" @confirm="delOrderCache(order)">
-                  <el-button slot="reference" icon="el-icon-delete" circle size="mini"></el-button>
+                  <el-button slot="reference" icon="el-icon-delete" circle size="mini" />
                 </el-popconfirm>
                 <el-popconfirm
                   v-if="getCartList.length"
@@ -21,7 +21,7 @@
                     type="success"
                     icon="el-icon-check"
                     circle
-                  ></el-button>
+                  />
                 </el-popconfirm>
                 <el-button
                   v-else
@@ -31,7 +31,7 @@
                   circle
                   plain
                   @click="useThisCache(order)"
-                ></el-button>
+                />
               </div>
               <div v-for="item in order.list" :key="item.uuid" class="text item">
                 {{ item.name + '*' + item.saled }}
@@ -40,16 +40,16 @@
           </el-col>
         </template>
 
-        <el-col :span="24" v-else>
+        <el-col v-else :span="24">
           <p>暂无挂起订单哦~</p>
         </el-col>
       </el-row>
     </div>
     <div slot="footer" class="dialog-footer">
-      <el-button type="danger" :disabled="!holdedList.length" @click="handleClearAllList"
-        >清空全部</el-button
-      >
-      <el-button @click="close">取 消</el-button>
+      <el-button type="danger" :disabled="!holdedList.length" @click="handleClearAllList">
+        清空全部
+      </el-button>
+      <el-button @click="close"> 取 消 </el-button>
     </div>
   </el-dialog>
 </template>
@@ -59,7 +59,7 @@ import { successCode } from '@/config';
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 import { formatTime } from '@/utils/index.js';
 export default {
-  name: 'discountEdit',
+  name: 'DiscountEdit',
   filters: {
     timeFilter(NS) {
       return formatTime(new Date(NS), '{yy}-{mm}-{dd} {hh}:{ii}:{ss}');

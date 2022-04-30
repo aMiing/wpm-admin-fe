@@ -1,4 +1,4 @@
-import store from '@/store'
+import store from '@/store';
 
 /**
  * @author amingxiansen 1006934861@qq.com
@@ -8,13 +8,13 @@ import store from '@/store'
  */
 export default function checkPermission(value) {
   if (value && value instanceof Array && value.length > 0) {
-    const permissions = store.getters['user/permissions']
-    const permissionPermissions = value
+    const permissions = store.getters['user/permissions'];
+    const permissionPermissions = value;
 
-    return permissions.some((role) => {
-      return permissionPermissions.includes(role)
-    })
+    return permissions.some(role => {
+      return permissionPermissions.includes(role);
+    });
   } else {
-    return false
+    return false;
   }
 }

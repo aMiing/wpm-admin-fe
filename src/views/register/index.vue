@@ -12,32 +12,64 @@
         <div style="color: transparent">占位符</div>
       </el-col>
       <el-col :xs="24" :sm="24" :md="12" :lg="8" :xl="8">
-        <el-form ref="registerForm" :model="form" class="register-form" :rules="registerRules" size="mini">
+        <el-form
+          ref="registerForm"
+          :model="form"
+          class="register-form"
+          :rules="registerRules"
+          size="mini"
+        >
           <el-form-item prop="username">
-            <el-input v-model.trim="form.username" v-focus style="margin-top: 20px" type="text" placeholder="请输入用户名" auto-complete="off">
-              <vab-icon slot="prefix" :icon="['fas', 'user-alt']"></vab-icon>
+            <el-input
+              v-model.trim="form.username"
+              v-focus
+              style="margin-top: 20px"
+              type="text"
+              placeholder="请输入用户名"
+              auto-complete="off"
+            >
+              <vab-icon slot="prefix" :icon="['fas', 'user-alt']" />
             </el-input>
           </el-form-item>
           <el-form-item prop="phone">
-            <el-input v-model.trim="form.phone" type="text" placeholder="请输入手机号" maxlength="11" show-word-limit autocomplete="off">
-              <vab-icon slot="prefix" :icon="['fas', 'mobile-alt']"></vab-icon>
+            <el-input
+              v-model.trim="form.phone"
+              type="text"
+              placeholder="请输入手机号"
+              maxlength="11"
+              show-word-limit
+              autocomplete="off"
+            >
+              <vab-icon slot="prefix" :icon="['fas', 'mobile-alt']" />
             </el-input>
           </el-form-item>
           <el-form-item prop="phoneCode" style="position: relative">
             <el-input v-model.trim="form.phoneCode" type="text" placeholder="手机验证码">
-              <vab-icon slot="prefix" :icon="['fas', 'envelope-open']"></vab-icon>
+              <vab-icon slot="prefix" :icon="['fas', 'envelope-open']" />
             </el-input>
-            <el-button type="primary" class="show-pwd phone-code" :disabled="isGetphone" @click="getPhoneCode">
+            <el-button
+              type="primary"
+              class="show-pwd phone-code"
+              :disabled="isGetphone"
+              @click="getPhoneCode"
+            >
               {{ phoneCode }}
             </el-button>
           </el-form-item>
           <el-form-item prop="password">
-            <el-input v-model.trim="form.password" type="password" placeholder="设置密码" autocomplete="new-password">
-              <vab-icon slot="prefix" :icon="['fas', 'unlock']"></vab-icon>
+            <el-input
+              v-model.trim="form.password"
+              type="password"
+              placeholder="设置密码"
+              autocomplete="new-password"
+            >
+              <vab-icon slot="prefix" :icon="['fas', 'unlock']" />
             </el-input>
           </el-form-item>
           <el-form-item>
-            <el-button class="register-btn" type="primary" @click.native.prevent="handleReister"> 注册 </el-button>
+            <el-button class="register-btn" type="primary" @click.native.prevent="handleReister">
+              注册
+            </el-button>
             <router-link to="/login">
               <div style="margin-top: 20px">登录</div>
             </router-link>
@@ -48,36 +80,36 @@
   </div>
 </template>
 <script>
-import { isPassword, isPhone } from "@/utils/validate";
-import { register } from "@/api/user";
-import { successCode } from "@/config";
+import { isPassword, isPhone } from '@/utils/validate';
+import { register } from '@/api/user';
+import { successCode } from '@/config';
 export default {
-  username: "Register",
+  username: 'Register',
   directives: {
     focus: {
       inserted(el) {
-        el.querySelector("input").focus();
+        el.querySelector('input').focus();
       },
     },
   },
   data() {
     const validateusername = (rule, value, callback) => {
-      if ("" == value) {
-        callback(new Error("用户名不能为空"));
+      if ('' == value) {
+        callback(new Error('用户名不能为空'));
       } else {
         callback();
       }
     };
     const validatePassword = (rule, value, callback) => {
       if (!isPassword(value)) {
-        callback(new Error("密码不能少于6位"));
+        callback(new Error('密码不能少于6位'));
       } else {
         callback();
       }
     };
     const validatePhone = (rule, value, callback) => {
       if (!isPhone(value)) {
-        callback(new Error("请输入正确的手机号"));
+        callback(new Error('请输入正确的手机号'));
       } else {
         callback();
       }
@@ -85,36 +117,36 @@ export default {
     return {
       isGetphone: false,
       getPhoneIntval: null,
-      phoneCode: "获取验证码",
+      phoneCode: '获取验证码',
       showRegister: false,
       nodeEnv: process.env.NODE_ENV,
       title: this.$baseTitle,
       form: {},
       registerRules: {
         username: [
-          { required: true, trigger: "blur", message: "请输入用户名" },
-          { max: 20, trigger: "blur", message: "最多不能超过20个字" },
-          { validator: validateusername, trigger: "blur" },
+          { required: true, trigger: 'blur', message: '请输入用户名' },
+          { max: 20, trigger: 'blur', message: '最多不能超过20个字' },
+          { validator: validateusername, trigger: 'blur' },
         ],
         phone: [
-          { required: true, trigger: "blur", message: "请输入手机号码" },
-          { validator: validatePhone, trigger: "blur" },
+          { required: true, trigger: 'blur', message: '请输入手机号码' },
+          { validator: validatePhone, trigger: 'blur' },
         ],
         password: [
-          { required: true, trigger: "blur", message: "请输入密码" },
-          { validator: validatePassword, trigger: "blur" },
+          { required: true, trigger: 'blur', message: '请输入密码' },
+          { validator: validatePassword, trigger: 'blur' },
         ],
-        phoneCode: [{ required: true, trigger: "blur", message: "请输入手机验证码" }],
+        phoneCode: [{ required: true, trigger: 'blur', message: '请输入手机验证码' }],
       },
       loading: false,
-      passwordType: "password",
+      passwordType: 'password',
     };
   },
   created() {
-    document.body.style.overflow = "hidden";
+    document.body.style.overflow = 'hidden';
   },
   beforeDestroy() {
-    document.body.style.overflow = "auto";
+    document.body.style.overflow = 'auto';
     this.getPhoneIntval = null;
     clearInterval(this.getPhoneIntval);
   },
@@ -122,7 +154,7 @@ export default {
     getPhoneCode() {
       if (!isPhone(this.form.phone)) {
         //this.$baseMessage('请输入手机号', 'error')
-        this.$refs["registerForm"].validateField("phone");
+        this.$refs['registerForm'].validateField('phone');
         return;
       }
       this.isGetphone = true;
@@ -130,17 +162,17 @@ export default {
       this.getPhoneIntval = setInterval(() => {
         if (n > 0) {
           n--;
-          this.phoneCode = "重新获取(" + n + "s)";
+          this.phoneCode = '重新获取(' + n + 's)';
         } else {
           this.getPhoneIntval = null;
           clearInterval(this.getPhoneIntval);
-          this.phoneCode = "获取验证码";
+          this.phoneCode = '获取验证码';
           this.isGetphone = false;
         }
       }, 1000);
     },
     handleReister() {
-      this.$refs["registerForm"].validate(async (valid) => {
+      this.$refs['registerForm'].validate(async valid => {
         if (valid) {
           const param = {
             username: this.form.username,
@@ -149,8 +181,8 @@ export default {
             phoneCode: this.form.phoneCode,
           };
           const { msg, code } = await register(param);
-          this.$baseMessage(msg, "success");
-          successCode.includes(code) && this.$router.push("login");
+          this.$baseMessage(msg, 'success');
+          successCode.includes(code) && this.$router.push('login');
         }
       });
     },
@@ -160,7 +192,7 @@ export default {
 <style lang="scss" scoped>
 .register-container {
   height: 100vh;
-  background: url("~@/assets/login_images/background.jpg") center center fixed no-repeat;
+  background: url('~@/assets/login_images/background.jpg') center center fixed no-repeat;
   background-size: cover;
 
   .title {

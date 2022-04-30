@@ -1,8 +1,8 @@
 /**
  * @description 导出默认通用配置
  */
- const os=require('os');
- const path = require('path')
+const os = require('os');
+const path = require('path');
 const pub_dir = path.join(__dirname, '../../../wpm-server/public');
 const setting = {
   // 开发以及部署时的URL
@@ -16,7 +16,7 @@ const setting = {
   // 进行编译的依赖
   transpileDependencies: [],
   // 默认的接口地址 如果是开发环境和生产环境走vab-mock-server，当然你也可以选择自己配置成需要的接口地址
-  baseURL:  'api',
+  baseURL: 'api',
   //标题 （包括初次加载雪花屏的标题 页面的标题 浏览器的标题）
   title: '商品管理系统',
   //简写
@@ -65,7 +65,7 @@ const setting = {
   //需要自动注入并加载的模块
   providePlugin: {
     maptalks: 'maptalks',
-    'window.maptalks': 'maptalks'
+    'window.maptalks': 'maptalks',
   },
   //npm run build时是否自动生成7z压缩包
   build7z: true,
@@ -75,5 +75,5 @@ const setting = {
   donation: true,
   // 资源地址
   excelUrl: '/',
-}
-module.exports = setting
+};
+module.exports = setting;

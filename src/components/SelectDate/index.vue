@@ -1,11 +1,11 @@
 <template>
   <div class="select-date-content">
     <el-radio-group v-model="initSelectRadio" @change="radioSelectChange">
-      <el-radio-button label="今天"></el-radio-button>
-      <el-radio-button label="昨天"></el-radio-button>
-      <el-radio-button label="近一周"></el-radio-button>
-      <el-radio-button label="近30天"></el-radio-button>
-      <el-radio-button label="近90天"></el-radio-button>
+      <el-radio-button label="今天" />
+      <el-radio-button label="昨天" />
+      <el-radio-button label="近一周" />
+      <el-radio-button label="近30天" />
+      <el-radio-button label="近90天" />
     </el-radio-group>
     <div class="initTime">
       <el-date-picker
@@ -16,8 +16,7 @@
         end-placeholder="结束日期"
         value-format="timestamp"
         @change="pickerDateChange"
-      >
-      </el-date-picker>
+      />
     </div>
   </div>
 </template>

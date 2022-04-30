@@ -2,34 +2,30 @@
   <div class="multiplePriceForm">
     <div class="form-title">
       <span>阶梯计价规则：(前包含后不包含)</span>
-      <el-button icon="el-icon-plus" size="mini" round type="text" @click="handleAdd"></el-button>
+      <el-button icon="el-icon-plus" size="mini" round type="text" @click="handleAdd" />
     </div>
     <el-form ref="form" label-width="auto" label-suffix=":">
       <el-form-item v-for="(rule, index) in rules" :key="rule.id" :label="'规则' + index">
         <div class="rule-item-content">
           <span>从</span>
           <el-input-number
+            v-model.number="rule.unitRange[0]"
             disabled
             :controls="false"
             size="mini"
             type="number"
-            v-model.number="rule.unitRange[0]"
             :max="rule.unitRange[1]"
-          ></el-input-number>
+          />
           <span>单位到</span>
           <el-input-number
+            v-model.number="rule.unitRange[1]"
             :controls="false"
             size="mini"
-            v-model.number="rule.unitRange[1]"
             :min="rule.unitRange[0]"
             @change="maxRangeChange(index)"
-          ></el-input-number>
+          />
           <span>单位，价格为:</span>
-          <el-input-number
-            :controls="false"
-            size="mini"
-            v-model.number="rule.price"
-          ></el-input-number>
+          <el-input-number v-model.number="rule.price" :controls="false" size="mini" />
           <span>元</span>
           <div class="operation-box">
             <el-button
@@ -38,7 +34,7 @@
               size="mini"
               circle
               @click="handleDelete(rule)"
-            ></el-button>
+            />
           </div>
         </div>
       </el-form-item>

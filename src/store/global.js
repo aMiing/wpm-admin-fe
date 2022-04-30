@@ -5,19 +5,19 @@
 
 const state = () => ({
   AllProductionsList: [],
-})
+});
 const getters = {
-  getAllProductionsList: (state) => state.AllProductionsList,
-}
+  getAllProductionsList: state => state.AllProductionsList,
+};
 
 const mutations = {
   setAllProductionsList(state, AllProductionsList) {
-    state.AllProductionsList = AllProductionsList
+    state.AllProductionsList = AllProductionsList;
   },
-}
+};
 const actions = {
   setAllProductionsList({ commit }, AllProductionsList) {
-    commit('setCartList', AllProductionsList)
+    commit('setCartList', AllProductionsList);
   },
-}
-export default { state, getters, mutations, actions }
+};
+export default { state, getters, mutations, actions };

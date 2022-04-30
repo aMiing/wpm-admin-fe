@@ -3,18 +3,18 @@
     <el-form ref="form" :model="form" label-width="80px">
       <el-form-item label="折扣" prop="discount">
         <el-input v-model.trim="form.discount" autocomplete="off">
-          <template slot="append">%</template>
+          <template slot="append"> % </template>
         </el-input>
         <div class="preValue">
-          <div class="preValue-list" v-for="val in preValue" :key="val" @click="preValueClick(val)">
+          <div v-for="val in preValue" :key="val" class="preValue-list" @click="preValueClick(val)">
             {{ val }}
           </div>
         </div>
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
-      <el-button @click="close">取 消</el-button>
-      <el-button type="primary" @click="save">确 定</el-button>
+      <el-button @click="close"> 取 消 </el-button>
+      <el-button type="primary" @click="save"> 确 定 </el-button>
     </div>
   </el-dialog>
 </template>
@@ -24,7 +24,7 @@ import { successCode } from '@/config';
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 
 export default {
-  name: 'discountEdit',
+  name: 'DiscountEdit',
   data() {
     return {
       form: {

@@ -24,7 +24,7 @@
           node-key="id"
           @check="checkNode"
           @node-click="nodeClick"
-        ></el-tree>
+        />
       </el-option>
     </el-select>
   </div>
@@ -32,7 +32,7 @@
 
 <script>
 export default {
-  name: "SelectTreeTemplate",
+  name: 'SelectTreeTemplate',
   props: {
     /* 树形结构数据 */
     treeOptions: {
@@ -45,28 +45,28 @@ export default {
     selectType: {
       type: String,
       default: () => {
-        return "single";
+        return 'single';
       },
     },
     /* 初始选中值key */
     selectedKey: {
       type: String,
       default: () => {
-        return "";
+        return '';
       },
     },
     /* 初始选中值name */
     selectedValue: {
       type: String,
       default: () => {
-        return "";
+        return '';
       },
     },
     /* 可做选择的层级 */
     selectLevel: {
       type: [String, Number],
       default: () => {
-        return "";
+        return '';
       },
     },
     /* 可清空选项 */
@@ -80,19 +80,14 @@ export default {
   data() {
     return {
       defaultProps: {
-        children: "children",
-        label: "name",
+        children: 'children',
+        label: 'name',
       },
       defaultSelectedKeys: [], //初始选中值数组
       currentNodeKey: this.selectedKey,
       selectValue:
-        this.selectType == "multiple"
-          ? this.selectedValue.split(",")
-          : this.selectedValue, //下拉框选中值label
-      selectKey:
-        this.selectType == "multiple"
-          ? this.selectedKey.split(",")
-          : this.selectedKey, //下拉框选中值value
+        this.selectType == 'multiple' ? this.selectedValue.split(',') : this.selectedValue, //下拉框选中值label
+      selectKey: this.selectType == 'multiple' ? this.selectedKey.split(',') : this.selectedKey, //下拉框选中值value
     };
   },
   mounted() {
@@ -103,8 +98,8 @@ export default {
     initTree() {
       const that = this;
       if (that.selectedKey) {
-        that.defaultSelectedKeys = that.selectedKey.split(","); // 设置默认展开
-        if (that.selectType == "single") {
+        that.defaultSelectedKeys = that.selectedKey.split(','); // 设置默认展开
+        if (that.selectType == 'single') {
           that.$refs.treeOption.setCurrentKey(that.selectedKey); // 设置默认选中
         } else {
           that.$refs.treeOption.setCheckedKeys(that.defaultSelectedKeys);
@@ -114,21 +109,21 @@ export default {
     // 清除选中
     clearHandle() {
       const that = this;
-      this.selectValue = "";
-      this.selectKey = "";
+      this.selectValue = '';
+      this.selectKey = '';
       this.defaultSelectedKeys = [];
-      this.currentNodeKey = "";
+      this.currentNodeKey = '';
       this.clearSelected();
-      if (that.selectType == "single") {
-        that.$refs.treeOption.setCurrentKey(""); // 设置默认选中
+      if (that.selectType == 'single') {
+        that.$refs.treeOption.setCurrentKey(''); // 设置默认选中
       } else {
         that.$refs.treeOption.setCheckedKeys([]);
       }
     },
     /* 清空选中样式 */
     clearSelected() {
-      const allNode = document.querySelectorAll("#treeOption .el-tree-node");
-      allNode.forEach((element) => element.classList.remove("is-current"));
+      const allNode = document.querySelectorAll('#treeOption .el-tree-node');
+      allNode.forEach(element => element.classList.remove('is-current'));
     },
     // select多选时移除某项操作
     removeTag() {
@@ -146,7 +141,7 @@ export default {
       const checkedNodes = this.$refs.treeOption.getCheckedNodes();
       const keyArr = [];
       const valueArr = [];
-      checkedNodes.forEach((item) => {
+      checkedNodes.forEach(item => {
         if (item.rank >= this.selectLevel) {
           keyArr.push(item.id);
           valueArr.push(item.name);
@@ -190,4 +185,3 @@ ul li > .el-tree .el-tree-node__content {
   color: #606266;
 }
 </style>
-

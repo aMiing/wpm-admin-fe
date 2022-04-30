@@ -1,39 +1,32 @@
 /**
- * @author 
+ * @author
  * @description 会员特权
  */
-import {
-  getPrivilege
-} from '@/api/privilege'
+import { getPrivilege } from '@/api/privilege';
 
 const state = () => ({
-  privilege: {}
-})
+  privilege: {},
+});
 const getters = {
-  getPrivilege: (state) => state.privilege,
-}
+  getPrivilege: state => state.privilege,
+};
 
 const mutations = {
   setPrivilege(state, privilege) {
-    state.privilege = privilege
+    state.privilege = privilege;
   },
-}
+};
 const actions = {
-  async getPrivilege({
-    commit
-  }) {
+  async getPrivilege({ commit }) {
     // 请求数据
-    const {
-      data
-    } = await getPrivilege()
-    commit('setPrivilege', data[0])
+    const { data } = await getPrivilege();
+    commit('setPrivilege', data[0]);
   },
-}
-
+};
 
 export default {
   state,
   getters,
   mutations,
-  actions
-}
+  actions,
+};

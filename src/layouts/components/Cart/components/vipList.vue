@@ -7,20 +7,10 @@
         highlight-current-row
         @current-change="selectRowChange"
       >
-        <el-table-column show-overflow-tooltip label="手机号" prop="PN"></el-table-column>
-        <el-table-column show-overflow-tooltip label="昵称" prop="name"></el-table-column>
-        <el-table-column
-          show-overflow-tooltip
-          prop="balance"
-          label="余额"
-          sortable
-        ></el-table-column>
-        <el-table-column
-          show-overflow-tooltip
-          label="积分"
-          prop="integral"
-          sortable
-        ></el-table-column>
+        <el-table-column show-overflow-tooltip label="手机号" prop="PN" />
+        <el-table-column show-overflow-tooltip label="昵称" prop="name" />
+        <el-table-column show-overflow-tooltip prop="balance" label="余额" sortable />
+        <el-table-column show-overflow-tooltip label="积分" prop="integral" sortable />
       </el-table>
       <el-pagination
         :background="background"
@@ -30,11 +20,11 @@
         :total="total"
         @current-change="handleCurrentChange"
         @size-change="handleSizeChange"
-      ></el-pagination>
+      />
     </div>
     <div slot="footer" class="dialog-footer">
-      <el-button @click="cancelSelect">取消选中</el-button>
-      <el-button @click="submitThis" :disabled="currentRow === null">确定</el-button>
+      <el-button @click="cancelSelect"> 取消选中 </el-button>
+      <el-button :disabled="currentRow === null" @click="submitThis"> 确定 </el-button>
     </div>
   </el-dialog>
 </template>
@@ -44,7 +34,7 @@ import { successCode } from '@/config';
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 
 export default {
-  name: 'vipList',
+  name: 'VipList',
   data() {
     return {
       dialogFormVisible: false,

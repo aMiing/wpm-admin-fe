@@ -1,4 +1,4 @@
-import { title } from '@/config'
+import { title } from '@/config';
 
 /**
  * @author amingxiansen 1006934861@qq.com
@@ -8,7 +8,7 @@ import { title } from '@/config'
  */
 export default function getPageTitle(pageTitle) {
   if (pageTitle) {
-    return `${pageTitle}-${title}`
+    return `${pageTitle}-${title}`;
   }
-  return `${title}`
+  return `${title}`;
 }
