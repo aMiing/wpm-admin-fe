@@ -2,7 +2,7 @@
 export default {
   async mounted() {
     if ('serial' in navigator) {
-      let [port] = await navigator.serial?.getPorts();
+      let [port] = (await navigator.serial?.getPorts()) || [];
       if (!port) {
         this.$confirm('要链接电子秤吗?', '提示', {
           confirmButtonText: '确定',
