@@ -75,7 +75,7 @@ module.exports = {
             ignore: ['.*'],
           },
         ]),
-        new BundleAnalyzerPlugin(),
+        // new BundleAnalyzerPlugin(),
       ],
     };
   },
