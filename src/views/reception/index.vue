@@ -76,9 +76,9 @@
                           />
                         </p>
                         <div class="bottom floatRight">
-                          <span v-if="goods.priceRange" class="price"
-                            >￥{{ goods.priceRange | priceRangeFilter }}</span
-                          >
+                          <span v-if="goods.priceRange" class="price">
+                            ￥{{ goods.priceRange | priceRangeFilter }}
+                          </span>
                           <span v-else class="price">￥{{ goods.price }}</span>
                         </div>
                       </div>
@@ -268,6 +268,7 @@ export default {
   .reception-main {
     width: 100%;
     height: calc(100% - 110px);
+    min-height: 440px;
     display: flex;
     .cart-content {
       position: relative;
@@ -283,7 +284,7 @@ export default {
       position: relative;
       .tab-content {
         position: relative;
-        height: calc(100% - 52px);
+        height: calc(100% - 48px);
         overflow: hidden;
         padding: 0 16px;
         .card-body {

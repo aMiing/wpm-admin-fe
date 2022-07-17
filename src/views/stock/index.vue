@@ -97,11 +97,11 @@
           <span>{{ row.createTime | timeFilter }}</span>
         </template>
       </el-table-column>
-      <el-table-column show-overflow-tooltip label="操作" min-width="150">
+      <el-table-column label="操作" width="150">
         <template #default="{ row }">
           <el-button type="text" @click="handleEdit(row)"> 编辑 </el-button>
           <el-button type="text" @click="handleOffOrOn(row)">
-            row.online === 1 ? '下架' : '上架' }}
+            {{ row.online === 1 ? '下架' : '上架' }}
           </el-button>
           <el-button type="text" @click="handleDelete(row)"> 删除 </el-button>
         </template>

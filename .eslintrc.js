@@ -22,5 +22,17 @@ module.exports = {
     'consistent-return': 0,
     'no-param-reassign': 0,
     'vue/multi-word-component-names': 0,
+    'vue/html-self-closing': 0,
+    'vue/max-attributes-per-line': [
+      'error',
+      {
+        singleline: {
+          max: 5,
+        },
+        multiline: {
+          max: 1,
+        },
+      },
+    ],
   },
 };

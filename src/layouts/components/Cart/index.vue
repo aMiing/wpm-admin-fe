@@ -75,29 +75,19 @@
       <div class="operate-content">
         <div v-for="operate in cartOperates" :key="operate.type" class="operate-btn">
           <el-badge
-            v-if="operate.bedge && orderCache.length"
+            :hidden="!operate.bedge || !orderCache.length"
             :value="orderCache.length"
             class="item"
           >
             <el-button
               size="medium"
-              type="primary"
+              :type="operate.btnType || 'primary'"
               :icon="operate.icon"
               @click="handleOperate(operate.type)"
             >
               {{ operate.name }}
             </el-button>
           </el-badge>
-
-          <el-button
-            v-else
-            size="medium"
-            type="primary"
-            :icon="operate.icon"
-            @click="handleOperate(operate.type)"
-          >
-            {{ operate.name }}
-          </el-button>
         </div>
       </div>
       <div class="settlement">
@@ -235,10 +225,13 @@ export default {
     }),
     toFixedFloat,
     transformPrice(row) {
-      const list = JSON.parse(row.priceRange);
-      let index = list.findIndex(e => e.unitRange[1] > row.saled);
-      index = index == -1 ? list.length - 1 : index;
-      row.price = list[index].price;
+      if (row.priceRange) {
+        const list = JSON.parse(row.priceRange);
+        console.log('list', list, row);
+        let index = list.findIndex(e => e.unitRange[1] > row.saled);
+        index = index == -1 ? list.length - 1 : index;
+        row.price = list[index].price;
+      }
       return row.price;
     },
     addedChange(row, add) {
@@ -454,6 +447,9 @@ export default {
     justify-content: space-between;
     border-left: 1px solid #409eff;
     .operate-content {
+      display: flex;
+      flex-direction: column;
+      flex-wrap: wrap;
       ::v-deep {
         .el-button--medium {
           text-align: center;
@@ -466,7 +462,7 @@ export default {
     .settlement {
       ::v-deep {
         .el-button--medium {
-          padding: 18px 20px;
+          padding: 16px 20px;
           margin: 0;
           width: 80px;
         }
